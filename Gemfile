@@ -39,6 +39,11 @@ gem 'jbuilder', '~> 2.5'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Windows Directory Monitor (WDM) is
+# a library which can be used to monitor directories for changes.
+# It's mostly implemented in C and uses the Win32 API for a better performance.
+gem 'wdm', '>= 0.1.0' if Gem.win_platform?
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
