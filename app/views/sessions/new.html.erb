@@ -1,0 +1,18 @@
+<h1>QINeS AUTOSAR Purosess Tool</h1>
+
+<%= form_for(:session, url: sessions_path) do |f| %>
+
+<div class="login_form">
+      <div>
+        <p style="display:inline-block;width:30%;text-align:center;"><%= f.label :name, 'ユーザ名' %></p>
+        <p style="display:inline-block;width:69%;"><%= f.text_field :name %></p>
+      </div>
+
+      <div>
+        <p style="display:inline-block;width:30%;text-align:center;"><%= f.label :password, 'パスワード' %></p>
+        <p style="display:inline-block;width:69%;"><%= f.password_field :password %></p>
+      </div>
+
+<%= f.submit 'サインイン' %>
+
+<% end %>

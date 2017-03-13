@@ -5,3 +5,5 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+CommunicationProtocol.create!(name: 'CAN', protocol_number: "1")
+QinesVersion.create!(name: 'V1.0', qines_version_number: "1")

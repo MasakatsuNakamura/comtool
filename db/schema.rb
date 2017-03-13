@@ -10,7 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170309012307) do
+ActiveRecord::Schema.define(version: 20170310053544) do
+
+  create_table "communication_protocols", force: :cascade do |t|
+    t.string   "protocol_number"
+    t.string   "name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "database_manages", force: :cascade do |t|
+    t.string   "backup_file_path"
+    t.date     "backup_date"
+    t.integer  "project_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["project_id"], name: "index_database_manages_on_project_id"
+  end
+
+  create_table "members", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_members_on_project_id"
+    t.index ["user_id"], name: "index_members_on_user_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "communication_protocol_id"
+    t.integer  "qines_version_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["communication_protocol_id"], name: "index_projects_on_communication_protocol_id"
+    t.index ["qines_version_id"], name: "index_projects_on_qines_version_id"
+  end
+
+  create_table "qines_versions", force: :cascade do |t|
+    t.string   "qines_version_number"
+    t.string   "name"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "name"
@@ -18,6 +60,8 @@ ActiveRecord::Schema.define(version: 20170309012307) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
+    t.string   "remember_token"
+    t.string   "password"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
