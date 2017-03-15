@@ -1,7 +1,12 @@
 <h1><%= @project.name %></h1>
 
-<div class="project_link"><%= link_to 'メッセージ設計', '#' %></div>
-
-<div class="project_link"><%= link_to 'コンフィグ', '#' %></div>
+<div class="project_link"><%= link_to 'メッセージ設計', messages_path(:project => @project) %></div>
 
 <div class="project_link"><%= link_to 'DB管理', '#' %></div>
+
+<div class="container">
+  <ul class="list-inline pull-right">
+    <li>エクスポート：</li>
+    <li><%= link_to 'ARXML', "#" %></li>
+  </ul>
+</div>

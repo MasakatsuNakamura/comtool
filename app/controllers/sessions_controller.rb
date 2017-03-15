@@ -1,5 +1,7 @@
 class SessionsController < ApplicationController
-  def new; end
+  def new
+    redirect_to home_index_path if signed_in?
+  end
 
   def create
     user = User.find_by(name: params[:session][:name])

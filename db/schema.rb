@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310053544) do
+ActiveRecord::Schema.define(version: 20170314094744) do
 
   create_table "communication_protocols", force: :cascade do |t|
     t.string   "protocol_number"
@@ -35,6 +35,17 @@ ActiveRecord::Schema.define(version: 20170310053544) do
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_members_on_project_id"
     t.index ["user_id"], name: "index_members_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "canid"
+    t.integer  "txrx"
+    t.integer  "baudrate"
+    t.integer  "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_messages_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|

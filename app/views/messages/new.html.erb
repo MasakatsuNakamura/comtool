@@ -1,0 +1,20 @@
+<% provide(:title, "Message Create") %>
+<h1>メッセージ作成</h1>
+
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    <%= form_for(@message) do |f| %>
+        <%= render 'shared/error_messages', object: @message %>
+
+        <%= f.label :name, 'メッセージ名称' %>
+        <%= f.text_field :name, class: 'form-control'%>
+
+        <%= f.label :duplicate_source, '複製元' %>
+        <%= f.select :duplicate_source, {"送信 1byte"=>1,"受信 1byte"=>2}, class: 'form-control'%>
+
+
+        <%= f.submit "Create message", class: "btn btn-primary　col-xs-4" %>
+    <% end %>
+    <%= link_to 'Back', messages_path(:project => @project) %>
+  </div>
+</div>

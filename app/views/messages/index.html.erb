@@ -1,0 +1,25 @@
+<% provide(:title, "Message List") %>
+<h1>メッセージ設計</h1>
+<div style="text-align: right;"><%= link_to '新規メッセージ', new_message_path %></div>
+
+<table>
+    <% @messages.each do |message| %>
+    <tr>
+        <td class="message_table"><%= link_to message.name, message_path(message.id) %>
+        </td>
+    </tr>
+    <% end %>
+</table>
+
+<div class="container" id="export">
+  <ul class="list-inline pull-right">
+    <li>エクスポート：</li>
+    <li><%= link_to 'DCD（未実装）', "#" %></li>
+  </ul>
+</div>
+<div class="container">
+  <ul class="list-inline pull-right">
+    <li>インポート：</li>
+    <li><%= link_to 'DCD（未実装）', "#" %></li>
+  </ul>
+</div>
