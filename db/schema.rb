@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170314094744) do
+ActiveRecord::Schema.define(version: 20170315085345) do
+
+  create_table "com_signals", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "message_id"
+    t.string   "unit"
+    t.string   "description"
+    t.integer  "layout"
+    t.integer  "bit_offset"
+    t.integer  "bit_size"
+    t.integer  "sign_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["message_id"], name: "index_com_signals_on_message_id"
+    t.index ["sign_id"], name: "index_com_signals_on_sign_id"
+  end
 
   create_table "communication_protocols", force: :cascade do |t|
     t.string   "protocol_number"
@@ -63,6 +78,25 @@ ActiveRecord::Schema.define(version: 20170314094744) do
     t.string   "name"
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+  end
+
+  create_table "signs", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "active"
+    t.integer  "vartype"
+    t.string   "unit"
+    t.float    "exchange_rate"
+    t.integer  "priority"
+    t.integer  "input_module"
+    t.integer  "output_moduel"
+    t.integer  "input_period"
+    t.integer  "output_period"
+    t.integer  "access_level"
+    t.string   "description"
+    t.integer  "project_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["project_id"], name: "index_signs_on_project_id"
   end
 
   create_table "users", force: :cascade do |t|
