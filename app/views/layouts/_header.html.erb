@@ -3,12 +3,13 @@
     <%= link_to "Q-Ape tools", welcome_path, id: "logo" %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to "Home",   home_index_path %></li>
-        <li><%= link_to "Help",   help_path %></li>
         <% if signed_in? %>
+        <li><%= link_to "Home", home_index_path %></li>
+        <li><%= link_to "Help",   help_path %></li>
         <li><%= link_to "Sign out", signout_path, method: :delete %></li>
         <li><%= link_to gravatar_for(current_user,size:24), current_user %></li>
         <% else %>
+        <li><%= link_to "Help",   help_path %></li>
         <li><%= link_to "Sign in", signin_path %></li>
         <li><%= link_to "Sign up", signup_path, id: "signup_btn" %></li>
         <% end %>
