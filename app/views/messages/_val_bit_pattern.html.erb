@@ -1,0 +1,13 @@
+<% message_bit_size = message.bytesize * 8 %>
+<% signal_bit_offset = com_signal.object.bit_offset %>
+<% signal_bit_size = com_signal.object.bit_size %>
+
+<% signal_bit_offset.times do %>
+<td></td>
+<% end %>
+<% signal_bit_size.times do %>
+<td style="background-color: #99cc00;"></td>
+<% end %>
+<% (message_bit_size - signal_bit_offset - signal_bit_size).times do %>
+<td></td>
+<% end %>
