@@ -8,10 +8,20 @@ class MessagesController < ApplicationController
     @message = Message.new
   end
 
+  def edit
+    @message = Message.find_by_id(params[:id])
+    if @message.nil?
+      redirect_to messages_path, notice: '選択されたメッセージが存在しません'
+    end
+    @signs = Sign.getOwnSigns(session[:project]).select(:name)
+    if @signs.nil?
+      redirect_to messages_path, notice: '符号が存在しません'
+    end
+  end
+
   def create
     @message = Message.new(message_params)
     #TODO duplicate_sourceからarxmlを指定する
-    #TODO projectを指定する
     @message.project = Project.find_by_id(session[:project])
     if @message.save
       redirect_to :messages, notice: 'Message was created.'
@@ -20,15 +30,22 @@ class MessagesController < ApplicationController
     end
   end
 
-  def show
+  def update
     @message = Message.find_by_id(params[:id])
-    if @message == nil
-      redirect_to home_index_path, notice: '選択されたメッセージが存在しません'
+    if @message.update_attributes(signal_params)
+      redirect_to :messages
+    else
+      render :edit
     end
   end
 
   def message_params
     {:name => params[:message][:name]}
+  end
+
+  def signal_params
+    params.require(:message).permit(:name, :email, :password,
+                                 :password_confirmation)
   end
 
   def correct_message

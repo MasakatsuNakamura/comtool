@@ -1,0 +1,29 @@
+<% provide(:title, "Message Design") %>
+<h1><%= @message.name %></h1>
+
+<div class="row">
+  <%= form_for(@message) do |f| %>
+    <div class="col-md-2 col-md-offset-3">
+        <%= render 'shared/error_messages', object: @message %>
+
+        <%= f.label :canid, 'ID' %>
+        <%= f.text_field :canid, class: 'form-control'%>
+
+        <%= f.label :txrx, '送受信' %>
+        <%= f.select :txrx, {"送信"=>1,"受信"=>2}, class: 'form-control'%>
+
+        <%= f.label :bytesize, 'Byte Size' %>
+        <%= f.select :bytesize, 1..8, class: 'form-control'%>
+
+        <%= f.label :baudrate, 'Baud Rate' %>
+        <%= f.select :baudrate, {"125kbps"=>1,"250kbps"=>2,"500kbps"=>3,"1Mbps"=>4}, class: 'form-control'%>
+    </div>
+    <div>
+      <%= render 'signal_table', message_form: f %>
+    </div>
+    <div class="col-md-2 col-md-offset-3">
+        <%= f.submit "Edit message", class: "btn btn-primary　col-xs-4" %>
+        <%= link_to 'Back', messages_path %>
+    </div>
+  <% end %>
+</div>

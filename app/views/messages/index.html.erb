@@ -5,7 +5,7 @@
 <table>
     <% @messages.each do |message| %>
     <tr>
-        <td class="message_table"><%= link_to message.name, message_path(message.id) %>
+        <td class="message_table"><%= link_to message.name, edit_message_path(message.id) %>
         </td>
     </tr>
     <% end %>
