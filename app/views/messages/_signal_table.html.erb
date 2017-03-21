@@ -27,7 +27,7 @@
         <td class="col-md-1">
           <%= s.select :sign_id,  @signs.map{|s| [s.name, s.id]}, { :selected => s.object.sign_id }, class: 'form-control'%>
         </td>
-        <td>
+        <td class="col-md-1">
           <%= link_to "delete", del_signal_path(@message, com_signal_id: s.object.id), method: :delete, data: { confirm: "You sure?" } %>
         </td>
       </tr>

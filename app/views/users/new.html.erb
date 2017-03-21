@@ -1,26 +1,24 @@
-<h1>Create your account</h1>
+<h1>新規アカウント</h1>
+<div class="row">
+  <div class="col-md-4 col-md-offset-3">
+    <%= form_for(@user) do |f| %>
+      <%= render 'shared/error_messages', object: @user %>
 
-<%= form_for(@user) do |f| %>
+      <%= f.label :name, '名前' %><br>
+      <%= f.text_field :name, class: 'form-control' %>
 
-<table border="1">
-    <tr>
-        <th><%= f.label :name, '名前' %></th>
-        <td><%= f.text_field :name %></td>
-    </tr>
-    <tr>
-        <th><%= f.label :email, 'メールアドレス' %></th>
-        <td><%= f.text_field :email %></td>
-    </tr>
-    <tr>
-        <th><%= f.label :password, 'パスワード' %></th>
-        <td><%= f.password_field :password %></td>
-    </tr>
-    <tr>
-        <th><%= f.label :password_confirmation, '確認' %></th>
-        <td><%= f.password_field :password_confirmation %></td>
-    </tr>
-</table>
+      <%= f.label :email, 'eメールアドレス' %><br>
+      <%= f.text_field :email, class: 'form-control' %>
 
-<%= f.submit 'Sign up' %>
+      <%= f.label :password, 'パスワード' %><br>
+      <%= f.password_field :password, class: 'form-control' %>
 
-<% end %>
+      <%= f.label :password_confirmation, '確認' %><br>
+      <%= f.password_field :password_confirmation, class: 'form-control' %>
+
+
+      <%= f.submit "作成", class: "btn btn-primary col-md-4", style: "margin-top:20px;"  %>
+
+    <% end %>
+  </div>
+</div>
