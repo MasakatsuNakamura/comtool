@@ -22,10 +22,10 @@
         <td class="col-md-1"><%= s.text_field :unit %></td>
         <td class="col-md-2"><%= s.text_field :description %></td>
         <%= render 'val_bit_pattern', message: @message, com_signal: s %>
-        <td ><%= s.select :bit_offset, 0..(@message.bytesize*8-1), class: 'form-control'%></td>
-        <td ><%= s.select :bit_size,   1..(@message.bytesize*8), class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :bit_offset, 0..(@message.bytesize*8-1), { :selected => s.object.bit_offset.to_i }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :bit_size,   1..(@message.bytesize*8),   { :selected => s.object.bit_size.to_i }, class: 'form-control'%></td>
         <td class="col-md-1">
-          <%= s.select :sign, @signs, class: 'form-control'%>
+          <%= s.select :sign_id,  @signs.map{|s| [s.name, s.id]}, { :selected => s.object.sign_id }, class: 'form-control'%>
         </td>
       <% end %>
     </tr>

@@ -13,17 +13,14 @@ class MessagesController < ApplicationController
     if @message.nil?
       redirect_to messages_path, notice: '選択されたメッセージが存在しません'
     end
-    @signs = Sign.getOwnSigns(session[:project]).select(:name)
+    @signs = Sign.getOwnSigns(session[:project])
     if @signs.nil?
       redirect_to messages_path, notice: '符号が存在しません'
     end
   end
 
   def create
-    @message = Message.duplicate_from_arxml(message_params, params[:message][:duplicate_source])
-    #TODO duplicate_sourceからarxmlを指定する
-    @message.project = Project.find_by_id(session[:project])
-
+    @message = Message.duplicate_from_arxml(create_params, project: session[:project], duplicate_source: params[:message][:duplicate_source])
     if @message.save
       redirect_to :messages, notice: 'Message was created.'
     else
@@ -33,10 +30,10 @@ class MessagesController < ApplicationController
 
   def update
     @message = Message.find_by_id(params[:id])
-    if @message.update_attributes(signal_params)
+    if @message.update_attributes(edit_params)
       redirect_to :messages
     else
-      render :edit
+      redirect_to :messages, notice: 'メッセージの更新に失敗しました'
     end
   end
 
@@ -50,24 +47,13 @@ class MessagesController < ApplicationController
   end
 
   def create_params
-    {
-      :name     => params[:message][:name],
-    }
+    {:name     => params[:message][:name]}
   end
 
   def edit_params
-    {
-      :canid    => params[:message][:canid],
-      :txrx     => params[:message][:txrx],
-      :bytesize => params[:message][:bytesize],
-      :baudrate => params[:message][:baudrate],
-      :com_signals_attributes => params[:message][:com_signals_attributes]
-    }
-  end
-
-  def signal_params
-    params.require(:message).permit(:name, :email, :password,
-                                 :password_confirmation)
+    params.require(:message).permit(
+      :canid,:txrx,:bytesize,:baudrate,
+      com_signals_attributes: [:id, :name, :unit, :description, :bit_offset, :bit_size, :sign_id])
   end
 
   def correct_message
