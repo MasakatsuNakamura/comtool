@@ -20,6 +20,7 @@
     </div>
     <div>
       <%= render 'signal_table', message_form: f %>
+      <%= link_to "add signal", add_signal_path(@message), method: :put, class:"btn btn-success" %>
     </div>
     <div class="col-md-2 col-md-offset-3">
         <%= f.submit "Edit message", class: "btn btn-primary　col-xs-4" %>

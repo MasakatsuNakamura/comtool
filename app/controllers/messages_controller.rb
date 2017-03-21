@@ -46,6 +46,27 @@ class MessagesController < ApplicationController
     end
   end
 
+  def add_signal
+    m = Message.find_by_id(params[:id])
+    # default com_signal
+    c = m.com_signals_build
+
+    if c.save
+      redirect_to :edit_message
+    else
+      redirect_to :messages, notice: 'シグナルの追加に失敗しました'
+    end
+  end
+
+  def del_signal
+    c = ComSignal.find_by_id(params[:com_signal_id])
+    if c.destroy
+      redirect_to :edit_message
+    else
+      redirect_to :messages, notice: 'シグナルの削除に失敗しました'
+    end
+  end
+
   def create_params
     {:name     => params[:message][:name]}
   end
