@@ -10,13 +10,13 @@
         <%= f.text_field :canid, class: 'form-control'%>
 
         <%= f.label :txrx, '送受信' %>
-        <%= f.select :txrx, {"送信"=>1,"受信"=>2}, class: 'form-control'%>
+        <%= f.select :txrx, {"送信"=>0,"受信"=>1},  { :selected => @message.txrx.to_i }, class: 'form-control'%>
 
         <%= f.label :bytesize, 'Byte Size' %>
-        <%= f.select :bytesize, 1..8, class: 'form-control'%>
+        <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control'%>
 
         <%= f.label :baudrate, 'Baud Rate' %>
-        <%= f.select :baudrate, {"125kbps"=>1,"250kbps"=>2,"500kbps"=>3,"1Mbps"=>4}, class: 'form-control'%>
+        <%= f.select :baudrate, {"125kbps"=>0,"250kbps"=>1,"500kbps"=>2,"1Mbps"=>3}, { :selected => @message.baudrate.to_i }, class: 'form-control'%>
     </div>
     <div>
       <%= render 'signal_table', message_form: f %>

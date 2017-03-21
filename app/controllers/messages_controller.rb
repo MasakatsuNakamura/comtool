@@ -20,9 +20,10 @@ class MessagesController < ApplicationController
   end
 
   def create
-    @message = Message.new(message_params)
+    @message = Message.duplicate_from_arxml(message_params, params[:message][:duplicate_source])
     #TODO duplicate_sourceからarxmlを指定する
     @message.project = Project.find_by_id(session[:project])
+
     if @message.save
       redirect_to :messages, notice: 'Message was created.'
     else
@@ -52,4 +53,9 @@ class MessagesController < ApplicationController
     @message = Message.find(params[:id])
     redirect_to root_url unless current_message?(@message)
   end
+
+  private
+  def duplicate_from ()
+  end
+
 end

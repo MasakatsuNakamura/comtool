@@ -7,4 +7,16 @@ class Message < ApplicationRecord
   def self.getOwnMessages(project)
     Message.where(project_id: project)
   end
+
+  def Message.duplicate_from_arxml(params, duplicate_source)
+    m = Message.new(params)
+
+    # TODO arxmlからメッセージのプロパティを読み込む
+    m.canid = 100
+    m.txrx  = duplicate_source.to_i % 2
+    m.baudrate = 2
+    m.bytesize  = 1
+
+    m
+  end
 end
