@@ -40,8 +40,29 @@ class MessagesController < ApplicationController
     end
   end
 
-  def message_params
-    {:name => params[:message][:name]}
+  def destroy
+    @message = Message.find_by_id(params[:id])
+    if @message.destroy
+      redirect_to :messages
+    else
+      redirect_to :messages, notice: 'メッセージの削除に失敗しました'
+    end
+  end
+
+  def create_params
+    {
+      :name     => params[:message][:name],
+    }
+  end
+
+  def edit_params
+    {
+      :canid    => params[:message][:canid],
+      :txrx     => params[:message][:txrx],
+      :bytesize => params[:message][:bytesize],
+      :baudrate => params[:message][:baudrate],
+      :com_signals_attributes => params[:message][:com_signals_attributes]
+    }
   end
 
   def signal_params

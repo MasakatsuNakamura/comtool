@@ -13,5 +13,5 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :home,     only: [:index]
   resources :projects, only: [:index, :show, :new, :edit, :create, :update]
-  resources :messages, only: [:index, :new, :edit, :create, :update]
+  resources :messages, only: [:index, :new, :edit, :create, :update, :destroy]
 end
