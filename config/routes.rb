@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get 'messages/new'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root 'sessions#new'
+  root 'static_pages#welcome'
   match 'welcome', to: 'static_pages#welcome', via: 'get'
   match 'about',   to: 'static_pages#about',   via: 'get'
   match 'help',    to: 'static_pages#help',    via: 'get'
@@ -16,4 +16,12 @@ Rails.application.routes.draw do
   resources :messages, only: [:index, :new, :edit, :create, :update, :destroy]
   match 'messages/:id/add_signal(.:format)', to: 'messages#add_signal', via: 'put',    as: 'add_signal'
   match 'messages/:id/del_signal(.:format)', to: 'messages#del_signal', via: 'delete', as: 'del_signal'
+  resources :projects, shallow: true do
+    resources :config, only: [:index] do
+      collection do
+        get 'export'
+        post 'export'
+      end
+    end
+  end
 end

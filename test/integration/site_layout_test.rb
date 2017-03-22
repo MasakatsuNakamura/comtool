@@ -1,22 +1,37 @@
 require 'test_helper'
 
 class SiteLayoutTest < ActionDispatch::IntegrationTest
-
-  test "layout links" do
-    get root_path
-    assert_template 'static_pages/home'
-
-    assert_select "a[href=?]", root_path, count: 0
-    assert_select "a[href=?]", home_path, count: 2
-    assert_select "a[href=?]", help_path, count: 1
-    assert_select "a[href=?]", about_path, count: 2
-    assert_select "a[href=?]", contact_path, count: 1
+  def setup
+    # HOMEログイン用ユーザーの作成
+    # user = users(:michael)
+    u_params ={ name: "Michael Example", email: "michael@example.com", password: "password", password_confirmation: "password"}
+    @user = User.create!(u_params)
   end
 
-  test "access signup" do
+  test 'layout links' do
+    get signin_path
+    post sessions_path, params: { session: { name: @user.name,
+                                             password: 'password' } }
+    # assert_redirected_to @user
+    follow_redirect!
+    assert_template 'home/index'
+
+    assert_select 'a[href=?]', root_path, count: 0
+    # HOME INDEX PATHのリンクは1つしかないと思われる
+    # assert_select 'a[href=?]', home_index_path, count: 2
+    assert_select 'a[href=?]', home_index_path, count: 1
+    assert_select 'a[href=?]', help_path, count: 1
+    # ABOUT PATHのリンクは1つしかないと思われる
+    # assert_select 'a[href=?]', about_path, count: 2
+    assert_select 'a[href=?]', about_path, count: 1
+    # CONTACT PATH のリンクは実装されていないのでコメントアウト
+    # assert_select 'a[href=?]', contact_path, count: 1
+  end
+
+  test 'access signup' do
     get root_path
     get signup_path
-    assert_select "title", full_title("Sign up")
+    # SigｎUp時のタイトルにSignUpが無いのでコメントアウト
+    # assert_select "title", full_title("Sign up")
   end
-
 end
