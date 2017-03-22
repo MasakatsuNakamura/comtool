@@ -13,5 +13,7 @@ Rails.application.routes.draw do
   resources :sessions, only: [:new, :create, :destroy]
   resources :home,     only: [:index]
   resources :projects, only: [:index, :show, :new, :edit, :create, :update]
-  resources :messages, only: [:index, :new, :edit, :create, :update]
+  resources :messages, only: [:index, :new, :edit, :create, :update, :destroy]
+  match 'messages/:id/add_signal(.:format)', to: 'messages#add_signal', via: 'put',    as: 'add_signal'
+  match 'messages/:id/del_signal(.:format)', to: 'messages#del_signal', via: 'delete', as: 'del_signal'
 end

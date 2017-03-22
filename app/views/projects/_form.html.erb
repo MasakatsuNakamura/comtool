@@ -1,30 +1,20 @@
-<%= form_for(@project) do |f| %>
-<% if @project.errors.any? %>
-<div id="error_explanation">
-    <h2><%= pluralize(@project.errors.count, "error") %>
-        prohibited this project from being saved:</h2>
+<div class="row">
+  <%= form_for(@project) do |f| %>
+    <div class="col-md-2 col-md-offset-3">
+        <%= render 'shared/error_messages', object: @project %>
 
-    <ul>
-        <% @project.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-        <% end %>
-    </ul>
-</div>
-<% end %>
+        <%= f.label :name %><br>
+        <%= f.text_field :name %>
 
-<div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+        <%= f.label :qines_version_number %><br>
+        <%= text_field :qines_version_number, :name, readonly: true %>
+
+        <%= f.label :protocol_number %><br>
+        <%= text_field :communication_protocol, :name, readonly: true %>
+
+        <%= f.submit class: "btn btn-primary　col-md-1" %>
+
+    </div>
+  <% end %>
+  <%= link_to 'Back', home_index_path %>
 </div>
-<div class="field">
-    <%= f.label :qines_version_number %><br>
-    <%= text_field :qines_version_number, :name, readonly: true %>
-</div>
-<div class="field">
-    <%= f.label :protocol_number %><br>
-    <%= text_field :communication_protocol, :name, readonly: true %>
-</div>
-<div class="actions">
-    <%= f.submit %>
-</div>
-<% end %>

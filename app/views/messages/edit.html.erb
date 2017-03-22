@@ -1,28 +1,32 @@
 <% provide(:title, "Message Design") %>
 <h1><%= @message.name %></h1>
+<div style="text-align: right;">
+  <%= link_to "＋", add_signal_path(@message), method: :put, class:"btn btn-success  btn-xs" %>
+  <%= link_to '新規シグナル', add_signal_path(@message), method: :put %>
+</div>
 
 <div class="row">
   <%= form_for(@message) do |f| %>
-    <div class="col-md-2 col-md-offset-3">
+    <div class="col-md-4 col-md-offset-3">
         <%= render 'shared/error_messages', object: @message %>
 
         <%= f.label :canid, 'ID' %>
         <%= f.text_field :canid, class: 'form-control'%>
 
         <%= f.label :txrx, '送受信' %>
-        <%= f.select :txrx, {"送信"=>1,"受信"=>2}, class: 'form-control'%>
+        <%= f.select :txrx, {"送信"=>0,"受信"=>1},  { :selected => @message.txrx.to_i }, class: 'form-control'%>
 
         <%= f.label :bytesize, 'Byte Size' %>
-        <%= f.select :bytesize, 1..8, class: 'form-control'%>
+        <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control'%>
 
         <%= f.label :baudrate, 'Baud Rate' %>
-        <%= f.select :baudrate, {"125kbps"=>1,"250kbps"=>2,"500kbps"=>3,"1Mbps"=>4}, class: 'form-control'%>
+        <%= f.select :baudrate, {"125kbps"=>0,"250kbps"=>1,"500kbps"=>2,"1Mbps"=>3}, { :selected => @message.baudrate.to_i }, class: 'form-control'%>
     </div>
     <div>
       <%= render 'signal_table', message_form: f %>
     </div>
     <div class="col-md-2 col-md-offset-3">
-        <%= f.submit "Edit message", class: "btn btn-primary　col-xs-4" %>
+        <%= f.submit "Edit message", class: "btn btn-primary　col-md-1" %>
         <%= link_to 'Back', messages_path %>
     </div>
   <% end %>

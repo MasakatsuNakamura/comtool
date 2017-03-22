@@ -1,5 +1,8 @@
 <h1>ホーム</h1>
-<div style="text-align: right;"><%= link_to '新規プロジェクト', new_project_path %></div>
+<div style="text-align: right;">
+  <%= link_to "＋", new_project_path, class:"btn btn-success  btn-xs" %>
+  <%= link_to '新規プロジェクト', new_project_path %>
+</div>
 
 <table>
     <% @projects.each do |p| %>
