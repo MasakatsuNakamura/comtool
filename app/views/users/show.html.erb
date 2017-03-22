@@ -1,0 +1,16 @@
+<h1>Profile</h1>
+
+<table border="1">
+    <tr>
+        <th>Name</th>
+        <td><%= @user.name %></td>
+    </tr>
+    <tr>
+        <th>email</th>
+        <td><%= @user.email %></td>
+    </tr>
+</table>
+
+<% if current_user?(@user) %>
+<p><%= link_to '編集', edit_user_path %></p>
+<% end %>

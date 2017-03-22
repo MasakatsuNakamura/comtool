@@ -1,0 +1,14 @@
+<h1>ホーム</h1>
+<div style="text-align: right;">
+  <%= link_to "＋", new_project_path, class:"btn btn-success  btn-xs" %>
+  <%= link_to '新規プロジェクト', new_project_path %>
+</div>
+
+<table>
+    <% @projects.each do |p| %>
+    <tr>
+        <td class="project_table"><%= link_to p.name, project_path(p.id) %>
+        </td>
+    </tr>
+    <% end %>
+</table>

@@ -1,0 +1,13 @@
+<% provide(:title, "Welcome") %>
+<div class="center jumbotron">
+  <%= link_to image_tag("QApe_Logo.jpg", size: "100*100", alt: "QApe logo"),
+              about_path %>
+
+  <h1>Welcome</h1>
+
+  <h2>
+    This is the home page for the Q-Ape tools.
+  </h2>
+
+  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary" %>
+</div>

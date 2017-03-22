@@ -1,0 +1,5 @@
+<% message_bit_size = message.bytesize * 8 %>
+
+<% message_bit_size.times do |i| %>
+<th><%= "b#{message_bit_size - i -1}" %></th>
+<% end %>

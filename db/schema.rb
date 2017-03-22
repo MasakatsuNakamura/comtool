@@ -10,6 +10,105 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 0) do
+ActiveRecord::Schema.define(version: 20170316062209) do
+
+  create_table "com_signals", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "message_id"
+    t.string   "unit"
+    t.string   "description"
+    t.integer  "layout"
+    t.integer  "bit_offset"
+    t.integer  "bit_size"
+    t.integer  "sign_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["message_id"], name: "index_com_signals_on_message_id"
+    t.index ["sign_id"], name: "index_com_signals_on_sign_id"
+  end
+
+  create_table "communication_protocols", force: :cascade do |t|
+    t.string   "protocol_number"
+    t.string   "name"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  create_table "database_manages", force: :cascade do |t|
+    t.string   "backup_file_path"
+    t.date     "backup_date"
+    t.integer  "project_id"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["project_id"], name: "index_database_manages_on_project_id"
+  end
+
+  create_table "members", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_members_on_project_id"
+    t.index ["user_id"], name: "index_members_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "canid"
+    t.integer  "txrx"
+    t.integer  "baudrate"
+    t.integer  "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "bytesize"
+    t.index ["project_id"], name: "index_messages_on_project_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "communication_protocol_id"
+    t.integer  "qines_version_id"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.index ["communication_protocol_id"], name: "index_projects_on_communication_protocol_id"
+    t.index ["qines_version_id"], name: "index_projects_on_qines_version_id"
+  end
+
+  create_table "qines_versions", force: :cascade do |t|
+    t.string   "qines_version_number"
+    t.string   "name"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  create_table "signs", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "active"
+    t.integer  "vartype"
+    t.string   "unit"
+    t.float    "exchange_rate"
+    t.integer  "priority"
+    t.integer  "input_module"
+    t.integer  "output_moduel"
+    t.integer  "input_period"
+    t.integer  "output_period"
+    t.integer  "access_level"
+    t.string   "description"
+    t.integer  "project_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["project_id"], name: "index_signs_on_project_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "password_digest"
+    t.string   "remember_token"
+    t.string   "password"
+    t.index ["email"], name: "index_users_on_email", unique: true
+  end
 
 end

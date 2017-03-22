@@ -1,0 +1,26 @@
+<h1>アカウント編集</h1>
+
+<%= form_for(@user) do |f| %>
+
+<table border="1">
+    <tr>
+        <th><%= f.label :name, '名前' %></th>
+        <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+        <th><%= f.label :email, 'メールアドレス' %></th>
+        <td><%= f.text_field :email %></td>
+    </tr>
+    <tr>
+        <th><%= f.label :password, 'パスワード' %></th>
+        <td><%= f.password_field :password %></td>
+    </tr>
+    <tr>
+        <th><%= f.label :password_confirmation, '確認' %></th>
+        <td><%= f.password_field :password_confirmation %></td>
+    </tr>
+</table>
+
+<%= f.submit 'アカウントを編集する' %>
+
+<% end %>

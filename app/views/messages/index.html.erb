@@ -1,0 +1,37 @@
+<% provide(:title, "Message List") %>
+<h1>メッセージ設計</h1>
+<div style="text-align: right;">
+  <%= link_to "＋", new_message_path, class:"btn btn-success  btn-xs" %>
+  <%= link_to '新規メッセージ', new_message_path %>
+</div>
+
+<div class='row'>
+<table class='table table-striped table-hover' style ='margin-top: 10px;'>
+    <% @messages.each do |message| %>
+    <tr>
+        <td class="message_table">
+          <%= link_to message.name, edit_message_path(message.id), class: 'h4' %>
+        </td>
+        <td>
+          <%= link_to image_tag("edit_images.png", alt: "Edit"), edit_message_path(message.id) %>
+          <%= link_to "edit", edit_message_path(message.id) %>
+          <%= link_to image_tag("delete_images.png", alt: "Delete"), message, method: :delete, data: { confirm: "You sure?" }  %>
+          <%= link_to "delete", message, method: :delete, data: { confirm: "You sure?" } %>
+        </td>
+    </tr>
+    <% end %>
+</table>
+</div>
+
+<div class="container" id="export"  style ='margin-bottom: 0px;'>
+  <ul class="list-inline pull-right">
+    <li>エクスポート：</li>
+    <li><%= link_to 'DCD（未実装）', "#" %></li>
+  </ul>
+</div>
+<div class="container" id="import" style ='margin-bottom: -30px;'>
+  <ul class="list-inline pull-right">
+    <li>インポート：</li>
+    <li><%= link_to 'DCD（未実装）', "#" %></li>
+  </ul>
+</div>
