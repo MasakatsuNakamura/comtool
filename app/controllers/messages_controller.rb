@@ -9,22 +9,25 @@ class MessagesController < ApplicationController
   end
 
   def edit
-    @message = Message.find_by_id(params[:id])
+      @message = Message.find_by_id(params[:id])
     if @message.nil?
-      redirect_to messages_path, notice: '選択されたメッセージが存在しません'
+      flash[:danger] = '選択されたメッセージが存在しません'
+      redirect_to messages_path
     end
     @signs = Sign.getOwnSigns(session[:project])
     if @signs.nil?
-      redirect_to messages_path, notice: '符号が存在しません'
+      flash[:danger] = '符号が存在しません'
+      redirect_to messages_path
     end
   end
 
   def create
     @message = Message.duplicate_from_arxml(create_params, project: session[:project], duplicate_source: params[:message][:duplicate_source])
     if @message.save
-      redirect_to :messages, notice: 'Message was created.'
+      redirect_to :messages
     else
-      render :new, notice: 'Failed to create a message.'
+      flash[:danger] = 'Failed to create a message.'
+      render :new
     end
   end
 
@@ -33,7 +36,8 @@ class MessagesController < ApplicationController
     if @message.update_attributes(edit_params)
       redirect_to :messages
     else
-      redirect_to :messages, notice: 'メッセージの更新に失敗しました'
+      flash[:danger] = 'メッセージの更新に失敗しました'
+      redirect_to :messages
     end
   end
 
@@ -42,7 +46,8 @@ class MessagesController < ApplicationController
     if @message.destroy
       redirect_to :messages
     else
-      redirect_to :messages, notice: 'メッセージの削除に失敗しました'
+      flash[:danger] = 'メッセージの削除に失敗しました'
+      redirect_to :messages
     end
   end
 
@@ -54,7 +59,8 @@ class MessagesController < ApplicationController
     if c.save
       redirect_to :edit_message
     else
-      redirect_to :messages, notice: 'シグナルの追加に失敗しました'
+      flash[:danger] = 'シグナルの追加に失敗しました'
+      redirect_to :messages
     end
   end
 
@@ -63,7 +69,8 @@ class MessagesController < ApplicationController
     if c.destroy
       redirect_to :edit_message
     else
-      redirect_to :messages, notice: 'シグナルの削除に失敗しました'
+      flash[:danger] = 'シグナルの削除に失敗しました'
+      redirect_to :messages
     end
   end
 
