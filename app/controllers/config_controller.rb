@@ -1,9 +1,4 @@
 class ConfigController < ApplicationController
-  def index
-    redirect_to welcome_path unless signed_in?
-    @project_id = params[:project_id]
- end
-
   def export
     # 1．ARXMLを読込み
     # 2．DBに従って、データの変更

@@ -13,9 +13,9 @@ class ProjectsController < ApplicationController
     @project.communication_protocol = CommunicationProtocol.find_by_name(params[:communication_protocol][:name])
     @project.qines_version = QinesVersion.find_by_name(params[:qines_version_number][:name])
     if @project.save
-       redirect_to home_index_path
+      redirect_to home_index_path, notice: 'Project was successfully created.'
     else
-       render :new
+      render :new, notice: '登録失敗しました.'
     end
   end
 
@@ -26,18 +26,16 @@ class ProjectsController < ApplicationController
     @project.qines_version = QinesVersion.find_by_name(params[:communication_protocol][:name])
 
     if @project.update(sample_params)
-      redirect_to @project
+      redirect_to @project, notice: 'Project was successfully updated.'
     else
-      flash[:danger] = 'プロジェクトの更新に失敗しました'
-      render :edit
+      render :edit, notice: 'プロジェクトの更新に失敗しました.'
     end
   end
 
   def show
     @project = Project.find_by_id(params[:id])
     if @project == nil
-      flash[:danger] = '選択されたプロジェクトが存在しません'
-      redirect_to home_index_path
+      redirect_to home_index_path, notice: '選択されたプロジェクトが存在しません'
     end
   end
 
