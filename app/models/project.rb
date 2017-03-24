@@ -2,6 +2,9 @@ class Project < ApplicationRecord
   belongs_to :communication_protocol
   belongs_to :qines_version
 
+  # TODO:delete 中間リリース用暫定処理 (タスク #579)
+  attr_accessor :duplicate_source
+
   validates :name,
             presence: true,
             length: { maximum: 50 }
