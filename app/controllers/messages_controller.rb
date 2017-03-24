@@ -9,7 +9,7 @@ class MessagesController < ApplicationController
   end
 
   def edit
-    @message = Message.find_by_id(params[:id])
+      @message = Message.find_by_id(params[:id])
     if @message.nil?
       flash[:danger] = '選択されたメッセージが存在しません'
       redirect_to messages_path

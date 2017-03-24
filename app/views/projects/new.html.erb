@@ -8,6 +8,15 @@
       <%= f.label :name %><br>
       <%= f.text_field :name %>
 
+      <!-- TODO:delete 中間リリース用暫定処理 (タスク #579) -->
+      <%= f.label :duplicate_source, '複製元' %>
+      <%= f.select :duplicate_source, {
+        "project 1(RPort:1,PPort:1)"=>1,
+        "project 2(RPort:2,PPort:2)"=>2,
+        "project 2(RPort:4,PPort:4)"=>4,
+        }, 
+        class: 'form-control'%>
+
       <%= f.label :qines_version_number %><br>
       <%= text_field :qines_version_number, :name, readonly: true %>
 

@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
       redirect_to home_index_path
     else
       flash[:warning] = "ログインに失敗しました。ユーザ名、パスワードを確認してください。"
-      redirect_to root_path
+      redirect_to signin_path
     end
   end
 
