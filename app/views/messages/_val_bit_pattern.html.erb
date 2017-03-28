@@ -1,6 +1,6 @@
 <% message_bit_size = message.bytesize * 8 %>
 
-<% if message.byte_order == :littel_endian then %>
+<% if message.byte_order == :little_endian then %>
     <% signal_bit_offset = com_signal.object.bit_offset %>
     <% signal_bit_size = com_signal.object.bit_size %>
 <% else %>

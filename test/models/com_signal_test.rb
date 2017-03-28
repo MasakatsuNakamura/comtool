@@ -90,15 +90,15 @@ class ComSignalTest < ActiveSupport::TestCase
     @com_signal.bit_offset = 9
     assert @com_signal.invalid?
 
-    # TODO:littel_endian
+    # TODO:little_endian
 =begin
-    @message.byte_order = :littel_endian
+    @message.byte_order = :little_endian
     @com_signal.bit_size = 8
     @com_signal.bit_offset = 0
     assert @com_signal.valid?
 =end
 
-# TODO:littel_endian
+# TODO:little_endian
 =begin
     @message.byte_order = :big_endian
 =end

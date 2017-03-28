@@ -8,7 +8,7 @@ class ComSignalValidator < ActiveModel::Validator
           record.errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
         end
 
-        if msg.byte_order == :littel_endian then
+        if msg.byte_order == :little_endian then
           if (record.bit_size > (msg.bytesize*8 - record.bit_offset))
             record.errors[:bit_size] << 'メッセージレイアウトが範囲外です'
           end

@@ -41,9 +41,9 @@ class MessageTest < ActiveSupport::TestCase
     c2.bit_offset = 0
     assert msg.invalid?
 
-    # TODO:littel_endian
+    # TODO:little_endian
 =begin
-    @message.byte_order = :littel_endian
+    @message.byte_order = :little_endian
     @com_signal.bit_size = 7
     @com_signal.bit_offset = 1
     assert msg.valid?
