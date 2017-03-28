@@ -41,7 +41,7 @@ class Message < ApplicationRecord
         unit: 'Enter a unit',
         description: 'Enter a description',
         bit_offset: 0,
-        bit_size:   self.bytesize*8,
+        bit_size:   1,
         message: self,
         sign: Sign.find_by(project_id: self.project_id)
       )
