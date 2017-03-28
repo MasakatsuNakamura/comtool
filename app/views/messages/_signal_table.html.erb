@@ -1,19 +1,16 @@
   <table class="table table-bordered">
     <tr class="info">
-        <th colspan="3" rowspan="2">シグナル</th>
+        <th colspan="3">シグナル</th>
         <th class="col-md-3" colspan="<%= @message.bytesize*8+2 %>">メッセージレイアウト(ビット)</th>
-        <th rowspan="3">符号</th>
-    </tr>
-    <tr class="info">
-        <th  colspan="<%= @message.bytesize*8 %>">MSB</th>
-        <th  rowspan="2">オフセット</th>
-        <th  rowspan="2">サイズ</th>
+        <th rowspan="2">符号</th>
     </tr>
     <tr class="info">
         <th>シグナル名</th>
         <th>単位</th>
         <th>説明</th>
         <%= render 'label_bit_pattern', message: @message %>
+        <th>オフセット</th>
+        <th>サイズ</th>
     </tr>
 
     <%= message_form.fields_for :com_signals do |s| %>

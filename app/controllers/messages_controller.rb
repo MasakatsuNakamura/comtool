@@ -121,9 +121,24 @@ class MessagesController < ApplicationController
     unused_bit = Array.new(msg.bytesize*8, true)
 
     msg.com_signals.each do |c|
-      c.bit_size.times do |bit|
-        offset = bit + c.bit_offset
-        unused_bit[offset] = false if offset < msg.bytesize*8
+      if msg.byte_order == :littel_endian then
+        c.bit_size.times do |bit|
+          offset = bit + c.bit_offset
+          unused_bit[offset] = false if offset < msg.bytesize*8
+        end
+      else
+        offset = c.bit_offset
+        bit_size = c.bit_size
+        while bit_size > 0
+          unused_bit[offset] = false if offset < msg.bytesize*8
+          bit_size -= 1
+
+          if offset % 8 == 0 then
+            offset += 15
+          else
+            offset -= 1
+          end
+        end
       end
     end
 

@@ -16,7 +16,7 @@ class ComSignalTest < ActiveSupport::TestCase
       unit: 'Example Unit',
       description: 'Example Description',
       bit_size: 8,
-      bit_offset: 0,
+      bit_offset: 7,
       sign: @sign1
       )
   end
@@ -32,7 +32,7 @@ class ComSignalTest < ActiveSupport::TestCase
       unit: 'Example Unit',
       description: 'Example Description',
       bit_size: 8,
-      bit_offset: 0,
+      bit_offset: 7,
       sign: @sign1
       )
     assert c.invalid?
@@ -45,7 +45,7 @@ class ComSignalTest < ActiveSupport::TestCase
       unit: 'Example Unit',
       description: 'Example Description',
       bit_size: 8,
-      bit_offset: 0,
+      bit_offset: 7,
       )
     assert c.invalid?
   end
@@ -72,12 +72,9 @@ class ComSignalTest < ActiveSupport::TestCase
 
   test "(bit_offset + bit_size) should be less than or equal to message.bytesize" do
     @message.bytesize = 1
+    @message.save
 
     @com_signal.bit_size = 1
-    @com_signal.bit_offset = 0
-    assert @com_signal.valid?
-
-    @com_signal.bit_size = 8
     @com_signal.bit_offset = 0
     assert @com_signal.valid?
 
@@ -92,6 +89,49 @@ class ComSignalTest < ActiveSupport::TestCase
     @com_signal.bit_size = 1
     @com_signal.bit_offset = 9
     assert @com_signal.invalid?
+
+    # TODO:littel_endian
+=begin
+    @message.byte_order = :littel_endian
+    @com_signal.bit_size = 8
+    @com_signal.bit_offset = 0
+    assert @com_signal.valid?
+=end
+
+# TODO:littel_endian
+=begin
+    @message.byte_order = :big_endian
+=end
+
+    @message.save
+    @com_signal.bit_size = 8
+    @com_signal.bit_offset = 7
+    assert @com_signal.valid?
+
+    @message.bytesize = 2
+    @message.save
+
+    @com_signal.bit_size = 16
+    @com_signal.bit_offset = 7
+    assert @com_signal.valid?
+
+    @message.bytesize = 3
+    @message.save
+
+    @com_signal.bit_size = 24
+    @com_signal.bit_offset = 7
+    assert @com_signal.valid?
+
+    @message.bytesize = 4
+    @message.save
+
+    @com_signal.bit_size = 32
+    @com_signal.bit_offset = 7
+    assert @com_signal.valid?
+
+    @com_signal.bit_size = 12
+    @com_signal.bit_offset = 13
+    assert @com_signal.valid?
   end
 
   test "bit_size should be present" do

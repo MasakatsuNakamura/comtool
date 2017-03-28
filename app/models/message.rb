@@ -4,12 +4,31 @@ class MessageValidator < ActiveModel::Validator
 
     message_layout = Array.new(msg.bytesize*8, false)
     msg.com_signals.each do |c|
-      c.bit_size.times do |bit|
-        if message_layout[bit + c.bit_offset] then
-          msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
-          break
+      if msg.byte_order == :littel_endian then
+        c.bit_size.times do |bit|
+          if message_layout[bit + c.bit_offset] then
+            msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
+            break
+          end
+          message_layout[bit + c.bit_offset] = true
         end
-        message_layout[bit + c.bit_offset] = true
+      else
+        offset = c.bit_offset
+        bit_size = c.bit_size
+        while bit_size > 0
+          if message_layout[offset] then
+            msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
+            break
+          end
+          message_layout[offset] = true
+
+          bit_size -= 1
+          if offset % 8 == 0 then
+            offset += 15
+          else
+            offset -= 1
+          end
+        end
       end
     end
   end
@@ -72,4 +91,10 @@ class Message < ApplicationRecord
 
     m
   end
+
+  def byte_order
+    # TODO: littel_endian
+    :big_endian
+  end
+
 end
