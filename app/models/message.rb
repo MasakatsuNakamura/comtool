@@ -1,8 +1,30 @@
+class MessageValidator < ActiveModel::Validator
+  def validate(record)
+    msg = record
+
+    message_layout = Array.new(msg.bytesize*8, false)
+    msg.com_signals.each do |c|
+      c.bit_size.times do |bit|
+        if message_layout[bit + c.bit_offset] then
+          msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
+          break
+        end
+        message_layout[bit + c.bit_offset] = true
+      end
+    end
+  end
+end
+
 class Message < ApplicationRecord
-  belongs_to :project
   attr_accessor :duplicate_source
+
+  belongs_to :project
   has_many :com_signals, dependent: :destroy
+
   accepts_nested_attributes_for :com_signals, reject_if: true
+#  validates_associated :com_signals
+  include ActiveModel::Validations
+  validates_with MessageValidator
 
   validates :name,
             presence: true,

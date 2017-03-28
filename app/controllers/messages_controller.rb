@@ -9,16 +9,7 @@ class MessagesController < ApplicationController
   end
 
   def edit
-      @message = Message.find_by_id(params[:id])
-    if @message.nil?
-      flash[:danger] = '選択されたメッセージが存在しません'
-      redirect_to messages_path
-    end
-    @signs = Sign.getOwnSigns(session[:project])
-    if @signs.nil?
-      flash[:danger] = '符号が存在しません'
-      redirect_to messages_path
-    end
+    edit_setup
   end
 
   def create
@@ -36,8 +27,8 @@ class MessagesController < ApplicationController
     if @message.update_attributes(edit_params)
       redirect_to :messages
     else
-      flash[:danger] = 'メッセージの更新に失敗しました'
-      redirect_to :messages
+      @signs = Sign.getOwnSigns(session[:project])
+      render :edit
     end
   end
 
@@ -52,15 +43,24 @@ class MessagesController < ApplicationController
   end
 
   def add_signal
-    m = Message.find_by_id(params[:id])
+    @message = Message.find_by_id(params[:id])
+
+    sign_id = unused_sign(@message, session[:project])
+    bit_offset = unused_bit(@message, session[:project])
+
     # default com_signal
-    c = m.com_signals_build
+    c = @message.com_signals_build
+
+    c.sign_id    = sign_id
+    c.bit_offset = bit_offset
+    c.bit_size   = 1
 
     if c.save
       redirect_to :edit_message
     else
-      flash[:danger] = 'シグナルの追加に失敗しました'
-      redirect_to :messages
+      edit_setup
+      c.errors.full_messages.each { |msg| @message.errors[:com_signals] << msg}
+      render :edit
     end
   end
 
@@ -69,8 +69,9 @@ class MessagesController < ApplicationController
     if c.destroy
       redirect_to :edit_message
     else
-      flash[:danger] = 'シグナルの削除に失敗しました'
-      redirect_to :messages
+      edit_setup
+      c.errors.full_messages.each { |msg| @message.errors[:com_signals] << msg}
+      render :edit
     end
   end
 
@@ -90,7 +91,42 @@ class MessagesController < ApplicationController
   end
 
   private
-  def duplicate_from ()
+  def edit_setup
+    @message = Message.find_by_id(params[:id])
+    if @message.nil?
+      flash[:danger] = '選択されたメッセージが存在しません'
+      redirect_to messages_path
+    end
+    @signs = Sign.getOwnSigns(session[:project])
+    if @signs.nil?
+      flash[:danger] = '符号が存在しません'
+      redirect_to messages_path
+    end
   end
 
+  def unused_sign(msg, pid)
+    used_signs = []
+    msg.com_signals.each { |c| used_signs << c.sign_id }
+
+    unused_signs = Sign.getOwnSigns(pid).reject { |sign| used_signs.include?(sign.id) }
+
+    if unused_signs.empty?
+      nil
+    else
+      unused_signs[0].id
+    end
+  end
+
+  def unused_bit(msg, pid)
+    unused_bit = Array.new(msg.bytesize*8, true)
+
+    msg.com_signals.each do |c|
+      c.bit_size.times do |bit|
+        offset = bit + c.bit_offset
+        unused_bit[offset] = false if offset < msg.bytesize*8
+      end
+    end
+
+    unused_bit.index(true)
+  end
 end
