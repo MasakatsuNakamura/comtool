@@ -17,7 +17,7 @@
         <%= f.select :txrx, {"送信"=>0,"受信"=>1},  { :selected => @message.txrx.to_i }, class: 'form-control'%>
 
         <%= f.label :bytesize, 'Byte Size' %>
-        <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control'%>
+        <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control', onChange: "drawBitLayout()"%>
 
         <%= f.label :baudrate, 'Baud Rate' %>
         <%= f.select :baudrate, {"125kbps"=>0,"250kbps"=>1,"500kbps"=>2,"1Mbps"=>3}, { :selected => @message.baudrate.to_i }, class: 'form-control'%>
@@ -31,3 +31,5 @@
     </div>
   <% end %>
 </div>
+
+<%= render 'bit_layout_view', message: @message %>
