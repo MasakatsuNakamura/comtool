@@ -11,7 +11,7 @@
         <%= render 'shared/error_messages', object: @message %>
 
         <%= f.label :canid, 'ID' %>
-        <%= f.text_field :canid, class: 'form-control'%>
+        <%= f.text_field :canid, value: "0x#{@message.canid.to_s(16)}", class: 'form-control'%>
 
         <%= f.label :txrx, '送受信' %>
         <%= f.select :txrx, {"送信"=>0,"受信"=>1},  { :selected => @message.txrx.to_i }, class: 'form-control'%>

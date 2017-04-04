@@ -49,6 +49,10 @@ class Message < ApplicationRecord
             presence: true,
             length: { maximum: 50 }
 
+  validates :canid,
+            presence: true,
+            numericality: true
+
   def self.getOwnMessages(project)
     Message.where(project_id: project)
   end

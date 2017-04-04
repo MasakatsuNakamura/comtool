@@ -80,6 +80,10 @@ class MessagesController < ApplicationController
   end
 
   def edit_params
+    begin
+      params[:message][:canid] = Integer(params[:message][:canid]).to_s
+    rescue
+    end
     params.require(:message).permit(
       :canid,:txrx,:bytesize,:baudrate,
       com_signals_attributes: [:id, :name, :unit, :description, :bit_offset, :bit_size, :sign_id])
