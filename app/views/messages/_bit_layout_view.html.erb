@@ -1,8 +1,10 @@
 <!--描画箇所 -->
-<div id="bitLayoutTableLegend" style="margin: 30px;"></div>
-<div id="bitLayoutTable" style="margin: 30px;"></div>
+<div id="bitLayoutTableLegend" style="margin: 30px;" hidden='true'>
+  <table class='table'>
+    <tr>
+    <th bgcolor='red' ><th>重複
+    <th bgcolor='lightgrey'><th>割付なし
+  </table>
+</div>
 
-<script>
-window.onload = drawBitLayout();
-document.getElementById("signal_table").onchange = drawBitLayout
-</script>
+<div id="bitLayoutTable" style="margin: 30px;"></div>

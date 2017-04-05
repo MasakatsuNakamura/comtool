@@ -1,3 +1,12 @@
+function hexToRgb(hex) {
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
 function makeBitLayout(){
   var bytesize = document.getElementById("message_bytesize").value
   var signalnum = document.getElementById("signal_table").rows.length - 2
@@ -55,34 +64,11 @@ function drawBitLayout(){
   var bytesize = document.getElementById("message_bytesize").value
   var signalnum = document.getElementById("signal_table").rows.length - 2
   var bitlayout = makeBitLayout()
-  var colors = ['limegreen','olive','darkgreen','darkslategray', 'royalblue','turquoise','teal',]
-
-  var tbl_heght = String(50 * bytesize)
-  var tbl_width = String(50)
-
-  // make html for bitLayoutTableLegend
-//  var html = `<table class='table table-bordered' height=${tbl_heght} width=${tbl_width}>`
-  var html = `<table class='table'>`
-  {
-    html += "<tr>"
-
-    var sig_no
-    for (sig_no = 0; sig_no < signalnum; sig_no++) {
-      color = colors[Math.floor((sig_no-1) % colors.length)]
-      sig_name = document.getElementById("message_com_signals_attributes_"+String(sig_no)+"_name").value
-      html += `<th bgcolor=${color} ><th>${sig_name}`
-    }
-    html += '<tr>'
-    html += `<th bgcolor='red' ><th>重複`
-    html += `<th bgcolor='lightgrey'><th>未割付`
-    html += `</th>`
-  }
-  document.getElementById("bitLayoutTableLegend").innerHTML = html
-
+//  var colors =       ['darkorange', 'teal'     'darkmagenta','navy',   'darkgreen']
+  var colors =         ['#ff8c00',    '#008080', '#8b008b',    '#000080','#006400']
 
   // make html for bitLayoutTable
-  var html = `<table class='table table-bordered' height=${tbl_heght} width=${tbl_width}>`
-
+  var html = `<table class='table table-bordered'>`
   {
     html += "<tr><td>"
 
@@ -91,7 +77,6 @@ function drawBitLayout(){
       html +=  `<td>bit${String(bit_pos)}`
     }
   }
-
 
   var byte_pos
   for (byte_pos = 0; byte_pos < bytesize; byte_pos++) {
@@ -116,4 +101,15 @@ function drawBitLayout(){
 
   html += "</table>"
   document.getElementById("bitLayoutTable").innerHTML = html
+
+  // paint signal_table
+  var sig_colors = []
+  $('#signal_table tr').each(function() {
+    if ($(this)[0].rowIndex > 1) {
+      if (sig_colors.length==0) sig_colors = colors.concat()
+
+      var c = hexToRgb(sig_colors.shift())
+      $(this).css('background-color', `rgba(${c.r},${c.g},${c.b},0.3)`);
+    }
+   });
 }
