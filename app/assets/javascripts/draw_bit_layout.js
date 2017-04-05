@@ -112,4 +112,8 @@ function drawBitLayout(){
       $(this).css('background-color', `rgba(${c.r},${c.g},${c.b},0.3)`);
     }
    });
+
+   $('#signal_table a').each(function() {
+     $(this).parent().css('background-color', `white`);
+   });
 }

@@ -20,10 +20,10 @@
     <div class="col-md-6">
     <%= render 'bit_layout_view', message: @message %>
     </div>
+  </div>
+  <div class = "row">
     <div>
       <%= render 'signal_table', message_form: f %>
-    </div>
-    <div style="-text-align: -right;">
       <%= link_to "＋", add_signal_path(@message), method: :put, class:"btn btn-success  btn-xs" %>
       <%= link_to '新規シグナル', add_signal_path(@message), method: :put %>
     </div>
