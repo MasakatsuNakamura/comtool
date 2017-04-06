@@ -9,7 +9,7 @@ class MessageTest < ActiveSupport::TestCase
     @sign1   = Sign.create!(id:1, name: 'テスト符号1', project:@project)
     @sign2   = Sign.create!(id:2, name: 'テスト符号2', project:@project)
 
-    @message = Message.new(name: 'テストメッセージ', project:@project, bytesize:1)
+    @message = Message.new(name: 'テストメッセージ', project:@project, bytesize:1,canid:1)
 
   end
 
@@ -18,7 +18,7 @@ class MessageTest < ActiveSupport::TestCase
   end
 
   test "message layout should not be overlap" do
-    msg = Message.new(name: 'テストメッセージ', project:@project, bytesize:1)
+    msg = Message.new(name: 'テストメッセージ', project:@project, bytesize:1,canid:1)
     c1 = msg.com_signals.build(
       name: "c1",
       message: msg,
