@@ -50,7 +50,8 @@ class Message < ApplicationRecord
 
   validates :name,
             presence: true,
-            length: { maximum: 50 }
+            length: { maximum: 50 },
+            format: { with: /\A\w+\z/, message: "半角英数とアンダースコアが利用できます"}
 
   validates :canid,
             presence: true,
@@ -63,7 +64,7 @@ class Message < ApplicationRecord
   def com_signals_build
     # default com_signal
     c = self.com_signals.build(
-        name: 'Enter a name',
+        name: "Signal#{self.com_signals.length}",
         unit: 'Enter a unit',
         description: 'Enter a description',
         bit_offset: 0,

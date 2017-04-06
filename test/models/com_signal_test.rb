@@ -5,13 +5,13 @@ class ComSignalTest < ActiveSupport::TestCase
   def setup
     CommunicationProtocol.create!(name: 'CAN', protocol_number: "1")
     QinesVersion.create!(name: 'V1.0', qines_version_number: "1")
-    @project = Project.create!(id:1, name: 'テストプロジェクト', communication_protocol_id: '1', qines_version_id: '1')
-    @sign1   = Sign.create!(id:1, name: 'テスト符号1', project:@project)
-    @sign2   = Sign.create!(id:2, name: 'テスト符号2', project:@project)
-    @message = Message.create!(id:1, name: 'テストメッセージ', project:@project, bytesize:1, canid:1)
+    @project = Project.create!(id:1, name: 'testProject', communication_protocol_id: '1', qines_version_id: '1')
+    @sign1   = Sign.create!(id:1, name: 'testSignal1', project:@project)
+    @sign2   = Sign.create!(id:2, name: 'testSignal2', project:@project)
+    @message = Message.create!(id:1, name: 'testMessage', project:@project, bytesize:1, canid:1)
 
     @com_signal = ComSignal.new(
-      name: 'Example ComSignal',
+      name: 'ExampleComSignal',
       message: @message,
       unit: 'Example Unit',
       description: 'Example Description',
@@ -28,7 +28,7 @@ class ComSignalTest < ActiveSupport::TestCase
 
   test "should belong_to message" do
     c = ComSignal.new(
-      name: 'Example ComSignal',
+      name: 'ExampleComSignal',
       unit: 'Example Unit',
       description: 'Example Description',
       bit_size: 8,
@@ -40,7 +40,7 @@ class ComSignalTest < ActiveSupport::TestCase
 
   test "should belong_to sign" do
     c = ComSignal.new(
-      name: 'Example ComSignal',
+      name: 'ExampleComSignal',
       message: @message,
       unit: 'Example Unit',
       description: 'Example Description',
@@ -178,4 +178,24 @@ class ComSignalTest < ActiveSupport::TestCase
     assert c.invalid?
   end
 =end
+
+  test "name validation should accept valid name" do
+    valid_names = %w[a z A Z 0 9 _ _name_ name_0]
+    valid_names.each do |name|
+      @com_signal.name = name
+      assert @com_signal.valid?, "#{name.inspect} should be valid"
+    end
+  end
+
+  test "name validation should accept invalid name" do
+    invalid_names = %w[! " # $ % & ' ( ) = ~ | \ [ ] @ * + < > ? ; : - * + ^ { }]
+    invalid_names << 'na me'
+    invalid_names << ' name'
+    invalid_names << 'name '
+    invalid_names.each do |name|
+      @com_signal.name = name
+      assert @com_signal.invalid?, "#{name.inspect} should be invalid"
+    end
+  end
+
 end
