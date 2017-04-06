@@ -13,11 +13,11 @@ class ProjectsController < ApplicationController
     @project.communication_protocol = CommunicationProtocol.find_by_name(params[:communication_protocol][:name])
     @project.qines_version = QinesVersion.find_by_name(params[:qines_version_number][:name])
 
-    # TODO:delete 中間リリース用暫定処理 (タスク #579)
-    params[:project][:duplicate_source].to_i.times { |cnt|
-      create_sign("PPort#{cnt}", @project)
-      create_sign("RPort#{cnt}", @project)
-    }
+    # TODO:disabled タスク #654
+    # params[:project][:duplicate_source].to_i.times { |cnt|
+    #   create_sign("PPort#{cnt}", @project)
+    #   create_sign("RPort#{cnt}", @project)
+    # }
 
     if @project.save
       redirect_to home_index_path
@@ -54,7 +54,7 @@ class ProjectsController < ApplicationController
     @communication_protocol = CommunicationProtocol.find_by_name('CAN')
   end
 
-  # TODO:delete 中間リリース用暫定処理 (タスク #579)
+  # TODO:disabled タスク #654
   def create_sign(name, project )
     Sign.create!(name: name, active: '1', vartype:'2', unit:'3',
     exchange_rate:'4.0', priority:'5', input_module:'6', output_moduel:'7',

@@ -2,7 +2,7 @@ class Project < ApplicationRecord
   belongs_to :communication_protocol
   belongs_to :qines_version
 
-  # TODO:delete 中間リリース用暫定処理 (タスク #579)
+  # TODO:disabled タスク #654
   attr_accessor :duplicate_source
 
   validates :name,
@@ -10,7 +10,7 @@ class Project < ApplicationRecord
             length: { maximum: 50 }
 
   def self.getOwnProjects(_user)
-    # TODO: 自身に紐づくプロジェクトを取得する？
+    # TODO: メンバー機能の実装
     Project.all
   end
 
