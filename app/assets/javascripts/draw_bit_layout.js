@@ -7,52 +7,59 @@ function hexToRgb(hex) {
     } : null;
 }
 
+function bitLayoutTableValue() {
+  return {CONFLICT:0, UNUSED:-1, OUT_OF_RANGE:-2}
+}
+
 function makeBitLayout(){
-  var bytesize = document.getElementById("message_bytesize").value
-  var signalnum = document.getElementById("signal_table").rows.length - 2
+  var bytesize = $("#message_bytesize").val()
 
   var byte_order = "big_endian"
-  var bitlayout=[]
+  var bitlayout=[
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+  ]
   var sig_no;
 
-  for (idx = 0; idx < bytesize; idx++) {
-    bitlayout.push([0,0,0,0,0,0,0,0])
+  var const_bit = bitLayoutTableValue()
+
+  var byte,bit
+  for (byte = 0; byte < 8; byte++) {
+    for (bit = 7; bit >= 0; bit--) {
+      if (byte < bytesize) {
+        bitlayout[byte][bit] = const_bit.UNUSED
+      } else {
+        bitlayout[byte][bit] = const_bit.OUT_OF_RANGE
+      }
+    }
   }
 
+  var signalnum = $("#signal_table")[0].rows.length - 2
   for (sig_no = 0; sig_no < signalnum; sig_no++) {
-    var bit_offset = parseInt(document.getElementById("message_com_signals_attributes_"+String(sig_no)+"_bit_offset").value)
-    var bit_size   = parseInt(document.getElementById("message_com_signals_attributes_"+String(sig_no)+"_bit_size").value)
-    var byte_pos = Math.floor(bit_offset / 8)
-    var bit_pos  = bit_offset % 8
+    var bit_offset = parseInt($(`#message_com_signals_attributes_${String(sig_no)}_bit_offset`).val())
+    var bit_size   = parseInt($(`#message_com_signals_attributes_${String(sig_no)}_bit_size`).val())
+    var byte = Math.floor(bit_offset / 8)
+    var bit  = bit_offset % 8
 
-    var bit;
-    for (bit = 0; bit < bit_size; bit++) {
-      if (bitlayout[byte_pos][bit_pos] == 0 ) {
-        bitlayout[byte_pos][bit_pos] = sig_no+1
-      } else {
-        // レイアウト競合
-        bitlayout[byte_pos][bit_pos] = -1
-      }
+    var bit_cnt;
+    var l = bitlayout
+    for (bit_cnt = 0; bit_cnt < bit_size; bit_cnt++) {
+      if (l[byte][bit] < 0 ) { l[byte][bit] = sig_no+1
+      } else {                 l[byte][bit] = const_bit.CONFLICT}
 
       if (byte_order == "big_endian") {
-        if (bit_pos == 0) {
-          byte_pos++
-          bit_pos=7
-        } else {
-          bit_pos--
-        }
+        if (bit == 0) { byte++; bit=7;}
+        else          {         bit--;}
       }
-      else {
-        if (bit_pos == 7) {
-          byte_pos++
-          bit_pos=0
-        } else {
-          bit_pos++
-        }
-      }
-
-      if ( byte_pos >= bytesize || byte_pos < 0) {
-        break;
+      else { // little_endian
+        if (bit == 7) { byte++; bit=0;}
+        else          {         bit++;}
       }
     }
   }
@@ -60,49 +67,42 @@ function makeBitLayout(){
   return bitlayout
 }
 
-function drawBitLayout(){
-  var bytesize = document.getElementById("message_bytesize").value
-  var signalnum = document.getElementById("signal_table").rows.length - 2
+function paintBitLayout(){
   var bitlayout = makeBitLayout()
 //  var colors =       ['darkorange', 'teal'     'darkmagenta','navy',   'darkgreen']
   var colors =         ['#ff8c00',    '#008080', '#8b008b',    '#000080','#006400']
 
-  // make html for bitLayoutTable
-  var html = `<table class='table table-bordered'>`
-  {
-    html += "<tr><td>"
+  //items
+  var bytesize =  parseInt($("#message_bytesize").val())
+  $('#bitLayoutTable td').each(function() {
+    var byte = $(this).parent()[0].rowIndex - 1
+    var bit  = 7 - $(this)[0].cellIndex + 1
 
-    var bit_pos
-    for (bit_pos = 7; bit_pos >= 0; bit_pos--) {
-      html +=  `<td>bit${String(bit_pos)}`
-    }
-  }
-
-  var byte_pos
-  for (byte_pos = 0; byte_pos < bytesize; byte_pos++) {
-    html += "<tr>"
-    html += `<td>byte${String(byte_pos)}`
-
-    var bit_pos
-    for (bit_pos = 7; bit_pos >= 0; bit_pos--) {
-      var sig_no = bitlayout[byte_pos][bit_pos]
+    var const_bit = bitLayoutTableValue()
+    if (byte >= 0 && bit < 8) {
+      var sig_no = bitlayout[byte][bit]
       if ( sig_no > 0) {
         color = colors[Math.floor((sig_no-1) % colors.length)]
-      } else if (sig_no < 0){
+      } else if (sig_no == const_bit.CONFLICT){
         color = 'red'
-      } else {
+      } else if (sig_no == const_bit.OUT_OF_RANGE){
+        color = 'dimgray'
+      } else { // const_bit.UNUSED
         color = 'lightgrey'
       }
-      html += `<td bgcolor=${color} >`
+
+      $(this).css('background-color', `${color}`);
     }
 
-    html += "</tr>"
-  }
+    if ($(this)[0].cellIndex == 0){
+      if (byte < bytesize) {
+        $(this).css('background-color', `white`);
+      }else{
+        $(this).css('background-color', `dimgray`);
+      }
+    }
+  });
 
-  html += "</table>"
-  document.getElementById("bitLayoutTable").innerHTML = html
-
-  // paint signal_table
   var sig_colors = []
   $('#signal_table tr').each(function() {
     if ($(this)[0].rowIndex > 1) {
@@ -116,4 +116,37 @@ function drawBitLayout(){
    $('#signal_table a').each(function() {
      $(this).parent().css('background-color', `white`);
    });
+
+   appendSelectOptions()
+}
+
+function initBitLayoutTable(){
+  // make html for bitLayoutTable
+  var html = ""
+
+  //header
+  html += "<tr><th>"
+
+  var bit
+  for (bit = 7; bit >= 0; bit--) {
+    html +=  `<th>bit${String(bit)}`
+  }
+
+  //items
+  var byte,bit
+  for (byte = 0; byte < 8; byte++) {
+    html += `<tr>`
+    html += `<td>byte${String(byte)}`
+
+    for (bit = 7; bit >= 0; bit--) {
+      html += `<td>`
+    }
+  }
+
+  $('#bitLayoutTable').html(html)
+
+  $("#message_bytesize").change(paintBitLayout)
+  $("#signal_table").change(paintBitLayout)
+
+  paintBitLayout()
 }

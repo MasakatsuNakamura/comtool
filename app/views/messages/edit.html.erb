@@ -1,10 +1,14 @@
 <% provide(:title, "Message Design") %>
 <h1><%= @message.name %></h1>
 <div class="row">
+  <div class="col-md-4 col-md-offset-4">
+    <%= render 'shared/error_messages', object: @message %>
+  </div>
+</div>
+
+<div class="row">
   <%= form_for(@message) do |f| %>
     <div class="col-md-4 col-md-offset-2">
-        <%= render 'shared/error_messages', object: @message %>
-
         <%= f.label :canid, 'ID' %>
         <%= f.text_field :canid, value: "0x#{@message.canid.to_s(16)}", class: 'form-control'%>
 
@@ -12,7 +16,7 @@
         <%= f.select :txrx, {"送信"=>0,"受信"=>1},  { :selected => @message.txrx.to_i }, class: 'form-control'%>
 
         <%= f.label :bytesize, 'Byte Size' %>
-        <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control', onChange: "drawBitLayout()"%>
+        <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control' %>
 
         <%= f.label :baudrate, 'Baud Rate' %>
         <%= f.select :baudrate, {"125kbps"=>0,"250kbps"=>1,"500kbps"=>2,"1Mbps"=>3}, { :selected => @message.baudrate.to_i }, class: 'form-control'%>
@@ -20,8 +24,6 @@
     <div class="col-md-6">
     <%= render 'bit_layout_view', message: @message %>
     </div>
-  </div>
-  <div class = "row">
     <div>
       <%= render 'signal_table', message_form: f %>
       <%= link_to "＋", add_signal_path(@message), method: :put, class:"btn btn-success  btn-xs" %>
@@ -35,6 +37,5 @@
 </div>
 
 <script>
-window.onload = drawBitLayout();
-document.getElementById("signal_table").onchange = drawBitLayout
+window.onload = initBitLayoutTable();
 </script>

@@ -17,8 +17,8 @@
         <td class="col-md-1"><%= s.text_field :name, class: 'form-control'%></td>
         <td class="col-md-1"><%= s.text_field :unit, class: 'form-control' %></td>
         <td class="col-md-2"><%= s.text_field :description, class: 'form-control' %></td>
-        <td class="col-md-1"><%= s.select :bit_offset, 0..(@message.bytesize*8-1), { :selected => s.object.bit_offset.to_i }, class: 'form-control'%></td>
-        <td class="col-md-1"><%= s.select :bit_size,   1..(@message.bytesize*8),   { :selected => s.object.bit_size.to_i }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :bit_offset, 0..63, { :selected => s.object.bit_offset.to_i }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :bit_size,   1..64,   { :selected => s.object.bit_size.to_i }, class: 'form-control'%></td>
         <td class="col-md-1">
           <%= s.select :sign_id,  @signs.map{|s| [s.name, s.id]}, { :selected => s.object.sign_id }, class: 'form-control'%>
         </td>
