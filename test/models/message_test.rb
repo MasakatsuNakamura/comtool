@@ -57,4 +57,24 @@ class MessageTest < ActiveSupport::TestCase
     assert msg.valid?
   end
 
+  test "(bit_offset + bit_size) should be less than or equal to message.bytesize" do
+    @message.bytesize = 2
+    @message.save
+
+    c1 = @message.com_signals.build(
+      name: "c1",
+      message: @message,
+      bit_size: 16,
+      bit_offset: 7,
+      sign: @sign1
+      )
+
+    assert @message.valid?
+    assert c1.valid?
+
+    @message.bytesize = 1
+
+    assert @message.invalid?
+  end
+
 end

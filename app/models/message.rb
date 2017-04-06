@@ -16,7 +16,10 @@ class MessageValidator < ActiveModel::Validator
         offset = c.bit_offset
         bit_size = c.bit_size
         while bit_size > 0
-          if message_layout[offset] then
+          if message_layout[offset].nil? then
+            msg.errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
+            break
+          elsif message_layout[offset] then
             msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
             break
           end
