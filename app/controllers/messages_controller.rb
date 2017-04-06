@@ -27,7 +27,7 @@ class MessagesController < ApplicationController
     if @message.update_attributes(edit_params)
       redirect_to :messages
     else
-      @signs = Sign.getOwnSigns(session[:project])
+#      @signs = Sign.getOwnSigns(session[:project])
       render :edit
     end
   end
@@ -45,13 +45,13 @@ class MessagesController < ApplicationController
   def add_signal
     @message = Message.find_by_id(params[:id])
 
-    sign_id = unused_sign(@message, session[:project])
+#    sign_id = unused_sign(@message, session[:project])
     bit_offset = unused_bit(@message, session[:project])
 
     # default com_signal
     c = @message.com_signals_build
 
-    c.sign_id    = sign_id
+#    c.sign_id    = sign_id
     c.bit_offset = bit_offset
     c.bit_size   = 1
 
@@ -101,11 +101,11 @@ class MessagesController < ApplicationController
       flash[:danger] = '選択されたメッセージが存在しません'
       redirect_to messages_path
     end
-    @signs = Sign.getOwnSigns(session[:project])
-    if @signs.nil?
-      flash[:danger] = '符号が存在しません'
-      redirect_to messages_path
-    end
+#    @signs = Sign.getOwnSigns(session[:project])
+#    if @signs.nil?
+#      flash[:danger] = '符号が存在しません'
+#      redirect_to messages_path
+#    end
   end
 
   def unused_sign(msg, pid)

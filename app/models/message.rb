@@ -69,7 +69,7 @@ class Message < ApplicationRecord
         bit_offset: 0,
         bit_size:   1,
         message: self,
-        sign: Sign.find_by(project_id: self.project_id)
+#       sign: Sign.find_by(project_id: self.project_id)
       )
   end
 
