@@ -44,7 +44,7 @@ class Message < ApplicationRecord
   has_many :com_signals, dependent: :destroy
 
   accepts_nested_attributes_for :com_signals, reject_if: true
-#  validates_associated :com_signals
+  validates_associated :com_signals
   include ActiveModel::Validations
   validates_with MessageValidator
 

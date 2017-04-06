@@ -10,7 +10,7 @@ class ComSignalTest < ActiveSupport::TestCase
     @sign2   = Sign.create!(id:2, name: 'testSignal2', project:@project)
     @message = Message.create!(id:1, name: 'testMessage', project:@project, bytesize:1, canid:1)
 
-    @com_signal = ComSignal.new(
+    @com_signal = @message.com_signals.build(
       name: 'ExampleComSignal',
       message: @message,
       unit: 'Example Unit',
@@ -70,70 +70,6 @@ class ComSignalTest < ActiveSupport::TestCase
   test "bit_offset should be integer" do
     @com_signal.bit_offset = "a"
     assert_not @com_signal.valid?
-  end
-
-  test "(bit_offset + bit_size) should be less than or equal to message.bytesize" do
-    @message.bytesize = 1
-    @message.save
-
-    @com_signal.bit_size = 1
-    @com_signal.bit_offset = 0
-    assert @com_signal.valid?
-
-    @com_signal.bit_size = 9
-    @com_signal.bit_offset = 0
-    assert @com_signal.invalid?
-
-    @com_signal.bit_size = 1
-    @com_signal.bit_offset = 8
-    assert @com_signal.invalid?
-
-    @com_signal.bit_size = 1
-    @com_signal.bit_offset = 9
-    assert @com_signal.invalid?
-
-    # TODO:little_endian
-=begin
-    @message.byte_order = :little_endian
-    @com_signal.bit_size = 8
-    @com_signal.bit_offset = 0
-    assert @com_signal.valid?
-=end
-
-# TODO:little_endian
-=begin
-    @message.byte_order = :big_endian
-=end
-
-    @message.save
-    @com_signal.bit_size = 8
-    @com_signal.bit_offset = 7
-    assert @com_signal.valid?
-
-    @message.bytesize = 2
-    @message.save
-
-    @com_signal.bit_size = 16
-    @com_signal.bit_offset = 7
-    assert @com_signal.valid?
-
-    @message.bytesize = 3
-    @message.save
-
-    @com_signal.bit_size = 24
-    @com_signal.bit_offset = 7
-    assert @com_signal.valid?
-
-    @message.bytesize = 4
-    @message.save
-
-    @com_signal.bit_size = 32
-    @com_signal.bit_offset = 7
-    assert @com_signal.valid?
-
-    @com_signal.bit_size = 12
-    @com_signal.bit_offset = 13
-    assert @com_signal.valid?
   end
 
   test "bit_size should be present" do
