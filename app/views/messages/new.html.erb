@@ -10,7 +10,7 @@
         <%= f.text_field :name, class: 'form-control'%>
 
         <%= f.label :duplicate_source, '複製元' %>
-        <%= f.select :duplicate_source, {"送信 1byte"=>0,"受信 1byte"=>1}, class: 'form-control'%>
+        <%= f.select :duplicate_source, {"送信 1byte"=>0,"受信 1byte"=>1}, {selected:0}, class: 'form-control'%>
 
 
         <%= f.submit "作成", class: "btn btn-primary col-md-4", style: "margin-top:20px;" %>

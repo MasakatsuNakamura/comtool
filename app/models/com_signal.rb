@@ -29,7 +29,7 @@ end
 
 class ComSignal < ApplicationRecord
   belongs_to :message
-  belongs_to :sign
+  belongs_to :sign, optional: true
 
   include ActiveModel::Validations
   validates_with ComSignalValidator
@@ -46,7 +46,4 @@ class ComSignal < ApplicationRecord
     presence: true,
     numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 
-  validates :sign,
-    uniqueness: { scope: :message_id,message: "シグナルの符号が重複しています" },
-    presence: true
 end

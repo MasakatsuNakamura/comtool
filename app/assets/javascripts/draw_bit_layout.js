@@ -116,8 +116,6 @@ function paintBitLayout(){
    $('#signal_table a').each(function() {
      $(this).parent().css('background-color', `white`);
    });
-
-   appendSelectOptions()
 }
 
 function initBitLayoutTable(){
