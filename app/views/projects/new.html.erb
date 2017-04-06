@@ -6,7 +6,7 @@
       <%= render 'shared/error_messages', object: @project %>
 
       <%= f.label :name %><br>
-      <%= f.text_field :name %>
+      <%= f.text_field :name , class: 'form-control'%>
 
       <!-- TODO:disabled タスク #654 -->
       <%= f.label :duplicate_source, '複製元(未対応)' %>
@@ -17,10 +17,10 @@
         }, { :selected => 0 }, class: 'form-control', disabled: true %>
 
       <%= f.label :qines_version_number %><br>
-      <%= text_field :qines_version_number, :name, readonly: true %>
+      <%= text_field :qines_version_number, :name, class: 'form-control', readonly: true %>
 
       <%= f.label :protocol_number %><br>
-      <%= text_field :communication_protocol, :name, readonly: true %>
+      <%= text_field :communication_protocol, :name, class: 'form-control', readonly: true %>
 
       <%= f.submit "作成", class: "btn btn-primary col-md-4", style: "margin-top:20px;"  %>
 
