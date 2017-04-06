@@ -9,7 +9,7 @@ class MessageTest < ActiveSupport::TestCase
     @sign1   = Sign.create!(id:1, name: 'テスト符号1', project:@project)
     @sign2   = Sign.create!(id:2, name: 'テスト符号2', project:@project)
 
-    @message = Message.new(name: 'テストメッセージ', project:@project, bytesize:1)
+    @message = Message.new(name: 'テストメッセージ', project:@project, bytesize:1,canid:1)
 
   end
 
@@ -18,7 +18,7 @@ class MessageTest < ActiveSupport::TestCase
   end
 
   test "message layout should not be overlap" do
-    msg = Message.new(name: 'テストメッセージ', project:@project, bytesize:1)
+    msg = Message.new(name: 'テストメッセージ', project:@project, bytesize:1,canid:1)
     c1 = msg.com_signals.build(
       name: "c1",
       message: msg,
@@ -55,6 +55,26 @@ class MessageTest < ActiveSupport::TestCase
     c2.bit_size = 7
     c2.bit_offset = 7
     assert msg.valid?
+  end
+
+  test "(bit_offset + bit_size) should be less than or equal to message.bytesize" do
+    @message.bytesize = 2
+    @message.save
+
+    c1 = @message.com_signals.build(
+      name: "c1",
+      message: @message,
+      bit_size: 16,
+      bit_offset: 7,
+      sign: @sign1
+      )
+
+    assert @message.valid?
+    assert c1.valid?
+
+    @message.bytesize = 1
+
+    assert @message.invalid?
   end
 
 end

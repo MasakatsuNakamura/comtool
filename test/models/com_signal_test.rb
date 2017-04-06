@@ -8,7 +8,7 @@ class ComSignalTest < ActiveSupport::TestCase
     @project = Project.create!(id:1, name: 'テストプロジェクト', communication_protocol_id: '1', qines_version_id: '1')
     @sign1   = Sign.create!(id:1, name: 'テスト符号1', project:@project)
     @sign2   = Sign.create!(id:2, name: 'テスト符号2', project:@project)
-    @message = Message.create!(id:1, name: 'テストメッセージ', project:@project, bytesize:1)
+    @message = Message.create!(id:1, name: 'テストメッセージ', project:@project, bytesize:1, canid:1)
 
     @com_signal = ComSignal.new(
       name: 'Example ComSignal',

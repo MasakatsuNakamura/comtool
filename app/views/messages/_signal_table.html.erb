@@ -1,30 +1,29 @@
-  <table class="table table-bordered">
+  <table id="signal_table" class="table table-bordered col-md-12">
     <tr class="info">
         <th colspan="3">シグナル</th>
-        <th class="col-md-3" colspan="<%= @message.bytesize*8+2 %>">メッセージレイアウト(ビット)</th>
+        <th colspan="2">メッセージレイアウト(ビット)</th>
         <th rowspan="2">符号</th>
     </tr>
     <tr class="info">
         <th>シグナル名</th>
         <th>単位</th>
         <th>説明</th>
-        <%= render 'label_bit_pattern', message: @message %>
         <th>オフセット</th>
         <th>サイズ</th>
     </tr>
 
     <%= message_form.fields_for :com_signals do |s| %>
       <tr>
-        <td class="col-md-1"><%= s.text_field :name %></td>
-        <td class="col-md-1"><%= s.text_field :unit %></td>
-        <td class="col-md-2"><%= s.text_field :description %></td>
-        <%= render 'val_bit_pattern', message: @message, com_signal: s %>
-        <td class="col-md-1"><%= s.select :bit_offset, 0..(@message.bytesize*8-1), { :selected => s.object.bit_offset.to_i }, class: 'form-control'%></td>
-        <td class="col-md-1"><%= s.select :bit_size,   1..(@message.bytesize*8),   { :selected => s.object.bit_size.to_i }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.text_field :name, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.text_field :unit, class: 'form-control' %></td>
+        <td class="col-md-2"><%= s.text_field :description, class: 'form-control' %></td>
+        <td class="col-md-1"><%= s.select :bit_offset, 0..63, { :selected => s.object.bit_offset.to_i }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :bit_size,   1..64,   { :selected => s.object.bit_size.to_i }, class: 'form-control'%></td>
         <td class="col-md-1">
           <%= s.select :sign_id,  @signs.map{|s| [s.name, s.id]}, { :selected => s.object.sign_id }, class: 'form-control'%>
         </td>
         <td class="col-md-1">
+          <%= link_to image_tag("delete_images.png", alt: "Delete"), del_signal_path(@message, com_signal_id: s.object.id), method: :delete, data: { confirm: "You sure?" }  %>
           <%= link_to "delete", del_signal_path(@message, com_signal_id: s.object.id), method: :delete, data: { confirm: "You sure?" } %>
         </td>
       </tr>
