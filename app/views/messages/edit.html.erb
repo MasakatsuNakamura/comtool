@@ -18,8 +18,8 @@
         <%= f.label :bytesize, 'Byte Size' %>
         <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control' %>
 
-        <%= f.label :baudrate, 'Baud Rate' %>
-        <%= f.select :baudrate, {"125kbps"=>0,"250kbps"=>1,"500kbps"=>2,"1Mbps"=>3}, { :selected => @message.baudrate.to_i }, class: 'form-control'%>
+        <%= f.label :baudrate, 'Baud Rate(未対応)' %>
+        <%= f.select :baudrate, {"125kbps"=>0,"250kbps"=>1,"500kbps"=>2,"1Mbps"=>3}, { :selected => @message.baudrate.to_i }, class: 'form-control', disabled:true%>
     </div>
     <div class="col-md-6">
     <%= render 'bit_layout_view', message: @message %>
