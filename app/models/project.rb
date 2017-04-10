@@ -7,7 +7,8 @@ class Project < ApplicationRecord
 
   validates :name,
             presence: true,
-            length: { maximum: 50 }
+            length: { maximum: 50 },
+            format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
 
   def self.getOwnProjects(_user)
     # TODO: メンバー機能の実装

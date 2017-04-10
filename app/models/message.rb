@@ -44,13 +44,14 @@ class Message < ApplicationRecord
   has_many :com_signals, dependent: :destroy
 
   accepts_nested_attributes_for :com_signals, reject_if: true
-#  validates_associated :com_signals
+  validates_associated :com_signals
   include ActiveModel::Validations
   validates_with MessageValidator
 
   validates :name,
             presence: true,
-            length: { maximum: 50 }
+            length: { maximum: 50 },
+            format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
 
   validates :canid,
             presence: true,
@@ -63,7 +64,7 @@ class Message < ApplicationRecord
   def com_signals_build
     # default com_signal
     c = self.com_signals.build(
-        name: 'Enter a name',
+        name: "Signal#{self.com_signals.length}",
         unit: 'Enter a unit',
         description: 'Enter a description',
         bit_offset: 0,
