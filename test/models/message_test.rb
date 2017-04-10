@@ -57,7 +57,7 @@ class MessageTest < ActiveSupport::TestCase
   end
 
   test "name validation should accept valid name" do
-    valid_names = %w[a z A Z 0 9 _ _name_ name_0]
+    valid_names = %w[a z A Z name_0]
     valid_names.each do |name|
       @message.name = name
       assert @message.valid?, "#{name.inspect} should be valid"
@@ -65,7 +65,7 @@ class MessageTest < ActiveSupport::TestCase
   end
 
   test "name validation should accept invalid name" do
-    invalid_names = %w[! " # $ % & ' ( ) = ~ | \ [ ] @ * + < > ? ; : - * + ^ { }]
+    invalid_names = %w[0 9 _ _name_ 0name ! " # $ % & ' ( ) = ~ | \ [ ] @ * + < > ? ; : - * + ^ { }]
     invalid_names << 'na me'
     invalid_names << ' name'
     invalid_names << 'name '

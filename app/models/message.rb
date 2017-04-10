@@ -51,7 +51,7 @@ class Message < ApplicationRecord
   validates :name,
             presence: true,
             length: { maximum: 50 },
-            format: { with: /\A\w+\z/, message: "半角英数とアンダースコアが利用できます"}
+            format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
 
   validates :canid,
             presence: true,
