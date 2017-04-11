@@ -2,15 +2,16 @@ class Project < ApplicationRecord
   belongs_to :communication_protocol
   belongs_to :qines_version
 
-  # TODO:delete 中間リリース用暫定処理 (タスク #579)
+  # TODO:disabled タスク #654
   attr_accessor :duplicate_source
 
   validates :name,
             presence: true,
-            length: { maximum: 50 }
+            length: { maximum: 50 },
+            format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
 
   def self.getOwnProjects(_user)
-    # TODO: 自身に紐づくプロジェクトを取得する？
+    # TODO: メンバー機能の実装
     Project.all
   end
 

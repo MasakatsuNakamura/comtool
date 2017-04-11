@@ -1,6 +1,15 @@
 <% message_bit_size = message.bytesize * 8 %>
-<% signal_bit_offset = com_signal.object.bit_offset %>
-<% signal_bit_size = com_signal.object.bit_size %>
+
+<% if message.byte_order == :little_endian then %>
+    <% signal_bit_offset = com_signal.object.bit_offset %>
+    <% signal_bit_size = com_signal.object.bit_size %>
+<% else %>
+    <% signal_bit_offset = com_signal.object.bit_offset %>
+    <% byte_pos = signal_bit_offset / 8 %>
+    <% bit_pos  = signal_bit_offset % 8 %>
+    <% signal_bit_offset =  (byte_pos*8) + (7-bit_pos)%>
+    <% signal_bit_size = com_signal.object.bit_size %>
+<% end %>
 
 <% signal_bit_offset.times do %>
 <td></td>
