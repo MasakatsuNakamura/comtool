@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  get 'database_manages/show'
+  get 'database_manages/sign_csvexport'
+  get 'database_manages/sign_binexport'
+  get 'database_manages/config_csvexport'
+  get 'database_manages/config_binexport'
+  get 'database_manages/restore'
+
   get 'messages/new'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
