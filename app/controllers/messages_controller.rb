@@ -17,7 +17,6 @@ class MessagesController < ApplicationController
     if @message.save
       redirect_to :messages
     else
-      flash[:danger] = 'Failed to create a message.'
       render :new
     end
   end
