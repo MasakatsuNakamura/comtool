@@ -134,4 +134,19 @@ class ComSignalTest < ActiveSupport::TestCase
     end
   end
 
+
+  test "name should be unique in message" do
+    duplicate_com_signal = @com_signal.dup
+    @com_signal.save
+    assert_not duplicate_com_signal.valid?
+
+    duplicate_com_signal.name = @com_signal.name.upcase
+    assert_not duplicate_com_signal.valid?
+
+    duplicate_com_signal = @com_signal.dup
+    message  = Message.create!(id:2, name: 'testMessage2', project:@project, bytesize:1, canid:1)
+    @com_signal.message_id = 2
+    @com_signal.save
+    assert duplicate_com_signal.valid?
+  end
 end

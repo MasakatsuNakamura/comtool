@@ -154,4 +154,18 @@ class MessageTest < ActiveSupport::TestCase
     assert @message.valid?
   end
 
+  test "name should be unique in project" do
+    duplicate_message = @message.dup
+    @message.save
+    assert_not duplicate_message.valid?
+
+    duplicate_message.name = @message.name.upcase
+    assert_not duplicate_message.valid?
+
+    duplicate_message = @message.dup
+    project2 = Project.create!(id:3, name: 'testProject2', communication_protocol_id: '1', qines_version_id: '1')
+    @message.project_id = 3
+    @message.save
+    assert duplicate_message.valid?
+  end
 end
