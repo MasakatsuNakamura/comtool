@@ -31,7 +31,7 @@ module ArxmlExporter
     create_SystemSignal(autosar.arpackages[:SystemDesign].elements)
     autosar.arpackages[:SystemDesign].elements[:ISignalIPdu] = create_ISignalIPdu()
 
-#    pp autosar
+    pp autosar
     return autosar.to_arxml(kind:'SystemDesign')
   end
 

@@ -30,7 +30,7 @@ module ArxmlWriter
     @@elements = arpackage.add_element('ELEMENTS')
   end
 
-  def create_ecuc_module_configuration_values(shortname, longname, definitionref,  uuid = nil)
+  def create_ecuc_module_configuration_values(shortname, longname, definitionref,  uuid = '')
     module_configuration_values = @@elements.add_element('ECUC-MODULE-CONFIGURATION-VALUES', {'UUID' => uuid})
     module_configuration_values.add_element('SHORT-NAME').add_text(shortname)
     longname_element = module_configuration_values.add_element('LONG-NAME')
@@ -68,16 +68,26 @@ module ArxmlWriter
     end
   end
 
-  def create_systemsignal
-
+  def create_systemsignal(shortname:'', uuid:'')
+    systemsignal = @@elements.add_element('SYSTEM-SIGNAL', {'UUID' => uuid})
+    systemsignal.add_element('SHORT-NAME').add_text(shortname)
   end
 
-  def create_isignal
-
+  def create_isignal(shortname:'', systemsignalref:nil, uuid:'')
+    isignal = @@elements.add_element('I-SIGNAL', {'UUID' => uuid})
+    isignal.add_element('SHORT-NAME').add_text(shortname)
+    isignal.add_element('SYSTEM-SIGNAL-REF', {'DEST' => systemsignalref.dest}).add_text(systemsignalref.value)
   end
 
-  def create_isignalpdu
-
+  def create_isignalpdu(shortname:'', uuid:'', isignaltoipdumappings:nil)
+    isignalpdu = @@elements.add_element('I-SIGNAL-I-PDU', {'UUID' => uuid})
+    isignalpdu.add_element('SHORT-NAME').add_text(shortname)
+    isignaltoipdumappings_element = isignalpdu.add_element('I-SIGNAL-TO-PDU-MAPPINGS')
+    isignaltoipdumappings.each_value { |isignaltoipdumapping|
+      isignaltoipdumapping_element = isignaltoipdumappings_element.add_element('I-SIGNAL-TO-PDU-MAPPING', {'UUID' => isignaltoipdumapping.uuid})
+      isignaltoipdumapping_element.add_element('SHORT-NAME').add_text(isignaltoipdumapping.shortname)
+      isignaltoipdumapping_element.add_element('I-SIGNAL-REF', {'DEST' => isignaltoipdumapping.isignalref.dest}).add_text(isignaltoipdumapping.isignalref.value)
+    }
   end
 
   def output_arxml

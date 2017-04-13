@@ -28,11 +28,11 @@ class Autosar < AutosarBase
         create_arpackage(shortname:arpackage.shortname, attributes:attributes)
         arpackage.elements.each_value { |element|
           if element.instance_of?(SystemSignal) then
-
+            create_systemsignal(shortname:element.shortname, uuid:element.uuid)
           elsif element.instance_of?(ISignal) then
-
+            create_isignal(shortname:element.shortname, systemsignalref:element.systemsignalref, uuid:element.uuid)
           elsif element.instance_of?(ISignalIPdu) then
-
+            create_isignalpdu(shortname:element.shortname, uuid:element.uuid, isignaltoipdumappings:element.isignaltoipdumappings)
           end
         }
       }
