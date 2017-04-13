@@ -82,9 +82,9 @@ module ArxmlWriter
   def create_isignalpdu(shortname:'', uuid:'', isignaltoipdumappings:nil)
     isignalpdu = @@elements.add_element('I-SIGNAL-I-PDU', {'UUID' => uuid})
     isignalpdu.add_element('SHORT-NAME').add_text(shortname)
-    isignaltoipdumappings_element = isignalpdu.add_element('I-SIGNAL-TO-PDU-MAPPINGS')
+    isignaltoipdumappings_element = isignalpdu.add_element('I-SIGNAL-TO-I-PDU-MAPPINGS')
     isignaltoipdumappings.each_value { |isignaltoipdumapping|
-      isignaltoipdumapping_element = isignaltoipdumappings_element.add_element('I-SIGNAL-TO-PDU-MAPPING', {'UUID' => isignaltoipdumapping.uuid})
+      isignaltoipdumapping_element = isignaltoipdumappings_element.add_element('I-SIGNAL-TO-I-PDU-MAPPING', {'UUID' => isignaltoipdumapping.uuid})
       isignaltoipdumapping_element.add_element('SHORT-NAME').add_text(isignaltoipdumapping.shortname)
       isignaltoipdumapping_element.add_element('I-SIGNAL-REF', {'DEST' => isignaltoipdumapping.isignalref.dest}).add_text(isignaltoipdumapping.isignalref.value)
     }

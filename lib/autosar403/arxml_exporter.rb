@@ -22,7 +22,6 @@ module ArxmlExporter
   def export_signals(project:nil, messages:nil)
     @project = project
     @messages = messages
-    @project = Project.find_by_id(session[:project])
 
     autosar = Autosar.new()
     autosar.arpackages = Hash.new([])
@@ -31,7 +30,6 @@ module ArxmlExporter
     create_SystemSignal(autosar.arpackages[:SystemDesign].elements)
     autosar.arpackages[:SystemDesign].elements[:ISignalIPdu] = create_ISignalIPdu()
 
-    pp autosar
     return autosar.to_arxml(kind:'SystemDesign')
   end
 
@@ -273,13 +271,13 @@ module ArxmlExporter
                         value:'UINT8')
           # REFERENCE-VALUES 作成
           referencevalues = Hash.new([])
-#          referencevalues[:ComPduIdRef] = ReferenceValue.new(
-#                        definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
-#                        valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_001/ISignalToIPduMapping_002"))
+          referencevalues[:ComPduIdRef] = ReferenceValue.new(
+                        definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
+                        valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"))
 
           # ComSignal コンテナ作成
           comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                  parametervalues:parametervalues,  referencevalues:nil, uuid:SecureRandom.uuid.upcase)
+                                                                                  parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
 
           count_ComHandleId += 1
       }
