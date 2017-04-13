@@ -15,7 +15,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
     arxmls_path = "test/integration/arxmls/Ecuc.#{@project.name}.arxml"
 
     # diff ARXML
-    actual = export_comstack(
+    actual = export_ecuc_comstack(
                project:  @project,
                messages: @messages.values
              )
@@ -35,7 +35,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
     diff_file   = arxmls_path+'.diff.txt'
     actual_file = arxmls_path+'.actual.arxml'
     [diff_file, actual_file].each {|f| File.delete(f) if FileTest.exist?(f)}
-    
+
     unless diffs.empty? then
       File.open(diff_file, 'w') do |f|
         diffs.each do |diff|

@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   match 'messages/:id/add_signal(.:format)', to: 'messages#add_signal', via: 'put',    as: 'add_signal'
   match 'messages/:id/del_signal(.:format)', to: 'messages#del_signal', via: 'delete', as: 'del_signal'
   resources :projects, shallow: true do
-    get 'export', to: 'config#export'
-    post 'export', to: 'config#export'
+    get 'export_ecuc', to: 'config#export_ecuc'
+    get 'export_systemdesign', to: 'config#export_systemdesign'
   end
 end
