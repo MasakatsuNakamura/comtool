@@ -250,6 +250,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMinimumCanV11/ISignalToIPduMapping_RxSig_can0_0_Rx_can0</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                                 <ECUC-CONTAINER-VALUE>
                                     <SHORT-NAME>ComSignal_TxSig_can0_0</SHORT-NAME>
@@ -279,6 +285,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMinimumCanV11/ISignalToIPduMapping_TxSig_can0_0_Tx_can0</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                             </SUB-CONTAINERS>
                         </ECUC-CONTAINER-VALUE>

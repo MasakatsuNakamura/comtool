@@ -435,6 +435,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMultipleMessageSingalCanV11/ISignalToIPduMapping_TxSignal1_TxMessage1</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                                 <ECUC-CONTAINER-VALUE>
                                     <SHORT-NAME>ComSignal_TxSignal2</SHORT-NAME>
@@ -464,6 +470,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMultipleMessageSingalCanV11/ISignalToIPduMapping_TxSignal2_TxMessage2</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                                 <ECUC-CONTAINER-VALUE>
                                     <SHORT-NAME>ComSignal_TxSignal3</SHORT-NAME>
@@ -493,6 +505,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMultipleMessageSingalCanV11/ISignalToIPduMapping_TxSignal3_TxMessage2</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                                 <ECUC-CONTAINER-VALUE>
                                     <SHORT-NAME>ComSignal_RxSignal1</SHORT-NAME>
@@ -522,6 +540,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMultipleMessageSingalCanV11/ISignalToIPduMapping_RxSignal1_RxMessage1</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                                 <ECUC-CONTAINER-VALUE>
                                     <SHORT-NAME>ComSignal_RxSignal2</SHORT-NAME>
@@ -551,6 +575,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMultipleMessageSingalCanV11/ISignalToIPduMapping_RxSignal2_RxMessage2</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                                 <ECUC-CONTAINER-VALUE>
                                     <SHORT-NAME>ComSignal_RxSignal3</SHORT-NAME>
@@ -580,6 +610,12 @@
                                             <VALUE>UINT8</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
+                                    <REFERENCE-VALUES>
+                                        <ECUC-REFERENCE-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMultipleMessageSingalCanV11/ISignalToIPduMapping_RxSignal3_RxMessage2</VALUE-REF>
+                                        </ECUC-REFERENCE-VALUE>
+                                    </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
                             </SUB-CONTAINERS>
                         </ECUC-CONTAINER-VALUE>

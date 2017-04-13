@@ -11,19 +11,11 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
   def setup
   end
 
-  def compare_arxml
-    arxmls_path = "test/integration/arxmls/Ecuc.#{@project.name}.arxml"
-
-    # diff ARXML
-    actual = export_ecuc_comstack(
-               project:  @project,
-               messages: @messages.values
-             )
-
+  def compare_arxml_sub(actual, expected_file)
     # uuid は一致しないので取り除く
     actual = actual.gsub(/ UUID=\".{36}\"/,'')
 
-    expected = IO.read(arxmls_path)
+    expected = IO.read(expected_file)
 
     # uuid は一致しないので取り除く
     expected = expected.gsub(/ UUID=\".{36}\"/,'')
@@ -32,8 +24,8 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
     diffs = Diff::LCS.diff(expected.split("\n"),actual.split("\n"))
 
     # 比較結果を出力する
-    diff_file   = arxmls_path+'.diff.txt'
-    actual_file = arxmls_path+'.actual.arxml'
+    diff_file   = expected_file+'.diff.txt'
+    actual_file = expected_file+'.actual.arxml'
     [diff_file, actual_file].each {|f| File.delete(f) if FileTest.exist?(f)}
 
     unless diffs.empty? then
@@ -47,7 +39,22 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
       end
       IO.write(actual_file, actual)
     end
-    assert diffs.empty?, "Compare failed. output actual file to #{arxmls_path+'.actual'}"
+    assert diffs.empty?, "Compare failed. output actual file to #{expected_file+'.actual.arxml'}"
+  end
+
+  def compare_arxml
+    msg = @messages.dup
+    # Ecuc
+    actual = export_ecuc_comstack(project:  @project, messages: msg.values)
+    expected_file = "test/integration/arxmls/Ecuc.#{@project.name}.arxml"
+
+    compare_arxml_sub(actual, expected_file)
+
+    # SystemDesign
+    actual = export_signals(project:  @project, messages: msg.values)
+    expected_file = "test/integration/arxmls/SystemDesign.#{@project.name}.arxml"
+
+    compare_arxml_sub(actual, expected_file)
   end
 
   test 'Export the minimum ecu configuration of CAN with QINeS Version 1.1 ' do
