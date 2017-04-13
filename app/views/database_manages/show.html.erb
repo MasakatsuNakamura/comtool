@@ -12,19 +12,23 @@
 
 <div class="container">
   <ul class="list-inline pull-right">
-    <li>符号ＤＢ　プロジェクト単位のエクスポート：</li>
-    <li><%= link_to "CSV", {controller: 'database_manages', action: 'sign_csvexport', project_id: @database_manage.project_id}, {method: :get, class: "btn btn-default"} %></li>
-    <li>全レコードのエクスポート：</li>
-    <li><%= link_to "CSV", {controller: 'database_manages', action: 'sign_csvexport', project_id: @database_manage.project_id, all:'all'}, {method: :get, class: "btn btn-default"} %></li>
-    <li><%= link_to "バイナリ", {controller: 'database_manages', action: 'sign_binexport',  project_id: @database_manage.project_id}, {method: :get, class: "btn btn-default"} %></li>
+    <li>符号ＤＢエクスポート：</li>
+    <li>プロジェクト</li>
+    <li><%= link_to "CSV", {controller: 'database_manages', action: 'sign_csvexport', project_id: @database_manage.project_id}, {method: :get, class: "none"} %></li>
+    <li>|</li>
+    <li>全レコード</li>
+    <li><%= link_to "CSV", {controller: 'database_manages', action: 'sign_csvexport', project_id: @database_manage.project_id, all:'all'}, {method: :get, class: "none"} %></li>
+    <li><%= link_to "バイナリ", {controller: 'database_manages', action: 'sign_binexport',  project_id: @database_manage.project_id}, {method: :get, class: "none"} %></li>
   </ul>
 </div>
 <div class="container">
   <ul class="list-inline pull-right">
-    <li>コンフィグＤＢ　プロジェクト単位のエクスポート：</li>
-    <li><%= link_to "CSV", {controller: 'database_manages', action: 'config_csvexport', params: {project_id: @database_manage.project_id}}, {method: :get, class: "btn btn-default"} %></li>
-    <li>全レコードのエクスポート：</li>
-    <li><%= link_to "CSV", {controller: 'database_manages', action: 'config_csvexport', params: {project_id: @database_manage.project_id, all:'all'}}, {method: :get, class: "btn btn-default"} %></li>
-    <li><%= link_to "バイナリ", {controller: 'database_manages', action: 'config_binexport', params:{project_id: @database_manage.project_id}}, {method: :get, class: "btn btn-default"} %></li>
+    <li>コンフィグＤＢエクスポート：</li>
+    <li>プロジェクト</li>
+    <li><%= link_to "CSV",    {controller: 'database_manages', action: 'config_csvexport', params: {project_id: @database_manage.project_id}}, {method: :get, class: "none"} %></li>
+    <li>|</li>
+    <li>全レコード</li>
+    <li><%= link_to "CSV",    {controller: 'database_manages', action: 'config_csvexport', params:{project_id: @database_manage.project_id, all:'all'}}, {method: :get, class: "none"} %></li>
+    <li><%= link_to "バイナリ", {controller: 'database_manages', action: 'config_binexport', params:{project_id: @database_manage.project_id}}, {method: :get, class: "none"} %></li>
   </ul>
 </div>
