@@ -20,6 +20,7 @@ class ProjectsController < ApplicationController
     # }
 
     if @project.save
+      DatabaseManage.create!(backup_file_path: 'CAN/test',backup_date: Date.today, project: @project)
       redirect_to home_index_path
     else
       render :new
