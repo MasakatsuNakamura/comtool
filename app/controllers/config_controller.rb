@@ -3,7 +3,10 @@ class ConfigController < ApplicationController
 
   def export
     # ComStack の ARXML を作成
-    arxml = export_comstack
+    arxml = export_comstack(
+              project:  Project.find_by_id(session[:project]),
+              messages: Message.getOwnMessages(session[:project])
+            )
 
     # クライアントへダウンロード
     send_data(

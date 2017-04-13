@@ -1,9 +1,9 @@
 require 'securerandom'
 
 module ArxmlExporter
-  def export_comstack
-    @messages = Message.getOwnMessages(session[:project])
-    @project = Project.find_by_id(session[:project])
+  def export_comstack(project: nil, messages: nil)
+    @project  = project
+    @messages = messages
     @longname = LongName.new(l4:"JA")
 
     autosar = Autosar.new()
