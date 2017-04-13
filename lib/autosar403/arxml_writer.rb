@@ -59,7 +59,7 @@ module ArxmlWriter
   end
 
   def output_arxml
-    formatter = Formatters::Pretty::new
+    formatter = Formatters::Pretty::new(4)
     formatter.compact = true
     formatter.width = 500
 

@@ -34,7 +34,7 @@ module ArxmlExporter
     count_CanIfRxPduCfg = 0
     @messages.each { |message|
       if message.txrx == 0 then # 送信
-        shortname = "TxPduCfg_" + message.name
+        shortname = "CanIfTxPduCfg_" + message.name
         definitionref = DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg")
         # PARAMETER-VALUES 作成
         parametervalues = Hash.new([])
@@ -79,7 +79,7 @@ module ArxmlExporter
                                                                                 parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
         count_CanIfTxPduCfg += 1
       elsif message.txrx == 1 then  # 受信
-        shortname = "RxPduCfg_" + message.name
+        shortname = "CanIfRxPduCfg_" + message.name
         definitionref = DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg")
         # PARAMETER-VALUES 作成
         parametervalues = Hash.new([])
@@ -133,16 +133,21 @@ module ArxmlExporter
                                                                     definitionref:DefinitionRef.new(value:"/eSOL/EcucDefs/Com"), uuid:SecureRandom.uuid.upcase,
                                                                     containers:Hash.new([]))
     # ComConfig コンテナ作成
+    # PARAMETER-VALUES 作成
+    parametervalues = {}
+    parametervalues[:ComConfigurationId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
+                  definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComConfigurationId"),
+                  value:"0")
     comConfig = EcucContainerValue.new(shortname:"ComConfig_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/eSOL/EcucDefs/Com/ComConfig"),
+                            parametervalues:parametervalues,
                             uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
 
     # ComIPdu コンテナ作成
-    count_TxComIPdu = 0
-    count_RxComIPdu = 0
+    count_ComIPduHandleId = 0
     @messages.each { |message|
       if message.txrx == 0 then # 送信
-        shortname = "TxIPdu_" + message.name
+        shortname = "ComIPdu_" + message.name
         definitionref = DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu")
         # PARAMETER-VALUES 作成
         parametervalues = Hash.new([])
@@ -154,7 +159,7 @@ module ArxmlExporter
                       value:"SEND")
         parametervalues[:ComIPduHandleId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
                       definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduHandleId"),
-                      value:count_TxComIPdu.to_s)
+                      value:count_ComIPduHandleId.to_s)
         parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:"ECUC-TEXTUAL-PARAM-VALUE",
                       definitionref:DefinitionRef.new(dest:"ECUC-ENUMERATION-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalProcessing"),
                       value:"IMMEDIATE")
@@ -167,9 +172,9 @@ module ArxmlExporter
 #                      definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduGroupRef"),
 #                      valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + "IPduGrp_can0"))
         message.com_signals.each { |signal|
-          referencevalues[:ComIPduSignalRef] = ReferenceValue.new(
+          referencevalues["ComIPduSignalRef#{signal.name}".to_sym] = ReferenceValue.new(
                         definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef"),
-                        valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + signal.name))
+                        valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + 'ComSignal_' + signal.name))
         }
         referencevalues[:ComPduIdRef] = ReferenceValue.new(
                       definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef"),
@@ -182,9 +187,9 @@ module ArxmlExporter
         txComIPdu.subcontainers[":ComTxIPdu"] = create_ComTxIPdu()
 
         comConfig.subcontainers[":#{shortname}"] = txComIPdu
-        count_TxComIPdu += 1
+        count_ComIPduHandleId += 1
       elsif message.txrx == 1 then  # 受信
-        shortname = "RxIPdu_" + message.name
+        shortname = "ComIPdu_" + message.name
         definitionref = DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu")
         # PARAMETER-VALUES 作成
         parametervalues = Hash.new([])
@@ -196,7 +201,7 @@ module ArxmlExporter
                       value:"RECEIVE")
         parametervalues[:ComIPduHandleId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
                       definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduHandleId"),
-                      value:count_RxComIPdu.to_s)
+                      value:count_ComIPduHandleId.to_s)
         parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:"ECUC-TEXTUAL-PARAM-VALUE",
                       definitionref:DefinitionRef.new(dest:"ECUC-ENUMERATION-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalProcessing"),
                       value:"IMMEDIATE")
@@ -209,9 +214,9 @@ module ArxmlExporter
 #                      definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduGroupRef"),
 #                      valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + "IPduGrp_can0"))
         message.com_signals.each { |signal|
-          referencevalues[:ComIPduSignalRef] = ReferenceValue.new(
+          referencevalues["ComIPduSignalRef#{signal.name}".to_sym] = ReferenceValue.new(
                         definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef"),
-                        valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + signal.name))
+                        valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + 'ComSignal_' + signal.name))
         }
         referencevalues[:ComPduIdRef] = ReferenceValue.new(
                       definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef"),
@@ -220,14 +225,15 @@ module ArxmlExporter
         # ComIPdu コンテナ作成
         comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
                                                                                 parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
-        count_RxComIPdu += 1
+        count_ComIPduHandleId += 1
       end
     }
 
     # ComSignal コンテナ作成
+    count_ComHandleId = 0
     @messages.each_with_index { |message, index|
         message.com_signals.each { |signal|
-          shortname = signal.name
+          shortname = 'ComSignal_' + signal.name
           definitionref = DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComSignal")
           # PARAMETER-VALUES 作成
           parametervalues = Hash.new([])
@@ -239,16 +245,16 @@ module ArxmlExporter
                         value:signal.bit_size.to_s)
           parametervalues[:ComHandleId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
                         definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComHandleId"),
-                        value:index.to_s)
-#          parametervalues[:ComSignalEndianness] = ParameterValue.new(type:"ECUC-TEXTUAL-PARAM-VALUE",
-#                        definitionref:DefinitionRef.new(dest:"ECUC-ENUMERATION-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness"),
-#                        value:"BIG_ENDIAN")
+                        value:count_ComHandleId.to_s)
+          parametervalues[:ComSignalEndianness] = ParameterValue.new(type:"ECUC-TEXTUAL-PARAM-VALUE",
+                        definitionref:DefinitionRef.new(dest:"ECUC-ENUMERATION-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness"),
+                        value:"BIG_ENDIAN")
 #          parametervalues[:ComSignalInitValue] = ParameterValue.new(type:"ECUC-TEXTUAL-PARAM-VALUE",
 #                        definitionref:DefinitionRef.new(dest:"ECUC-STRING-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue"),
 #                        value:"0")
-#          parametervalues[:ComSignalType] = ParameterValue.new(type:"ECUC-TEXTUAL-PARAM-VALUE",
-#                        definitionref:DefinitionRef.new(dest:"ECUC-ENUMERATION-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType"),
-#                        value:"UINT8")
+          parametervalues[:ComSignalType] = ParameterValue.new(type:"ECUC-TEXTUAL-PARAM-VALUE",
+                        definitionref:DefinitionRef.new(dest:"ECUC-ENUMERATION-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType"),
+                        value:"UINT8")
           # REFERENCE-VALUES 作成
           referencevalues = Hash.new([])
 #          referencevalues[:ComPduIdRef] = ReferenceValue.new(
@@ -257,7 +263,9 @@ module ArxmlExporter
 
           # ComSignal コンテナ作成
           comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                  parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
+                                                                                  parametervalues:parametervalues,  referencevalues:nil, uuid:SecureRandom.uuid.upcase)
+
+          count_ComHandleId += 1
       }
     }
 
@@ -271,7 +279,7 @@ module ArxmlExporter
     # ComTxIPdu コンテナ作成
     comTxIPdu = EcucContainerValue.new(shortname:"ComTxIpdu", longname:@longname,
                             definitionref:DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComTxIPdu"),
-                            parametervalues:Hash.new([]), uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                            parametervalues:nil, uuid:SecureRandom.uuid.upcase, subcontainers:nil)
 
     return comTxIPdu
   end
@@ -317,8 +325,15 @@ module ArxmlExporter
                                                                     definitionref:DefinitionRef.new(value:"/AUTOSAR/EcucDefs/PduR"), uuid:SecureRandom.uuid.upcase,
                                                                     containers:Hash.new([]))
     # PduRRoutingTables コンテナ作成
+    # PARAMETER-VALUES 作成
+    parametervalues = Hash.new([])
+    parametervalues[:PduRConfigurationId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
+                  definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRConfigurationId"),
+                  value:0.to_s)
+
     pduRRoutingTables = EcucContainerValue.new(shortname:"PduRRoutingTables_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:"ECUC-PARAM-CONF-CONTAINER-DEF", value:"/AUTOSAR/EcucDefs/PduR/PduRRoutingTables"),
+                            parametervalues: parametervalues,
                             uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
 
     # PduRRoutingTable コンテナ作成
