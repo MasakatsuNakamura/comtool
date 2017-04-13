@@ -43,6 +43,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find_by_id(params[:id])
+    session[:project]  = params[:id]
     if @project == nil
       flash[:danger] = '選択されたプロジェクトが存在しません'
       redirect_to home_index_path
