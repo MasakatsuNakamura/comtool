@@ -214,7 +214,7 @@
                                     </REFERENCE-VALUES>
                                     <SUB-CONTAINERS>
                                         <ECUC-CONTAINER-VALUE>
-                                            <SHORT-NAME>ComTxIpdu_Tx_can0</SHORT-NAME>
+                                            <SHORT-NAME>ComTxIPdu_Tx_can0</SHORT-NAME>
                                             <LONG-NAME>
                                                 <L-4 L="JA"></L-4>
                                             </LONG-NAME>
