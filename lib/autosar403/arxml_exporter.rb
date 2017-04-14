@@ -198,7 +198,7 @@ module ArxmlExporter
         txComIPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref, parametervalues:parametervalues,
                                                             referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
 
-        txComIPdu.subcontainers[:ComTxIPdu] = create_ComTxIPdu()
+        txComIPdu.subcontainers[:ComTxIPdu] = create_ComTxIPdu(message)
 
         comConfig.subcontainers[":#{shortname}"] = txComIPdu
         count_ComIPduHandleId += 1
@@ -287,9 +287,9 @@ module ArxmlExporter
     return com
   end
 
-  def create_ComTxIPdu
+  def create_ComTxIPdu(message)
     # ComTxIPdu コンテナ作成
-    comTxIPdu = EcucContainerValue.new(shortname:'ComTxIpdu', longname:@longname,
+    comTxIPdu = EcucContainerValue.new(shortname:'ComTxIpdu_'+message.name, longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComTxIPdu'),
                             parametervalues:nil, uuid:SecureRandom.uuid.upcase, subcontainers:nil)
 
