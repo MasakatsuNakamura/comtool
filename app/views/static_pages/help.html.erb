@@ -1,2 +1,147 @@
 <% provide(:title, "Help") %>
-<%= render 'layouts/under_mainte' %>
+<div class="row">
+  <div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Help</h3>
+  </div>
+  <div class="panel-body">
+    <ul>
+    <li> <%= link_to "プロジェクト管理", :action => "help", :anchor => "project" %>
+    <li> <%= link_to "メッセージ設計", :action => "help", :anchor => "message" %>
+    <li> <%= link_to "ARXMLエクスポート", :action => "help", :anchor => "export" %>
+    <li> <%= link_to "DB管理", :action => "help", :anchor => "db" %>
+    </ul>
+  </div>
+</div>
+
+<div class="row">
+<h1 id="project" class="text-left"> プロジェクト管理 </h1>
+<ul>
+<li> プロジェクトの作成</li>
+  <ol>
+  <li><%= link_to "ホーム画面", home_index_path %>の右上にある[新規プロジェクト]からプロジェクト作成画面を開きます。
+  <li>プロジェクト作成画面でプロジェクトを作成します。プロジェクト名称は半角英数及びアンダースコアが使用できます。
+  </ol>
+</ul>
+
+<ul>
+<li> プロジェクトの編集及び削除</li>
+  未対応です。一度決めたプロジェクト名は変更できませんし、削除もできません。
+</ul>
+</div>
+
+<div class="row">
+<h1 id="message" class="text-left"> メッセージ設計 </h1>
+<ul>
+<li> メッセージの作成</li>
+  <ol>
+    <li>プロジェクト画面の[メッセージ設計]からメッセージ一覧画面を開きます。
+    <li>メッセージ一覧画面の右上にある[新規メッセージ]からメッセージ作成画面を開きます。
+    <li>メッセージ作成画面でメッセージを作成します。メッセージ名称は半角英数及びアンダースコアが使用できます。
+  </ol>
+</ul>
+
+<ul>
+<li> メッセージの編集</li>
+  <ol>
+    <li>メッセージ一覧画面から編集するメッセージを選択し、メッセージ設計画面を開きます。
+    <li>メッセージ設計画面で項目を編集し、画面下の[Edit message]ボタンを押します。正常に編集できた場合はメッセージ一覧画面が表示されます。
+      <table class="table table-hover ">
+        <tr>
+          <th>項目名
+          <th>説明
+        <tr>
+          <td>ID
+          <td>CANのフレームIDを設定します。
+        <tr>
+          <td>送受信
+          <td>メッセージの方向です。送信か受信を設定します。
+        <tr>
+          <td>Byte Size
+          <td>メッセージサイズを設定します。
+      </table>
+  </ol>
+</ul>
+
+
+<ul>
+<li> メッセージの削除</li>
+  <ol>
+    <li>メッセージ一覧画面から削除するメッセージの[delete]を選択します。
+    <li>確認ダイアログで[OK]を選択します
+  </ol>
+</ul>
+
+<ul>
+<li> シグナルの追加</li>
+  <ol>
+    <li>メッセージ設計画面の左下にある[新規シグナル]をクリックするとシグナルを追加します。
+  </ol>
+</ul>
+
+<ul>
+<li> シグナルの編集</li>
+  <ol>
+    <li>メッセージ一覧画面から編集するシグナルを含むメッセージを選択し、メッセージ設計画面を開きます。
+    <li>メッセージ設計画面で項目を編集し、画面下の[Edit message]ボタンを押します。正常に編集できた場合はメッセージ一覧画面が表示されます。
+      <table class="table table-hover ">
+        <tr>
+          <th>項目名
+          <th>説明
+        <tr>
+          <td>シグナル名
+          <td>シグナルの名称です。半角英数及びアンダースコアが使用できます。
+        <tr>
+          <td>単位
+          <td>シグナルの単位です。※ARXML出力には対応していません。
+        <tr>
+          <td>説明
+          <td>シグナルの説明です。※ARXML出力には対応していません。
+        <tr>
+          <td>オフセット
+          <td>シグナルのビット開始位置を設定します。レイアウトは右上のレイアウトテーブルで確認できます。
+        <tr>
+          <td>サイズ
+          <td>シグナルのビットサイズを設定します。レイアウトは右上のレイアウトテーブルで確認できます。
+      </table>
+  </ol>
+</ul>
+
+<li> シグナルの削除</li>
+  <ol>
+    <li>メッセージ設計画面の左側にある各シグナルの[delete]をクリックします。
+  　<li>確認ダイアログで[OK]を選択します
+  </ol>
+</ul>
+
+</div>
+
+<div class="row">
+<h1 id="export" class="text-left"> ARXMLエクスポート </h1>
+<ul>
+<li> Ecuc.arxmlのエクスポート</li>
+  <ol>
+    <li>プロジェクト画面の右下にある[Ecuc.arxml]をクリックするとEcuc.arxmlをエクスポートします。
+  </ol>
+</ul>
+
+<ul>
+<li> SystemDesign.arxmlのエクスポート</li>
+  <ol>
+    <li>プロジェクト画面の右下にある[SystemDesign.arxml]をクリックするとSystemDesign.arxmlをエクスポートします。
+  </ol>
+</ul>
+</div>
+
+
+<div class="row">
+<h1 id="db" class="text-left"> DB管理 </h1>
+<ul>
+<li> 符号DBのエクスポート</li>
+本バージョンでは符号DBに対応していません。
+</ul>
+
+<ul>
+<li> コンフィグDBのエクスポート</li>
+本バージョンではコンフィグDBに対応していません。
+</div>
