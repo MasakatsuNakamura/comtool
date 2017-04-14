@@ -289,7 +289,7 @@ module ArxmlExporter
 
   def create_ComTxIPdu(message)
     # ComTxIPdu コンテナ作成
-    comTxIPdu = EcucContainerValue.new(shortname:'ComTxIpdu_'+message.name, longname:@longname,
+    comTxIPdu = EcucContainerValue.new(shortname:'ComTxIPdu_'+message.name, longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComTxIPdu'),
                             parametervalues:nil, uuid:SecureRandom.uuid.upcase, subcontainers:nil)
 
