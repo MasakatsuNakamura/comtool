@@ -265,7 +265,7 @@
                                     </REFERENCE-VALUES>
                                     <SUB-CONTAINERS>
                                         <ECUC-CONTAINER-VALUE>
-                                            <SHORT-NAME>ComTxIpdu</SHORT-NAME>
+                                            <SHORT-NAME>ComTxIpdu_TxMessage1</SHORT-NAME>
                                             <LONG-NAME>
                                                 <L-4 L="JA"></L-4>
                                             </LONG-NAME>
@@ -317,7 +317,7 @@
                                     </REFERENCE-VALUES>
                                     <SUB-CONTAINERS>
                                         <ECUC-CONTAINER-VALUE>
-                                            <SHORT-NAME>ComTxIpdu</SHORT-NAME>
+                                            <SHORT-NAME>ComTxIpdu_TxMessage2</SHORT-NAME>
                                             <LONG-NAME>
                                                 <L-4 L="JA"></L-4>
                                             </LONG-NAME>
