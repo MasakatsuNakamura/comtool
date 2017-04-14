@@ -7,6 +7,8 @@
 <div class="container">
   <ul class="list-inline pull-right">
     <li>エクスポート：</li>
-    <li><%= link_to "ARXML", project_export_path(project_id: @project.id), :target=>["_blank"] %></li>
+    <li><%= link_to "Ecuc.arxml", project_export_ecuc_path(project_id: @project.id), :target=>["_blank"] %></li>
+    <li>｜</li>
+    <li><%= link_to "SystemDesign.arxml", project_export_systemdesign_path(project_id: @project.id), :target=>["_blank"] %></li>
   </ul>
 </div>

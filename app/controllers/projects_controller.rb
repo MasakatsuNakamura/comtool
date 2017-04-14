@@ -20,6 +20,7 @@ class ProjectsController < ApplicationController
     # }
 
     if @project.save
+      DatabaseManage.create!(backup_file_path: 'CAN/test',backup_date: Date.today, project: @project)
       redirect_to home_index_path
     else
       render :new
@@ -42,6 +43,7 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find_by_id(params[:id])
+    session[:project]  = params[:id]
     if @project == nil
       flash[:danger] = '選択されたプロジェクトが存在しません'
       redirect_to home_index_path

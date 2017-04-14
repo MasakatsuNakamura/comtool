@@ -5,7 +5,7 @@ class ProjectTest < ActiveSupport::TestCase
   def setup
     CommunicationProtocol.create!(name: 'CAN', protocol_number: "1")
     QinesVersion.create!(name: 'V1.0', qines_version_number: "1")
-    @project = Project.new(id:1, name: 'testProject', communication_protocol_id: '1', qines_version_id: '1')
+    @project = Project.new(id:2, name: 'testProject1', communication_protocol_id: '1', qines_version_id: '1')
   end
 
   test "should be valid" do
@@ -39,6 +39,16 @@ class ProjectTest < ActiveSupport::TestCase
       @project.name = name
       assert @project.invalid?, "#{name.inspect} should be invalid"
     end
+  end
+
+  test "name should be unique" do
+    assert @project.valid?
+    duplicate_project = @project.dup
+    @project.save
+    assert_not duplicate_project.valid?
+
+    duplicate_project.name = @project.name.upcase
+    assert_not duplicate_project.valid?
   end
 
 end

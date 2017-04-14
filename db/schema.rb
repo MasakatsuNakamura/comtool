@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403023129) do
+ActiveRecord::Schema.define(version: 20170412051425) do
 
   create_table "com_signals", force: :cascade do |t|
     t.string   "name"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 20170403023129) do
     t.integer  "sign_id"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["message_id", "name"], name: "index_com_signals_on_message_id_and_name", unique: true
     t.index ["message_id"], name: "index_com_signals_on_message_id"
     t.index ["sign_id"], name: "index_com_signals_on_sign_id"
   end
@@ -75,6 +76,7 @@ ActiveRecord::Schema.define(version: 20170403023129) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "bytesize"
+    t.index ["project_id", "name"], name: "index_messages_on_project_id_and_name", unique: true
     t.index ["project_id"], name: "index_messages_on_project_id"
   end
 
@@ -85,6 +87,7 @@ ActiveRecord::Schema.define(version: 20170403023129) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.index ["communication_protocol_id"], name: "index_projects_on_communication_protocol_id"
+    t.index ["name"], name: "index_projects_on_name", unique: true
     t.index ["qines_version_id"], name: "index_projects_on_qines_version_id"
   end
 

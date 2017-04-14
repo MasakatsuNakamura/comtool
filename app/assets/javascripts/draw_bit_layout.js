@@ -50,8 +50,10 @@ function makeBitLayout(){
     var bit_cnt;
     var l = bitlayout
     for (bit_cnt = 0; bit_cnt < bit_size; bit_cnt++) {
-      if (l[byte][bit] < 0 ) { l[byte][bit] = sig_no+1
-      } else {                 l[byte][bit] = const_bit.CONFLICT}
+      if (byte >= 0 && byte < 8) {
+        if (l[byte][bit] < 0 ) { l[byte][bit] = sig_no+1
+        } else {                 l[byte][bit] = const_bit.CONFLICT}
+      }
 
       if (byte_order == "big_endian") {
         if (bit == 0) { byte++; bit=7;}

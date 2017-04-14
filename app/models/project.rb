@@ -7,6 +7,7 @@ class Project < ApplicationRecord
 
   validates :name,
             presence: true,
+            uniqueness: { case_sensitive: false },
             length: { maximum: 50 },
             format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
 
