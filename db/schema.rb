@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412051425) do
+ActiveRecord::Schema.define(version: 20170419070037) do
 
   create_table "com_signals", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                     collation: "NOCASE"
     t.integer  "message_id"
     t.string   "unit"
     t.string   "description"
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 20170412051425) do
   end
 
   create_table "messages", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                    collation: "NOCASE"
     t.integer  "canid"
     t.integer  "txrx"
     t.integer  "baudrate"
@@ -81,7 +81,7 @@ ActiveRecord::Schema.define(version: 20170412051425) do
   end
 
   create_table "projects", force: :cascade do |t|
-    t.string   "name"
+    t.string   "name",                                   collation: "NOCASE"
     t.integer  "communication_protocol_id"
     t.integer  "qines_version_id"
     t.datetime "created_at",                null: false
