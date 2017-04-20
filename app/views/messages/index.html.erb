@@ -26,12 +26,15 @@
 <div class="container" id="export"  style ='margin-bottom: 0px;'>
   <ul class="list-inline pull-right">
     <li>エクスポート：</li>
-    <li><%= link_to 'DCD（未実装）', "#" %></li>
+    <li><%= link_to "DBC",    {controller: 'messages', action: 'export'}, {method: :get, class: "none"} %></li>
   </ul>
 </div>
 <div class="container" id="import" style ='margin-bottom: -30px;'>
-  <ul class="list-inline pull-right">
-    <li>インポート：</li>
-    <li><%= link_to 'DCD（未実装）', "#" %></li>
-  </ul>
+  <%= form_tag({controller: "messages", action: "import", method: "post"}, {multipart: true, name: "import"}) do %>
+    <ul class="list-inline pull-right">
+      <li>インポート：</li>
+      <li><%= file_field_tag :file %></li>
+      <li><a href='#' onclick="document.import.submit();" >DBC</a></li>
+    </ul>
+  <% end %>
 </div>

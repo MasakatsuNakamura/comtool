@@ -41,6 +41,39 @@ class MessagesController < ApplicationController
     end
   end
 
+  def export
+    # TODO DBCエキスポート
+    # DBCファイルエキスポートに書き換えてください
+    # downloadの出力ファイル名を書き換えてください
+    # poroject_idは session[:project]　に保有している
+    dbc = "DBCファイル\r\nエキスポートはまだ未実装です。\r\n"
+    # クライアントへダウンロード
+    send_data(
+      dbc,
+      type: 'application/octet-stream',
+      # 出力ファイル名
+      filename: 'Dbc.txt'
+    )
+  end
+  def import
+    # TODO DBCインポート
+    # poroject_idは session[:project]　に保有している
+    uploadfile = params[:file]
+    if uploadfile
+      content = Hash.new
+      content[:uploadfile] = uploadfile.read
+      content[:filename] = uploadfile.original_filename
+      #TODO DBCインポートに書き換えてくださいs
+      #TODO 下記のライン単位のreadは消してください
+          content[:uploadfile].each_line do |line|
+            puts line
+          end
+    else
+      flash[:danger] = 'ファイルを選択してください'
+    end
+    redirect_to :messages
+  end
+
   def add_signal
     @message = Message.find_by_id(params[:id])
 
