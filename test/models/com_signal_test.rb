@@ -149,4 +149,22 @@ class ComSignalTest < ActiveSupport::TestCase
     @com_signal.save
     assert duplicate_com_signal.valid?
   end
+
+  test "name should be unique from sql" do
+    com_signal = ComSignal.new(
+      name: 'ExampleComSignal',
+      message_id: 1,
+      bit_size: 8,
+      bit_offset: 7
+      )
+    com_signal.save
+
+    before_com_signal_count = ComSignal.all.length
+    assert_raise(ActiveRecord::RecordNotUnique, "Not find exception") do
+      con = ActiveRecord::Base.connection
+      con.execute("INSERT INTO com_signals(name, message_id, created_at, updated_at) VALUES('EXAMPLECOMSIGNAL', 1, 'Fri, 21 Apr 2017 15:40:43 JST +09:00', 'Fri, 21 Apr 2017 15:40:43 JST +09:00')")
+    end
+    after_com_signal_count = ComSignal.all.length
+    assert_equal(before_com_signal_count, after_com_signal_count)
+  end
 end

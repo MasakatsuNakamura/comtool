@@ -168,4 +168,18 @@ class MessageTest < ActiveSupport::TestCase
     @message.save
     assert duplicate_message.valid?
   end
+
+  test "name should be unique from sql" do
+    message = Message.new(name: 'testMessageUnique', project:@project, bytesize:1,canid:1)
+    message.save
+
+    before_message_count = Message.all.length
+    assert_raise(ActiveRecord::RecordNotUnique, "Not find exception") do
+      con = ActiveRecord::Base.connection
+      con.execute("INSERT INTO messages(name, project_id, created_at, updated_at) VALUES('TESTMESSAGEUNIQUE',2 , 'Fri, 21 Apr 2017 15:40:43 JST +09:00', 'Fri, 21 Apr 2017 15:40:43 JST +09:00')")
+    end
+    after_message_count = Message.all.length
+    assert_equal(before_message_count, after_message_count)
+  end
+
 end
