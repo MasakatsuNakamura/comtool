@@ -1,0 +1,25 @@
+---
+ja:
+  enums:
+    project:
+      byte_order:
+        little_endian: リトルエンディアン
+        big_endian: ビッグエンディアン
+    message:
+      data_frame:
+        standard_format: 標準フォーマット
+        extended_format: 拡張フォーマット
+    com_signal:
+      data_type:
+        boolean: BOOL
+        uint8: UINT8
+        uint16: UINT16
+        uint32: UINT32
+        uint64: UINT64
+        sint8: SINT8
+        sint16: SINT16
+        sint32: SINT32
+        sint64: SINT64
+        float32: FLOAT_32
+        float64: FLOAT_64
+        other: その他

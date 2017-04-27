@@ -22,7 +22,7 @@
         <%= f.select :bytesize, 1..8, { :selected => @message.bytesize.to_i }, class: 'form-control' %>
 
         <label>エンディアン（プロジェクト設定）</label>
-        <input value="<%= byte_order_of @message %>" class="form-control" readonly="readonly" type="text" id="message_byte_order"/>
+        <input value="<%= Project.find(@message.project_id).byte_order_i18n %>" class="form-control" readonly="readonly" type="text" id="message_byte_order"/>
 
         <%= f.label :baudrate, 'Baud Rate(未対応)' %>
         <%= f.select :baudrate, {"125kbps"=>0,"250kbps"=>1,"500kbps"=>2,"1Mbps"=>3}, { :selected => @message.baudrate.to_i }, class: 'form-control', disabled:true%>
