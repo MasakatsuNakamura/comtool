@@ -4,7 +4,7 @@ class ComSignal < ApplicationRecord
   belongs_to :message
   belongs_to :sign, optional: true
   enum data_type: %w[
-    boolean uint8 uint16 uint32 uint64 sint8 sing16 sing32
+    boolean uint8 uint16 uint32 uint64 sint8 sint16 sint32
     sint64 float32 float64 other
   ]
 
