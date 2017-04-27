@@ -30,7 +30,7 @@
     <div class="col-md-6">
     <%= render 'bit_layout_view', message: @message %>
     </div>
-    <div>
+    <div class="col-md-12">
       <%= render 'signal_table', message_form: f %>
       <%= link_to "＋", add_signal_path(@message), method: :put, class:"btn btn-success  btn-xs" %>
       <%= link_to '新規シグナル', add_signal_path(@message), method: :put %>
