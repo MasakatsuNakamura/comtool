@@ -14,7 +14,6 @@ function bitLayoutTableValue() {
 function makeBitLayout(){
   var bytesize = $("#message_bytesize").val()
 
-  var byte_order = $("#message_byte_order").val()
   var bitlayout=[
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
@@ -55,11 +54,13 @@ function makeBitLayout(){
         } else {                 l[byte][bit] = const_bit.CONFLICT}
       }
 
-      if (byte_order == "big_endian") {
+      if (from_rails["byte_order"] == "0") {
+        // big endian
         if (bit == 0) { byte++; bit=7;}
         else          {         bit--;}
       }
-      else { // little_endian
+      else {
+        // little_endian
         if (bit == 7) { byte++; bit=0;}
         else          {         bit++;}
       }
