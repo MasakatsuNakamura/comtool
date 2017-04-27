@@ -9,6 +9,9 @@
 <div class="row">
   <%= form_for(@message) do |f| %>
     <div class="col-md-4 col-md-offset-2">
+        <%= f.label :data_frame, 'データフレーム' %>
+        <%= f.select :data_frame, Message.data_frames_i18n.invert,  { :selected => @message.data_frame }, class: 'form-control'%>
+
         <%= f.label :canid, 'ID' %>
         <%= f.text_field :canid, value: "0x#{@message.canid.to_s(16)}", class: 'form-control'%>
 

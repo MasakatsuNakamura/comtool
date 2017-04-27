@@ -37,6 +37,7 @@ class Message < ApplicationRecord
 
   belongs_to :project
   has_many :com_signals, dependent: :destroy
+  enum data_frame: %w[standard_format extended_format]
 
   accepts_nested_attributes_for :com_signals, reject_if: true
   validates_associated :com_signals
