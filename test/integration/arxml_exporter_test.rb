@@ -60,6 +60,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
   test 'Export the minimum ecu configuration of CAN with QINeS Version 1.1 ' do
     # arxml出力用プロジェクトの作成
     @project = Project.create!(name: 'PrjMinimumCanV11', communication_protocol_id: '1', qines_version_id: '1')
+    @project.big_endian!
 
     # メッセージ設定
     @messages = {}
@@ -83,6 +84,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
   test 'Export the multiple messages and multiple signals ecu configuration of CAN with QINeS Version 1.1 ' do
     # arxml出力用プロジェクトの作成
     @project = Project.create!(name: 'PrjMultipleMessageSingalCanV11', communication_protocol_id: '1', qines_version_id: '1')
+    @project.big_endian!
 
     # メッセージ設定
     @messages = {}
@@ -107,6 +109,30 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
     message = @messages[:RxMessage2]
     message.com_signals.build(name: 'RxSignal2', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 1)
     message.com_signals.build(name: 'RxSignal3', message: message, unit: '', description: '', layout: '', bit_offset: 6, bit_size: 63)
+
+    @messages.each {|k,v| assert v.save, "messages[#{k}] is invalid" }
+
+    compare_arxml
+  end
+
+  test 'Export the little_endian ecu configuration of CAN with QINeS Version 1.1 ' do
+    # arxml出力用プロジェクトの作成
+    @project = Project.create!(name: 'LittleEndianCanV11', communication_protocol_id: '1', qines_version_id: '1', )
+    @project.little_endian!
+
+    # メッセージ設定
+    @messages = {}
+    @messages[:Rx_can0] = Message.create!(name: 'Rx_can0', canid:768, txrx: TXRX_RX, baudrate:'2', project:@project, bytesize:1)
+    @messages[:Tx_can0] = Message.create!(name: 'Tx_can0', canid:256, txrx: TXRX_TX, baudrate:'2', project:@project, bytesize:1)
+
+    @messages.each {|k,v| assert v.valid?, "messages[#{k}] is invalid" }
+
+    # シグナル設定
+    message = @messages[:Rx_can0]
+    message.com_signals.build(name: 'RxSig_can0_0', message: message, unit: '', description: 'テスト用入力値', layout: '', bit_offset: 0, bit_size: 3)
+
+    message = @messages[:Tx_can0]
+    message.com_signals.build(name: 'TxSig_can0_0', message: message, unit: '', description: 'テスト用出力値', layout: '', bit_offset: 0, bit_size: 2)
 
     @messages.each {|k,v| assert v.save, "messages[#{k}] is invalid" }
 

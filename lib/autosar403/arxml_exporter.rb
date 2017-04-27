@@ -262,7 +262,7 @@ module ArxmlExporter
                         value:count_ComHandleId.to_s)
           parametervalues[:ComSignalEndianness] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness'),
-                        value:'BIG_ENDIAN')
+                        value: (@project.little_endian? ? 'LITTLE_ENDIAN' : 'BIG_ENDIAN'))
 #          parametervalues[:ComSignalInitValue] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
 #                        definitionref:DefinitionRef.new(dest:'ECUC-STRING-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue'),
 #                        value:0.to_s)

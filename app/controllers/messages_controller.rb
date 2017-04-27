@@ -156,8 +156,10 @@ class MessagesController < ApplicationController
   def unused_bit(msg, pid)
     unused_bit = Array.new(msg.bytesize*8, true)
 
+    project = Project.find_by_id(msg.project_id)
+
     msg.com_signals.each do |c|
-      if msg.byte_order == :little_endian then
+      if project.little_endian? then
         c.bit_size.times do |bit|
           offset = bit + c.bit_offset
           unused_bit[offset] = false if offset < msg.bytesize*8
@@ -180,4 +182,5 @@ class MessagesController < ApplicationController
 
     unused_bit.index(true)
   end
+
 end

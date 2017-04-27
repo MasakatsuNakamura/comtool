@@ -9,9 +9,7 @@ class ProjectsController < ApplicationController
 
   # POST /projects
   def create
-    @project = Project.new(name: params[:project][:name])
-    @project.communication_protocol = CommunicationProtocol.find_by_name(params[:communication_protocol][:name])
-    @project.qines_version = QinesVersion.find_by_name(params[:qines_version_number][:name])
+    @project = Project.new(project_params)
 
     # TODO:disabled タスク #654
     # params[:project][:duplicate_source].to_i.times { |cnt|
@@ -32,6 +30,7 @@ class ProjectsController < ApplicationController
     @project.name =  params[:project][:name]
     @project.communication_protocol = CommunicationProtocol.find_by_name(params[:qines_version_number][:name])
     @project.qines_version = QinesVersion.find_by_name(params[:communication_protocol][:name])
+    @project.byte_order = params[:project][:byte_order].to_i
 
     if @project.update(sample_params)
       redirect_to @project
@@ -64,4 +63,11 @@ class ProjectsController < ApplicationController
     description: "project:#{project.name},name:#{name}")
   end
 
+  def project_params
+    params[:project][:communication_protocol_id] = CommunicationProtocol.find_by_name(params[:communication_protocol][:name]).id
+    params[:project][:qines_version_id]          = QinesVersion.find_by_name(params[:qines_version_number][:name]).id
+    params[:project][:byte_order]                = params[:project][:byte_order].to_i
+
+    params.require(:project).permit(:name, :communication_protocol_id, :qines_version_id, :byte_order)
+  end
 end

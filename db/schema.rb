@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170419070037) do
+ActiveRecord::Schema.define(version: 20170424062214) do
 
   create_table "com_signals", force: :cascade do |t|
     t.string   "name",                     collation: "NOCASE"
@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 20170419070037) do
     t.integer  "qines_version_id"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.integer  "byte_order"
     t.index ["communication_protocol_id"], name: "index_projects_on_communication_protocol_id"
     t.index ["name"], name: "index_projects_on_name", unique: true
     t.index ["qines_version_id"], name: "index_projects_on_qines_version_id"

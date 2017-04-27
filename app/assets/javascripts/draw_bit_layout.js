@@ -14,7 +14,7 @@ function bitLayoutTableValue() {
 function makeBitLayout(){
   var bytesize = $("#message_bytesize").val()
 
-  var byte_order = "big_endian"
+  var byte_order = $("#message_byte_order").val()
   var bitlayout=[
     [0,0,0,0,0,0,0,0],
     [0,0,0,0,0,0,0,0],
