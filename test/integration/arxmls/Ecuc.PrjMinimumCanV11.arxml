@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
-<AUTOSAR xmlns="http://autosar.org/schema/r4.0">
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-0-3.xsd">
     <AR-PACKAGES>
         <AR-PACKAGE>
             <SHORT-NAME>Ecuc</SHORT-NAME>
@@ -246,8 +246,12 @@
                                             <VALUE>BIG_ENDIAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
+                                            <VALUE>0</VALUE>
+                                        </ECUC-TEXTUAL-PARAM-VALUE>
+                                        <ECUC-TEXTUAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType</DEFINITION-REF>
-                                            <VALUE>UINT8</VALUE>
+                                            <VALUE>BOOLEAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
                                     <REFERENCE-VALUES>
@@ -281,8 +285,12 @@
                                             <VALUE>BIG_ENDIAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
+                                            <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
+                                            <VALUE>0</VALUE>
+                                        </ECUC-TEXTUAL-PARAM-VALUE>
+                                        <ECUC-TEXTUAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType</DEFINITION-REF>
-                                            <VALUE>UINT8</VALUE>
+                                            <VALUE>BOOLEAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
                                     <REFERENCE-VALUES>

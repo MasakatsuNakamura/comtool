@@ -45,13 +45,13 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
   def compare_arxml
     msg = @messages.dup
     # Ecuc
-    actual = export_ecuc_comstack(project:  @project, messages: msg.values)
+    actual = export_ecuc_comstack_r403(project:  @project, messages: msg.values)
     expected_file = "test/integration/arxmls/Ecuc.#{@project.name}.arxml"
 
     compare_arxml_sub(actual, expected_file)
 
     # SystemDesign
-    actual = export_signals(project:  @project, messages: msg.values)
+    actual = export_signals_r403(project:  @project, messages: msg.values)
     expected_file = "test/integration/arxmls/SystemDesign.#{@project.name}.arxml"
 
     compare_arxml_sub(actual, expected_file)
@@ -71,10 +71,10 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
     # シグナル設定
     message = @messages[:Rx_can0]
-    message.com_signals.build(name: 'RxSig_can0_0', message: message, unit: '', description: 'テスト用入力値', layout: '', bit_offset: 7, bit_size: 3)
+    message.com_signals.build(name: 'RxSig_can0_0', message: message, unit: '', description: 'テスト用入力値', layout: '', bit_offset: 7, bit_size: 3, initial_value: '0', data_type: 0)
 
     message = @messages[:Tx_can0]
-    message.com_signals.build(name: 'TxSig_can0_0', message: message, unit: '', description: 'テスト用出力値', layout: '', bit_offset: 7, bit_size: 2)
+    message.com_signals.build(name: 'TxSig_can0_0', message: message, unit: '', description: 'テスト用出力値', layout: '', bit_offset: 7, bit_size: 2, initial_value: '0', data_type: 0)
 
     @messages.each {|k,v| assert v.save, "messages[#{k}] is invalid" }
 
@@ -97,18 +97,18 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
     # シグナル設定
     message = @messages[:TxMessage1]
-    message.com_signals.build(name: 'TxSignal1', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 8)
+    message.com_signals.build(name: 'TxSignal1', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 8, initial_value: '0', data_type: 1)
 
     message = @messages[:TxMessage2]
-    message.com_signals.build(name: 'TxSignal2', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 32)
-    message.com_signals.build(name: 'TxSignal3', message: message, unit: '', description: '', layout: '', bit_offset: 39, bit_size: 32)
+    message.com_signals.build(name: 'TxSignal2', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 32, initial_value: '0', data_type: 3)
+    message.com_signals.build(name: 'TxSignal3', message: message, unit: '', description: '', layout: '', bit_offset: 39, bit_size: 32, initial_value: '0', data_type: 3)
 
     message = @messages[:RxMessage1]
-    message.com_signals.build(name: 'RxSignal1', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 8)
+    message.com_signals.build(name: 'RxSignal1', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 8, initial_value: '0', data_type: 1)
 
     message = @messages[:RxMessage2]
-    message.com_signals.build(name: 'RxSignal2', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 1)
-    message.com_signals.build(name: 'RxSignal3', message: message, unit: '', description: '', layout: '', bit_offset: 6, bit_size: 63)
+    message.com_signals.build(name: 'RxSignal2', message: message, unit: '', description: '', layout: '', bit_offset: 7, bit_size: 1, initial_value: '0', data_type: 0)
+    message.com_signals.build(name: 'RxSignal3', message: message, unit: '', description: '', layout: '', bit_offset: 6, bit_size: 63, initial_value: '0', data_type: 4)
 
     @messages.each {|k,v| assert v.save, "messages[#{k}] is invalid" }
 
@@ -129,10 +129,10 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
     # シグナル設定
     message = @messages[:Rx_can0]
-    message.com_signals.build(name: 'RxSig_can0_0', message: message, unit: '', description: 'テスト用入力値', layout: '', bit_offset: 0, bit_size: 3)
+    message.com_signals.build(name: 'RxSig_can0_0', message: message, unit: '', description: 'テスト用入力値', layout: '', bit_offset: 0, bit_size: 3, initial_value: '0', data_type: 0)
 
     message = @messages[:Tx_can0]
-    message.com_signals.build(name: 'TxSig_can0_0', message: message, unit: '', description: 'テスト用出力値', layout: '', bit_offset: 0, bit_size: 2)
+    message.com_signals.build(name: 'TxSig_can0_0', message: message, unit: '', description: 'テスト用出力値', layout: '', bit_offset: 0, bit_size: 2, initial_value: '0', data_type: 0)
 
     @messages.each {|k,v| assert v.save, "messages[#{k}] is invalid" }
 

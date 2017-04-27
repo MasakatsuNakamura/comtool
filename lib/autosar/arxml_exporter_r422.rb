@@ -66,7 +66,7 @@ module ArxmlExporter
                       value:message.bytesize.to_s)
         parametervalues[:CanIfTxPduCanIdType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduCanIdType'),
-                      value:'STANDARD_CAN') # TODO 設定可能にしたい
+                      value:message.data_frame.upcase)
         parametervalues[:CanIfTxPduPnFilterPdu] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduPnFilterPdu'),
                       value:0.to_s)
@@ -105,7 +105,7 @@ module ArxmlExporter
                       value:message.bytesize.to_s)
         parametervalues[:CanIfRxPduCanIdType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduCanIdType'),
-                      value:'STANDARD_CAN') # TODO 設定可能にしたい
+                      value:message.data_frame.upcase)
         parametervalues[:CanIfRxPduId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduId'),
                       value:count_CanIfRxPduCfg.to_s)
@@ -263,12 +263,12 @@ module ArxmlExporter
           parametervalues[:ComSignalEndianness] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness'),
                         value: (@project.little_endian? ? 'LITTLE_ENDIAN' : 'BIG_ENDIAN'))
-#          parametervalues[:ComSignalInitValue] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-#                        definitionref:DefinitionRef.new(dest:'ECUC-STRING-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue'),
-#                        value:0.to_s)
+          parametervalues[:ComSignalInitValue] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
+                        definitionref:DefinitionRef.new(dest:'ECUC-STRING-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue'),
+                        value:signal.initial_value)
           parametervalues[:ComSignalType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType'),
-                        value:'UINT8')
+                        value:signal.data_type.upcase)
           # REFERENCE-VALUES 作成
           referencevalues = Hash.new([])
           referencevalues[:ComPduIdRef] = ReferenceValue.new(

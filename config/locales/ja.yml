@@ -7,8 +7,8 @@ ja:
         big_endian: ビッグエンディアン
     message:
       data_frame:
-        standard_format: 標準フォーマット
-        extended_format: 拡張フォーマット
+        standard_can: 標準フォーマット
+        extended_can: 拡張フォーマット
     com_signal:
       data_type:
         boolean: BOOL
