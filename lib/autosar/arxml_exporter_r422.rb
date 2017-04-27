@@ -1,14 +1,14 @@
 require 'securerandom'
 
 module ArxmlExporter
-  def export_ecuc_comstack(project:nil, messages:nil)
+  def export_ecuc_comstack_r422(project:nil, messages:nil)
     @project = project
     @messages = messages
     @longname = LongName.new(l4:'JA')
 
     autosar = Autosar.new()
     autosar.arpackages = Hash.new([])
-    autosar.arpackages[:Ecuc] = ArPackage.new(shortname:'Ecuc', longname:@longname)
+    autosar.arpackages[:Ecuc] = ArPackage.new(shortname:'Ecuc', longname:@longname, uuid:SecureRandom.uuid)
     autosar.arpackages[:Ecuc] .elements = Hash.new([])
     autosar.arpackages[:Ecuc] .elements[:CanIf] = create_CanIf()
     autosar.arpackages[:Ecuc] .elements[:Com] = create_Com()
@@ -16,33 +16,33 @@ module ArxmlExporter
     autosar.arpackages[:Ecuc] .elements[:PduR] = create_PduR()
 
 #    pp autosar
-    return autosar.to_arxml()
+    return autosar.to_arxml(version:'r422')
   end
 
-  def export_signals(project:nil, messages:nil)
+  def export_signals_r422(project:nil, messages:nil)
     @project = project
     @messages = messages
 
     autosar = Autosar.new()
     autosar.arpackages = Hash.new([])
-    autosar.arpackages[:SystemDesign] = ArPackage.new(shortname:'SystemDesign')
+    autosar.arpackages[:SystemDesign] = ArPackage.new(shortname:'SystemDesign', uuid:SecureRandom.uuid)
     autosar.arpackages[:SystemDesign].elements = Hash.new([])
     create_SystemSignal(autosar.arpackages[:SystemDesign].elements)
     autosar.arpackages[:SystemDesign].elements[:ISignalIPdu] = create_ISignalIPdu()
 
-    return autosar.to_arxml(kind:'SystemDesign')
+    return autosar.to_arxml(version:'r422', kind:'SystemDesign')
   end
 
   private
   def create_CanIf
     # CanIf モジュール作成
     canIf = EcucModuleConfigurationValue.new(shortname:"CanIf_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/QINeS/CanIf'), uuid:SecureRandom.uuid.upcase,
+                                                                    definitionref:DefinitionRef.new(value:'/QINeS/CanIf'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
     # CanIfInitCfg コンテナ作成
     canIfInitCfg = EcucContainerValue.new(shortname:"CanIfInitCfg_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/CanIf/CanIfInitCfg'),
-                            uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     count_CanIfTxPduCfg = 0
     count_CanIfRxPduCfg = 0
@@ -90,7 +90,7 @@ module ArxmlExporter
 
         # CanIfTxPduCfg コンテナ作成
         canIfInitCfg.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
+                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
         count_CanIfTxPduCfg += 1
       elsif message.txrx == 1 then  # 受信
         shortname = "CanIfRxPduCfg_" + message.name
@@ -132,7 +132,7 @@ module ArxmlExporter
 
         # CanIfRxPduCfg コンテナ作成
         canIfInitCfg.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
+                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
         count_CanIfRxPduCfg += 1
       end
     }
@@ -144,7 +144,7 @@ module ArxmlExporter
   def create_Com
     # Com モジュール作成
     com = EcucModuleConfigurationValue.new(shortname:"Com_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/eSOL/EcucDefs/Com'), uuid:SecureRandom.uuid.upcase,
+                                                                    definitionref:DefinitionRef.new(value:'/eSOL/EcucDefs/Com'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
     # ComConfig コンテナ作成
     # PARAMETER-VALUES 作成
@@ -155,7 +155,7 @@ module ArxmlExporter
     comConfig = EcucContainerValue.new(shortname:"ComConfig_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig'),
                             parametervalues:parametervalues,
-                            uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     # ComIPdu コンテナ作成
     count_ComIPduHandleId = 0
@@ -196,7 +196,7 @@ module ArxmlExporter
 
         # ComIPdu コンテナ作成
         txComIPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref, parametervalues:parametervalues,
-                                                            referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                                                            referencevalues:referencevalues, uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
         txComIPdu.subcontainers[:ComTxIPdu] = create_ComTxIPdu(message)
 
@@ -238,7 +238,7 @@ module ArxmlExporter
 
         # ComIPdu コンテナ作成
         comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
+                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
         count_ComIPduHandleId += 1
       end
     }
@@ -277,7 +277,7 @@ module ArxmlExporter
 
           # ComSignal コンテナ作成
           comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                  parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
+                                                                                  parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
 
           count_ComHandleId += 1
       }
@@ -291,7 +291,7 @@ module ArxmlExporter
     # ComTxIPdu コンテナ作成
     comTxIPdu = EcucContainerValue.new(shortname:'ComTxIPdu_'+message.name, longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComTxIPdu'),
-                            parametervalues:nil, uuid:SecureRandom.uuid.upcase, subcontainers:nil)
+                            parametervalues:nil, uuid:SecureRandom.uuid, subcontainers:nil)
 
     return comTxIPdu
   end
@@ -299,12 +299,12 @@ module ArxmlExporter
   def create_Ecuc
     # Ecuc モジュール作成
     ecuc = EcucModuleConfigurationValue.new(shortname:"Ecuc_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/EcuC'), uuid:SecureRandom.uuid.upcase,
+                                                                    definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/EcuC'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
     # EcucPduCollection コンテナ作成
     ecucPduCollection = EcucContainerValue.new(shortname:"EcucPduCollection_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/AUTOSAR/EcucDefs/EcuC/EcucPduCollection'),
-                            parametervalues:Hash.new([]), uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                            parametervalues:Hash.new([]), uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
     # PARAMETER-VALUES 作成
     ecucPduCollection.parametervalues[:PduIdTypeEnum] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/AUTOSAR/EcucDefs/EcuC/EcucPduCollection/PduIdTypeEnum'),
@@ -324,7 +324,7 @@ module ArxmlExporter
 
         # Pdu コンテナ作成
         ecucPduCollection.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                        parametervalues:parametervalues, uuid:SecureRandom.uuid.upcase)
+                                                                                        parametervalues:parametervalues, uuid:SecureRandom.uuid)
     }
 
     ecuc.containers[:EcucPduCollection] = ecucPduCollection
@@ -334,7 +334,7 @@ module ArxmlExporter
   def create_PduR
     # PduR モジュール作成
     pduR = EcucModuleConfigurationValue.new(shortname:"PduR_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/PduR'), uuid:SecureRandom.uuid.upcase,
+                                                                    definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/PduR'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
     # PduRRoutingTables コンテナ作成
     # PARAMETER-VALUES 作成
@@ -346,13 +346,13 @@ module ArxmlExporter
     pduRRoutingTables = EcucContainerValue.new(shortname:"PduRRoutingTables_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables'),
                             parametervalues: parametervalues,
-                            uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     # PduRRoutingTable コンテナ作成
     pduRRoutingTable = EcucContainerValue.new(shortname:"PduRRoutingTable_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
                                                                   value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable'),
-                            uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
     pduRRoutingTables.subcontainers[:PduRRoutingTable] = pduRRoutingTable
 
     @messages.each_with_index { |message, index|
@@ -361,7 +361,7 @@ module ArxmlExporter
       definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
                                               value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath')
       pduRRoutingPath = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                        uuid:SecureRandom.uuid.upcase, subcontainers:Hash.new([]))
+                                                                                        uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
       pduRRoutingTable.subcontainers[":#{shortname}"] = pduRRoutingPath
 
       # PduRDestPdu コンテナ作成
@@ -382,7 +382,7 @@ module ArxmlExporter
                     valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',
                                 value:"/Ecuc/Ecuc_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
       pduRDestPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                parametervalues: parametervalues, referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
+                                                parametervalues: parametervalues, referencevalues:referencevalues, uuid:SecureRandom.uuid)
       pduRRoutingPath.subcontainers[":#{shortname}"] = pduRDestPdu
 
       # PduRSrcPdu コンテナ作成
@@ -403,7 +403,7 @@ module ArxmlExporter
                     valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',
                                 value:"/Ecuc/Ecuc_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
       pduRSrcPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                parametervalues: parametervalues, referencevalues:referencevalues, uuid:SecureRandom.uuid.upcase)
+                                                parametervalues: parametervalues, referencevalues:referencevalues, uuid:SecureRandom.uuid)
       pduRRoutingPath.subcontainers[":#{shortname}"] = pduRSrcPdu
     }
 
@@ -416,11 +416,11 @@ module ArxmlExporter
       message.com_signals.each { |signal|
         # SystemSignal 作成
         shortname_systemSignal = "SystemSignal_#{signal.name}"
-        systemSignal = SystemSignal.new(shortname:shortname_systemSignal, uuid:SecureRandom.uuid.upcase)
+        systemSignal = SystemSignal.new(shortname:shortname_systemSignal, uuid:SecureRandom.uuid)
         # ISignal 作成
         shortname_isignal = "ISignal_#{signal.name}"
         systemsignalref =  SystemSignalRef.new(dest:'SYSTEM-SIGNAL', value:"/SystemDesign/#{shortname_systemSignal}")
-        iSignal = ISignal.new(shortname:shortname_isignal, systemsignalref:systemsignalref, uuid:SecureRandom.uuid.upcase)
+        iSignal = ISignal.new(shortname:shortname_isignal, systemsignalref:systemsignalref, uuid:SecureRandom.uuid)
 
         elements[":#{shortname_systemSignal}"] = systemSignal
         elements[":#{shortname_isignal}"] = iSignal
@@ -430,13 +430,13 @@ module ArxmlExporter
 
   def create_ISignalIPdu
     # ISignalIPdu 作成
-    iSignalIPdu = ISignalIPdu.new(shortname:"ISignalIPdu_#{@project.name}", uuid:SecureRandom.uuid.upcase, isignaltoipdumappings:Hash.new([]))
+    iSignalIPdu = ISignalIPdu.new(shortname:"ISignalIPdu_#{@project.name}", uuid:SecureRandom.uuid, isignaltoipdumappings:Hash.new([]))
 
     @messages.each { |message|
       message.com_signals.each { |signal|
         shortname = "ISignalToIPduMapping_#{signal.name}_#{message.name}"
         iSignalIPdu.isignaltoipdumappings[":#{shortname}"] = ISignalToIPduMapping.new(shortname:shortname,
-                                  isignalref:ISignalRef.new(dest:'I-SIGNAL', value:"/SystemDesign/ISignal_#{signal.name}"), uuid:SecureRandom.uuid.upcase)
+                                  isignalref:ISignalRef.new(dest:'I-SIGNAL', value:"/SystemDesign/ISignal_#{signal.name}"), uuid:SecureRandom.uuid)
       }
     }
     return iSignalIPdu

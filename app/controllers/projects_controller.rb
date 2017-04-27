@@ -51,7 +51,7 @@ class ProjectsController < ApplicationController
 
   private
   def find_master
-    @qines_version_number = QinesVersion.find_by_name('V1.0')
+    @qines_version_number = QinesVersion.find_by_name('V2.0')
     @communication_protocol = CommunicationProtocol.find_by_name('CAN')
   end
 

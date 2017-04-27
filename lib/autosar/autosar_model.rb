@@ -10,22 +10,23 @@ class Autosar < AutosarBase
   attr_accessor :arpackages
 
   include ArxmlWriter
-  def to_arxml(kind:'Ecuc')
+  def to_arxml(version:'r422', kind:'Ecuc')
+    xsd = version == 'r422' ? 'autosar_4-2-2.xsd' : 'autosar_4-0-3.xsd'
+    create_arxml(xmlns:'http://autosar.org/schema/r4.0', xsi:'http://www.w3.org/2001/XMLSchema-instance',
+                                        schemaLocation:"http://autosar.org/schema/r4.0 #{xsd}")
     if kind == 'Ecuc' then
-      create_arxml()
       @arpackages.each_value { |arpackage|
-        create_arpackage(shortname:arpackage.shortname, longname:arpackage.longname)
+        create_arpackage(shortname:arpackage.shortname, longname:arpackage.longname, uuid:arpackage.uuid)
         arpackage.elements.each_value { |element|
           root_container = create_ecuc_module_configuration_values(element.shortname, element.longname, element.definitionref, element.uuid)
           create_container(root_container, element.containers)
         }
       }
     elsif kind == 'SystemDesign' then
-      create_arxml(xsi:'http://www.w3.org/2001/XMLSchema-instance', schemaLocation:'http://autosar.org/schema/r4.0 autosar_4-0-3.xsd')
       @arpackages.each_value { |arpackage|
         attributes = Hash.new([])
         attributes[:S] = ''
-        create_arpackage(shortname:arpackage.shortname, attributes:attributes)
+        create_arpackage(shortname:arpackage.shortname, uuid:arpackage.uuid, attributes:attributes)
         arpackage.elements.each_value { |element|
           if element.instance_of?(SystemSignal) then
             create_systemsignal(shortname:element.shortname, uuid:element.uuid)
@@ -53,7 +54,7 @@ class Autosar < AutosarBase
 end
 
 class ArPackage < AutosarBase
-  attr_accessor :shortname, :longname, :elements
+  attr_accessor :shortname, :longname, :uuid, :elements
 end
 
 class EcucModuleConfigurationValue < AutosarBase

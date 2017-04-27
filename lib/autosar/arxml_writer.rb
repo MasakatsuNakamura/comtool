@@ -4,19 +4,16 @@ module ArxmlWriter
   include REXML
   extend self
 
-  def create_arxml(xmlns:'http://autosar.org/schema/r4.0', xsi:'', schemaLocation:'')
+  def create_arxml(xmlns:'', xsi:'', schemaLocation:'')
     @@document = Document.new
     @@document.context[:attribute_quote] = :quote
     @@document << XMLDecl.new('1.0', 'UTF-8', 'yes')
-    autosar = @@document.add_element('AUTOSAR', {'xmlns' => xmlns})
-    if xsi != '' && schemaLocation != '' then
-      autosar.add_attributes({'xmlns:xsi' => xsi, 'xsi:schemaLocation' => schemaLocation})
-    end
+    autosar = @@document.add_element('AUTOSAR', {'xmlns' => xmlns, 'xmlns:xsi' => xsi, 'xsi:schemaLocation' => schemaLocation})
     @@arpackages = autosar.add_element('AR-PACKAGES')
   end
 
-  def create_arpackage(shortname:'', longname:'', attributes:nil)
-    arpackage = @@arpackages.add_element('AR-PACKAGE')
+  def create_arpackage(shortname:'', longname:'', uuid:'', attributes:nil)
+    arpackage = @@arpackages.add_element('AR-PACKAGE', {'UUID' => uuid})
     if attributes != nil then
       attributes.each_pair { |key, val|
         arpackage.add_attributes({"#{key}" => "#{val}"})

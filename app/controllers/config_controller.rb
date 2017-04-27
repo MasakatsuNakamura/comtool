@@ -2,31 +2,37 @@ class ConfigController < ApplicationController
   include ArxmlExporter
 
   def export_ecuc
-    # ComStack の Ecuc.arxml を作成
-    arxml = export_ecuc_comstack(
-                    project:Project.find_by_id(session[:project]),
-                    messages: Message.getOwnMessages(session[:project]))
+    project = Project.find_by_id(session[:project])
+    messages = Message.getOwnMessages(session[:project])
+    version = QinesVersion.find_by_id(project[:qines_version_id]).qines_version_number
 
-    # クライアントへダウンロード
+    if version == "1" then
+      arxml = export_ecuc_comstack_r403(project:project, messages:messages)
+    elsif version == "2" then
+      arxml = export_ecuc_comstack_r422(project:project, messages:messages)
+    end
+
     send_data(
       arxml,
       type: 'application/octet-stream',
-      # 出力ファイル名
       filename: 'Ecuc.arxml'
     )
   end
 
   def export_systemdesign
-    # SIGNAL関連 の SystemDesign.arxml を作成
-    arxml = export_signals(
-                    project:Project.find_by_id(session[:project]),
-                    messages: Message.getOwnMessages(session[:project]))
+    project = Project.find_by_id(session[:project])
+    messages = Message.getOwnMessages(session[:project])
+    version = QinesVersion.find_by_id(project[:qines_version_id]).qines_version_number
 
-    # クライアントへダウンロード
+    if version == "1" then
+      arxml = export_signals_r403(project:project, messages:messages)
+    elsif version == "2" then
+      arxml = export_signals_r422(project:project, messages:messages)
+    end
+
     send_data(
       arxml,
       type: 'application/octet-stream',
-      # 出力ファイル名
       filename: 'SystemDesign.arxml'
     )
   end
