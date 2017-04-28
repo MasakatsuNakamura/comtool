@@ -42,32 +42,64 @@ class MessagesController < ApplicationController
   end
 
   def export
-    # TODO DBCエキスポート
-    # DBCファイルエキスポートに書き換えてください
-    # downloadの出力ファイル名を書き換えてください
-    # poroject_idは session[:project]　に保有している
-    dbc = "DBCファイル\r\nエキスポートはまだ未実装です。\r\n"
+    prj = Project.find_by_id(session[:project])
+    dbc = MessagesHelper::DbcFileGenerator.generate(prj)
     # クライアントへダウンロード
     send_data(
       dbc,
       type: 'application/octet-stream',
       # 出力ファイル名
-      filename: 'Dbc.txt'
+      filename: prj.name + '.dbc'
     )
   end
+
   def import
-    # TODO DBCインポート
-    # poroject_idは session[:project]　に保有している
     uploadfile = params[:file]
     if uploadfile
-      content = Hash.new
-      content[:uploadfile] = uploadfile.read
-      content[:filename] = uploadfile.original_filename
-      #TODO DBCインポートに書き換えてくださいs
-      #TODO 下記のライン単位のreadは消してください
-          content[:uploadfile].each_line do |line|
-            puts line
+      prj = Project.find_by_id(session[:project])
+      messages = MessagesHelper::DbcFileParser.parse(prj, uploadfile.read)
+
+      begin
+        Message.transaction do
+          messages.each do |m|
+            exist_message = Message.find_by_name(m.name)
+            if exist_message.nil?
+              raise unless m.save
+            else
+              update_params = m.attributes.select { |k,v| k == :canid || k == :bytesize}
+              raise unless exist_message.update_attributes update_params
+
+              m.com_signals.each do |s|
+                exist_com_signal = ComSignal.find_by_name(s.name)
+                if exist_com_signal.nil?
+                  raise unless s.save
+                else
+                  update_params = s.attributes.select { |k,v|
+                    k == :description || k == :offset || k == :bit_size || k == :data_type || k == :unit }
+                  raise unless exist_com_signal.update_attributes update_params
+                end
+              end
+            end
           end
+        end
+        flash_msg = []
+        messages.each do |m|
+          signames = ""
+          m.com_signals.each {|s| signames += s.name + ', ' }
+          flash_msg << m.name + ' ( ' + signames + " ) "
+        end
+        flash[:success] = 'インポートしました'
+        flash[:info]    = flash_msg.join("<br>").html_safe
+      rescue => e
+        error_msg = []
+        error_msg << 'インポートに失敗しました。エラー内容を確認して下さい。'
+        messages.each do |m|
+          m.errors.full_messages.each {|msg|
+            error_msg << m.name + '=>' + msg + ','
+          }
+        end
+        flash[:danger] = error_msg.join("<br>").html_safe
+      end
     else
       flash[:danger] = 'ファイルを選択してください'
     end

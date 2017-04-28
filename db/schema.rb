@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170425061822) do
+ActiveRecord::Schema.define(version: 20170428083332) do
 
   create_table "com_signals", force: :cascade do |t|
-    t.string   "name",                       collation: "NOCASE"
+    t.string   "name",                                   collation: "NOCASE"
     t.integer  "message_id"
     t.string   "unit"
     t.string   "description"
@@ -21,10 +21,10 @@ ActiveRecord::Schema.define(version: 20170425061822) do
     t.integer  "bit_offset"
     t.integer  "bit_size"
     t.integer  "sign_id"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.string   "initial_value"
-    t.integer  "data_type"
+    t.integer  "data_type",     default: 0, null: false
     t.index ["message_id", "name"], name: "index_com_signals_on_message_id_and_name", unique: true
     t.index ["message_id"], name: "index_com_signals_on_message_id"
     t.index ["sign_id"], name: "index_com_signals_on_sign_id"
