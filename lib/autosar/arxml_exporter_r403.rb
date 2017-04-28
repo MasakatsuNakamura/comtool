@@ -1,6 +1,6 @@
 require 'securerandom'
 
-module ArxmlExporter
+module ArxmlExporter_r403
   def export_ecuc_comstack_r403(project:nil, messages:nil)
     @project = project
     @messages = messages
@@ -10,10 +10,10 @@ module ArxmlExporter
     autosar.arpackages = Hash.new([])
     autosar.arpackages[:Ecuc] = ArPackage.new(shortname:'Ecuc', longname:@longname, uuid:SecureRandom.uuid)
     autosar.arpackages[:Ecuc] .elements = Hash.new([])
-    autosar.arpackages[:Ecuc] .elements[:CanIf] = create_CanIf()
-    autosar.arpackages[:Ecuc] .elements[:Com] = create_Com()
-    autosar.arpackages[:Ecuc] .elements[:Ecuc] = create_Ecuc()
-    autosar.arpackages[:Ecuc] .elements[:PduR] = create_PduR()
+    autosar.arpackages[:Ecuc] .elements[:CanIf] = create_CanIf_r403()
+    autosar.arpackages[:Ecuc] .elements[:Com] = create_Com_r403()
+    autosar.arpackages[:Ecuc] .elements[:Ecuc] = create_Ecuc_r403()
+    autosar.arpackages[:Ecuc] .elements[:PduR] = create_PduR_r403()
 
 #    pp autosar
     return autosar.to_arxml(version:'r403')
@@ -27,14 +27,14 @@ module ArxmlExporter
     autosar.arpackages = Hash.new([])
     autosar.arpackages[:SystemDesign] = ArPackage.new(shortname:'SystemDesign', uuid:SecureRandom.uuid)
     autosar.arpackages[:SystemDesign].elements = Hash.new([])
-    create_SystemSignal(autosar.arpackages[:SystemDesign].elements)
-    autosar.arpackages[:SystemDesign].elements[:ISignalIPdu] = create_ISignalIPdu()
+    create_SystemSignal_r403(autosar.arpackages[:SystemDesign].elements)
+    autosar.arpackages[:SystemDesign].elements[:ISignalIPdu] = create_ISignalIPdu_r403()
 
     return autosar.to_arxml(version:'r403', kind:'SystemDesign')
   end
 
   private
-  def create_CanIf
+  def create_CanIf_r403
     # CanIf モジュール作成
     canIf = EcucModuleConfigurationValue.new(shortname:"CanIf_#{@project.name}", longname:@longname,
                                                                     definitionref:DefinitionRef.new(value:'/QINeS/CanIf'), uuid:SecureRandom.uuid,
@@ -141,7 +141,7 @@ module ArxmlExporter
     return canIf
   end
 
-  def create_Com
+  def create_Com_r403
     # Com モジュール作成
     com = EcucModuleConfigurationValue.new(shortname:"Com_#{@project.name}", longname:@longname,
                                                                     definitionref:DefinitionRef.new(value:'/eSOL/EcucDefs/Com'), uuid:SecureRandom.uuid,
@@ -198,7 +198,7 @@ module ArxmlExporter
         txComIPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref, parametervalues:parametervalues,
                                                             referencevalues:referencevalues, uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
-        txComIPdu.subcontainers[:ComTxIPdu] = create_ComTxIPdu(message)
+        txComIPdu.subcontainers[:ComTxIPdu] = create_ComTxIPdu_r403(message)
 
         comConfig.subcontainers[":#{shortname}"] = txComIPdu
         count_ComIPduHandleId += 1
@@ -271,7 +271,7 @@ module ArxmlExporter
                         value:signal.data_type.upcase)
           # REFERENCE-VALUES 作成
           referencevalues = Hash.new([])
-          referencevalues[:ComPduIdRef] = ReferenceValue.new(
+          referencevalues[:ComSystemTemplateSystemSignalRef] = ReferenceValue.new(
                         definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
                         valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"))
 
@@ -287,7 +287,7 @@ module ArxmlExporter
     return com
   end
 
-  def create_ComTxIPdu(message)
+  def create_ComTxIPdu_r403(message)
     # ComTxIPdu コンテナ作成
     comTxIPdu = EcucContainerValue.new(shortname:'ComTxIPdu_'+message.name, longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComTxIPdu'),
@@ -296,7 +296,7 @@ module ArxmlExporter
     return comTxIPdu
   end
 
-  def create_Ecuc
+  def create_Ecuc_r403
     # Ecuc モジュール作成
     ecuc = EcucModuleConfigurationValue.new(shortname:"Ecuc_#{@project.name}", longname:@longname,
                                                                     definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/EcuC'), uuid:SecureRandom.uuid,
@@ -331,7 +331,7 @@ module ArxmlExporter
     return ecuc
   end
 
-  def create_PduR
+  def create_PduR_r403
     # PduR モジュール作成
     pduR = EcucModuleConfigurationValue.new(shortname:"PduR_#{@project.name}", longname:@longname,
                                                                     definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/PduR'), uuid:SecureRandom.uuid,
@@ -411,7 +411,7 @@ module ArxmlExporter
     return pduR
   end
 
-  def create_SystemSignal(elements)
+  def create_SystemSignal_r403(elements)
     @messages.each { |message|
       message.com_signals.each { |signal|
         # SystemSignal 作成
@@ -428,7 +428,7 @@ module ArxmlExporter
     }
   end
 
-  def create_ISignalIPdu
+  def create_ISignalIPdu_r403
     # ISignalIPdu 作成
     iSignalIPdu = ISignalIPdu.new(shortname:"ISignalIPdu_#{@project.name}", uuid:SecureRandom.uuid, isignaltoipdumappings:Hash.new([]))
 

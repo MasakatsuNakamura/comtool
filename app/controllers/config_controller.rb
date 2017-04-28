@@ -1,5 +1,6 @@
 class ConfigController < ApplicationController
-  include ArxmlExporter
+  include ArxmlExporter_r403
+  include ArxmlExporter_r422
 
   def export_ecuc
     project = Project.find_by_id(session[:project])

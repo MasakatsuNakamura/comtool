@@ -3,7 +3,7 @@ require 'diff/lcs'
 require 'pp'
 
 class ArxmlExporterTest < ActionDispatch::IntegrationTest
-  include ArxmlExporter
+  include ArxmlExporter_r403
 
   TXRX_TX = '0'
   TXRX_RX = '1'
