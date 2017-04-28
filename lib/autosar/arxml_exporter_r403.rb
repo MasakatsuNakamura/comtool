@@ -271,7 +271,7 @@ module ArxmlExporter_r403
                         value:signal.data_type.upcase)
           # REFERENCE-VALUES 作成
           referencevalues = Hash.new([])
-          referencevalues[:ComPduIdRef] = ReferenceValue.new(
+          referencevalues[:ComSystemTemplateSystemSignalRef] = ReferenceValue.new(
                         definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
                         valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"))
 
