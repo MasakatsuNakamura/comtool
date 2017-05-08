@@ -147,14 +147,8 @@ module ArxmlExporter_r422
                                                                     definitionref:DefinitionRef.new(value:'/eSOL/EcucDefs/Com'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
     # ComConfig コンテナ作成
-    # PARAMETER-VALUES 作成
-    parametervalues = {}
-    parametervalues[:ComConfigurationId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
-                  definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComConfigurationId"),
-                  value:"0")
     comConfig = EcucContainerValue.new(shortname:"ComConfig_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig'),
-                            parametervalues:parametervalues,
                             uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     # ComIPdu コンテナ作成
@@ -260,6 +254,9 @@ module ArxmlExporter_r422
           parametervalues[:ComHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComHandleId'),
                         value:count_ComHandleId.to_s)
+          parametervalues[:ComInitialValueOnly] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
+                        definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComInitialValueOnly'),
+                        value:0.to_s)
           parametervalues[:ComSignalEndianness] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness'),
                         value: (@project.little_endian? ? 'LITTLE_ENDIAN' : 'BIG_ENDIAN'))
@@ -398,7 +395,7 @@ module ArxmlExporter_r422
                     value:index.to_s)
       # REFERENCE-VALUES 作成
       referencevalues = Hash.new([])
-      referencevalues[:PduRDestPduRef] = ReferenceValue.new(
+      referencevalues[:PduRSrcPduRef] = ReferenceValue.new(
                     definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF',
                             value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSrcPduRef'),
                     valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',

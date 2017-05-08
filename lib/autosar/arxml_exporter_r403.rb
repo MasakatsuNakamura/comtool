@@ -397,7 +397,7 @@ module ArxmlExporter_r403
                     value:index.to_s)
       # REFERENCE-VALUES 作成
       referencevalues = Hash.new([])
-      referencevalues[:PduRDestPduRef] = ReferenceValue.new(
+      referencevalues[:PduRSrcPduRef] = ReferenceValue.new(
                     definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF',
                             value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSrcPduRef'),
                     valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',
