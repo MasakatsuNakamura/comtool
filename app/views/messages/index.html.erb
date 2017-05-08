@@ -16,6 +16,24 @@ $(function(){
 </script>
 <% provide(:title, "Message List") %>
 <h1>メッセージ設計</h1>
+
+<% unless flash[:import_info].nil? %>
+<div class='row'>
+<% flash[:import_info].each do |message_type, messages | %>
+  <div id="success_error_explanation">
+    <div class="alert alert-<%=message_type%>">
+      <%= messages.shift %>
+    </div>
+    <ul>
+    <% messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+</div>
+<% end %>
+
 <div style="text-align: right;">
   <%= link_to "＋", new_message_path, class:"btn btn-success  btn-xs" %>
   <%= link_to '新規メッセージ', new_message_path %>

@@ -55,54 +55,16 @@ class MessagesController < ApplicationController
 
   def import
     uploadfile = params[:file]
+    project_id = session[:project]
     if uploadfile
-      prj = Project.find_by_id(session[:project])
+      prj = Project.find_by_id(project_id)
       messages = MessagesHelper::DbcFileParser.parse(prj, uploadfile.read)
 
-      begin
-        Message.transaction do
-          messages.each do |m|
-            exist_message = Message.find_by_name(m.name)
-            if exist_message.nil?
-              raise unless m.save
-            else
-              update_params = m.attributes.select { |k,v| k == :canid || k == :bytesize}
-              raise unless exist_message.update_attributes update_params
-
-              m.com_signals.each do |s|
-                exist_com_signal = ComSignal.find_by_name(s.name)
-                if exist_com_signal.nil?
-                  raise unless s.save
-                else
-                  update_params = s.attributes.select { |k,v|
-                    k == :description || k == :offset || k == :bit_size || k == :data_type || k == :unit }
-                  raise unless exist_com_signal.update_attributes update_params
-                end
-              end
-            end
-          end
-        end
-        flash_msg = []
-        messages.each do |m|
-          signames = ""
-          m.com_signals.each {|s| signames += s.name + ', ' }
-          flash_msg << m.name + ' ( ' + signames + " ) "
-        end
-        flash[:success] = 'インポートしました'
-        flash[:info]    = flash_msg.join("<br>").html_safe
-      rescue => e
-        error_msg = []
-        error_msg << 'インポートに失敗しました。エラー内容を確認して下さい。'
-        messages.each do |m|
-          m.errors.full_messages.each {|msg|
-            error_msg << m.name + '=>' + msg + ','
-          }
-        end
-        flash[:danger] = error_msg.join("<br>").html_safe
-      end
+      flash[:import_info] = view_context.import_messages(project_id, messages)
     else
       flash[:danger] = 'ファイルを選択してください'
     end
+
     redirect_to :messages
   end
 

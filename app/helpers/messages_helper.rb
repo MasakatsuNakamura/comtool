@@ -139,40 +139,44 @@ module MessagesHelper
 
       messages = {}
 
-      until s.eos?
-        if s.scan(/#{grammar[:message]}\R*/)
-          args = import_captures(grammar[:message], s)
-          args.merge! ({project_id:project.id})
-          m = Message.new(args)
+      begin
+        until s.eos?
+          if s.scan(/#{grammar[:message]}\R*/)
+            args = import_captures(grammar[:message], s)
+            args.merge! ({project_id:project.id})
+            m = Message.new(args)
 
-          while s.scan(/#{grammar[:signal]}\R*/)
-            cap  = matched_captures(grammar[:signal], s)
-            args = import_captures(grammar[:signal], s)
-            args.merge!(
-              { data_type: import_data_type(cap),
-                message: m,
-              }
-            )
-            m.com_signals.build args
+            while s.scan(/#{grammar[:signal]}\R*/)
+              cap  = matched_captures(grammar[:signal], s)
+              args = import_captures(grammar[:signal], s)
+              args.merge!(
+                { data_type: import_data_type(cap),
+                  message: m,
+                }
+              )
+              m.com_signals.build args
+            end
+
+            messages[m.canid.to_s] = m
+
+          elsif s.scan(/#{grammar[:comment_signal]}\R*/)
+            cap = matched_captures(grammar[:comment_signal], s)
+
+            messages[cap[:_canid]].com_signals.each do |ss|
+              ss.description = cap[:description] if ss.name == cap[:_sig_name]
+            end
+
+          elsif s.scan(/.+\R*/)
+            #p "skiped. #{s.matched}"
+          else
+            raise "scanner error"
           end
-
-          messages[m.canid.to_s] = m
-
-        elsif s.scan(/#{grammar[:comment_signal]}\R*/)
-          cap = matched_captures(grammar[:comment_signal], s)
-
-          messages[cap[:_canid]].com_signals.each do |ss|
-            ss.description = cap[:description] if ss.name == cap[:_sig_name]
-          end
-
-        elsif s.scan(/.+\R*/)
-          #p "skiped. #{s.matched}"
-        else
-          raise "scanner error"
         end
-      end
 
-      messages.values
+        messages.values
+      end
+    rescue => e
+      nil
     end
   end
 
@@ -318,5 +322,55 @@ BS_:
         cm:      cm_format(project)
       ).gsub(/\\n/,"\n")
     end
+  end
+
+  def import_messages(project_id, messages)
+    import_info = {}
+    begin
+      Message.transaction do
+        messages.each do |m|
+          exist_message = Message.find_by(name:m.name, project_id:project_id)
+          if exist_message.nil?
+            raise unless m.save
+          else
+            message_id = exist_message.id
+
+            update_params = m.attributes.select { |k,v| k == :canid || k == :bytesize}
+            raise unless exist_message.update_attributes update_params
+
+            m.com_signals.each do |s|
+              exist_com_signal = ComSignal.find_by(name:s.name, message_id:message_id)
+              if exist_com_signal.nil?
+                raise unless s.save
+              else
+                update_params = s.attributes.select { |k,v|
+                  k == :description || k == :offset || k == :bit_size || k == :data_type || k == :unit }
+                raise unless exist_com_signal.update_attributes update_params
+              end
+            end
+          end
+        end
+      end
+
+      import_info[:info] = ['メッセージをインポートしました。']
+      messages.each do |m|
+        signames = ""
+        m.com_signals.each {|s| signames += s.name + ', ' }
+        import_info[:info] << m.name + ' ( ' + signames + " ) "
+      end
+    rescue => e
+      if messages.nil? then
+        import_info[:danger] = ['サポートされないフォーマットです']
+      else
+        import_info[:danger] = ['インポートに失敗しました。']
+        messages.each do |m|
+          m.errors.full_messages.each {|msg|
+            import_info[:danger] << m.name + ' => ' + msg
+          }
+        end
+      end
+    end
+
+    import_info
   end
 end
