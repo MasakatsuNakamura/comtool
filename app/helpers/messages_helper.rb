@@ -109,11 +109,11 @@ module MessagesHelper
       /#{fmt}/.match(scanner.matched).named_captures.symbolize_keys
     end
 
-    def self.inport_captures(fmt, scanner)
+    def self.import_captures(fmt, scanner)
       matched_captures(fmt, scanner).delete_if {|k,v| k =~ /\A_/}
     end
 
-    def self.inport_data_type(cap)
+    def self.import_data_type(cap)
       signed = cap[:_value_type] == '-'
 
       case cap[:bit_size].to_i
@@ -141,15 +141,15 @@ module MessagesHelper
 
       until s.eos?
         if s.scan(/#{grammar[:message]}\R*/)
-          args = inport_captures(grammar[:message], s)
+          args = import_captures(grammar[:message], s)
           args.merge! ({project_id:project.id})
           m = Message.new(args)
 
           while s.scan(/#{grammar[:signal]}\R*/)
             cap  = matched_captures(grammar[:signal], s)
-            args = inport_captures(grammar[:signal], s)
+            args = import_captures(grammar[:signal], s)
             args.merge!(
-              { data_type: inport_data_type(cap),
+              { data_type: import_data_type(cap),
                 message: m,
               }
             )

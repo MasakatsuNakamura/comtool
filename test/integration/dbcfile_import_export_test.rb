@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'diff/lcs'
 
-class DbcfileInportExportTest < ActionDispatch::IntegrationTest
+class DbcfileimportExportTest < ActionDispatch::IntegrationTest
   TXRX_TX = '0'
   TXRX_RX = '1'
 
