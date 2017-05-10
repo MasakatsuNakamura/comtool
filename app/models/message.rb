@@ -1,31 +1,26 @@
 class MessageValidator < ActiveModel::Validator
   def validate(record)
     msg = record
+    project = Project.find_by_id(msg.project_id)
 
     message_layout = Array.new(msg.bytesize*8, false)
     msg.com_signals.each do |c|
-      if msg.byte_order == :little_endian then
-        c.bit_size.times do |bit|
-          if message_layout[bit + c.bit_offset] then
-            msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
-            break
-          end
-          message_layout[bit + c.bit_offset] = true
+      offset = c.bit_offset
+      bit_size = c.bit_size
+      while bit_size > 0
+        if message_layout[offset].nil? then
+          msg.errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
+          break
+        elsif message_layout[offset] then
+          msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
+          break
         end
-      else
-        offset = c.bit_offset
-        bit_size = c.bit_size
-        while bit_size > 0
-          if message_layout[offset].nil? then
-            msg.errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
-            break
-          elsif message_layout[offset] then
-            msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
-            break
-          end
-          message_layout[offset] = true
+        message_layout[offset] = true
 
-          bit_size -= 1
+        bit_size -= 1
+        if project.little_endian? then
+          offset += 1
+        else
           if offset % 8 == 0 then
             offset += 15
           else
@@ -42,6 +37,7 @@ class Message < ApplicationRecord
 
   belongs_to :project
   has_many :com_signals, dependent: :destroy
+  enum data_frame: %w[standard_can extended_can]
 
   accepts_nested_attributes_for :com_signals, reject_if: true
   validates_associated :com_signals
@@ -100,10 +96,4 @@ class Message < ApplicationRecord
 
     m
   end
-
-  def byte_order
-    # TODO: little_endian
-    :big_endian
-  end
-
 end

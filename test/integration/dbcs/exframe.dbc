@@ -1,0 +1,36 @@
+VERSION ""
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_: Exframe_Test
+
+BO_ 0 ExampleMessage0: 1 Vector_XXX
+ SG_ Signal_bool : 7|1@1+ (1,0) [0|1] "deg/K" Vector_XXX
+
+BO_ 536870911 ExampleMessage536870911: 4 Vector_XXX
+ SG_ Signal_uint_32 : 7|32@1+ (1,0) [0|4294967295] "-" Vector_XXX
+
+CM_ SG_ 0 Signal_bool "Description Test 0";
+CM_ SG_ 536870911 Signal_uint_32 "Description Test 536870911";

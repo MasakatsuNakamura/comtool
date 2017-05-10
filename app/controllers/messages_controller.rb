@@ -41,6 +41,33 @@ class MessagesController < ApplicationController
     end
   end
 
+  def export
+    prj = Project.find_by_id(session[:project])
+    dbc = MessagesHelper::DbcFileGenerator.generate(prj)
+    # クライアントへダウンロード
+    send_data(
+      dbc,
+      type: 'application/octet-stream',
+      # 出力ファイル名
+      filename: prj.name + '.dbc'
+    )
+  end
+
+  def import
+    uploadfile = params[:file]
+    project_id = session[:project]
+    if uploadfile
+      prj = Project.find_by_id(project_id)
+      messages = MessagesHelper::DbcFileParser.parse(prj, uploadfile.read)
+
+      flash[:import_info] = view_context.import_messages(project_id, messages)
+    else
+      flash[:danger] = 'ファイルを選択してください'
+    end
+
+    redirect_to :messages
+  end
+
   def add_signal
     @message = Message.find_by_id(params[:id])
 
@@ -84,8 +111,8 @@ class MessagesController < ApplicationController
     rescue
     end
     params.require(:message).permit(
-      :canid,:txrx,:bytesize,:baudrate,
-      com_signals_attributes: [:id, :name, :unit, :description, :bit_offset, :bit_size, :sign_id])
+      :data_frame, :canid, :txrx, :bytesize, :baudrate,
+      com_signals_attributes: [:data_type, :initial_value, :id, :name, :unit, :description, :bit_offset, :bit_size, :sign_id])
   end
 
   def correct_message
@@ -123,8 +150,10 @@ class MessagesController < ApplicationController
   def unused_bit(msg, pid)
     unused_bit = Array.new(msg.bytesize*8, true)
 
+    project = Project.find_by_id(msg.project_id)
+
     msg.com_signals.each do |c|
-      if msg.byte_order == :little_endian then
+      if project.little_endian? then
         c.bit_size.times do |bit|
           offset = bit + c.bit_offset
           unused_bit[offset] = false if offset < msg.bytesize*8
@@ -147,4 +176,5 @@ class MessagesController < ApplicationController
 
     unused_bit.index(true)
   end
+
 end

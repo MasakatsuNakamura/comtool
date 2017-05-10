@@ -40,20 +40,29 @@ class MessageTest < ActiveSupport::TestCase
     c2.bit_offset = 0
     assert msg.invalid?
 
-    # TODO:little_endian
-=begin
-    @message.byte_order = :little_endian
-    @com_signal.bit_size = 7
-    @com_signal.bit_offset = 1
-    assert msg.valid?
-=end
+    msg.bytesize = 2
+    c1.bit_size   = 2
+    c1.bit_offset = 7
+    c2.bit_size   = 1
+    c2.bit_offset = 8
 
-=begin
-    @message.byte_order = :big_endian
-=end
-    c2.bit_size = 7
-    c2.bit_offset = 7
+    @project.big_endian!
     assert msg.valid?
+
+    @project.little_endian!
+    assert msg.invalid?
+
+    c1.bit_size   = 1
+    c1.bit_offset = 7
+    c2.bit_size   = 2
+    c2.bit_offset = 8
+
+    @project.big_endian!
+    assert msg.invalid?
+
+    @project.little_endian!
+    assert msg.valid?
+
   end
 
   test "name validation should accept valid name" do
@@ -88,42 +97,26 @@ class MessageTest < ActiveSupport::TestCase
     assert @message.valid?
     assert @com_signal.valid?
 
+    # Big endian
+    @project.big_endian!
+
     @message.bytesize = 1
 
     @com_signal.bit_size = 1
     @com_signal.bit_offset = 0
     assert @message.valid?
 
-    @com_signal.bit_size = 9
+    @com_signal.bit_size = 8
+    @com_signal.bit_offset = 7
+    assert @message.valid?
+
+    @com_signal.bit_size = 2
     @com_signal.bit_offset = 0
     assert @message.invalid?
 
     @com_signal.bit_size = 1
     @com_signal.bit_offset = 8
     assert @message.invalid?
-
-    @com_signal.bit_size = 1
-    @com_signal.bit_offset = 9
-    assert @message.invalid?
-
-    # TODO:little_endian
-=begin
-    @message.byte_order = :little_endian
-    @com_signal.bit_size = 8
-    @com_signal.bit_offset = 0
-    assert @com_signal.valid?
-=end
-
-# TODO:little_endian
-=begin
-    @message.byte_order = :big_endian
-=end
-
-    @message.bytesize = 1
-
-    @com_signal.bit_size = 8
-    @com_signal.bit_offset = 7
-    assert @message.valid?
 
     @com_signal.bit_size = 9
     @com_signal.bit_offset = 7
@@ -152,6 +145,51 @@ class MessageTest < ActiveSupport::TestCase
     @com_signal.bit_size = 12
     @com_signal.bit_offset = 13
     assert @message.valid?
+
+    # little endian
+    @project.little_endian!
+
+    @message.bytesize = 1
+
+    @com_signal.bit_size = 1
+    @com_signal.bit_offset = 7
+    assert @message.valid?
+
+    @com_signal.bit_size = 8
+    @com_signal.bit_offset = 0
+    assert @message.valid?
+
+    @com_signal.bit_size = 2
+    @com_signal.bit_offset = 7
+    assert @message.invalid?
+
+    @com_signal.bit_size = 1
+    @com_signal.bit_offset = 8
+    assert @message.invalid?
+
+    @com_signal.bit_size = 9
+    @com_signal.bit_offset = 0
+    assert @message.invalid?
+
+    @message.bytesize = 2
+
+    @com_signal.bit_size = 16
+    @com_signal.bit_offset = 0
+    assert @message.valid?
+
+    @com_signal.bit_size = 17
+    @com_signal.bit_offset = 0
+    assert @message.invalid?
+
+    @message.bytesize = 8
+
+    @com_signal.bit_size = 64
+    @com_signal.bit_offset = 0
+    assert @message.valid?
+
+    @com_signal.bit_size = 65
+    @com_signal.bit_offset = 0
+    assert @message.invalid?
   end
 
   test "name should be unique in project" do
@@ -168,4 +206,18 @@ class MessageTest < ActiveSupport::TestCase
     @message.save
     assert duplicate_message.valid?
   end
+
+  test "name should be unique from sql" do
+    message = Message.new(name: 'testMessageUnique', project:@project, bytesize:1,canid:1)
+    message.save
+
+    before_message_count = Message.all.length
+    assert_raise(ActiveRecord::RecordNotUnique, "Not find exception") do
+      con = ActiveRecord::Base.connection
+      con.execute("INSERT INTO messages(name, project_id, created_at, updated_at) VALUES('TESTMESSAGEUNIQUE',2 , 'Fri, 21 Apr 2017 15:40:43 JST +09:00', 'Fri, 21 Apr 2017 15:40:43 JST +09:00')")
+    end
+    after_message_count = Message.all.length
+    assert_equal(before_message_count, after_message_count)
+  end
+
 end

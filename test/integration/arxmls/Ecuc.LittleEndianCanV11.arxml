@@ -8,14 +8,14 @@
             </LONG-NAME>
             <ELEMENTS>
                 <ECUC-MODULE-CONFIGURATION-VALUES>
-                    <SHORT-NAME>CanIf_PrjMinimumCanV11</SHORT-NAME>
+                    <SHORT-NAME>CanIf_LittleEndianCanV11</SHORT-NAME>
                     <LONG-NAME>
                         <L-4 L="JA"></L-4>
                     </LONG-NAME>
                     <DEFINITION-REF>/QINeS/CanIf</DEFINITION-REF>
                     <CONTAINERS>
                         <ECUC-CONTAINER-VALUE>
-                            <SHORT-NAME>CanIfInitCfg_PrjMinimumCanV11</SHORT-NAME>
+                            <SHORT-NAME>CanIfInitCfg_LittleEndianCanV11</SHORT-NAME>
                             <LONG-NAME>
                                 <L-4 L="JA"></L-4>
                             </LONG-NAME>
@@ -60,7 +60,7 @@
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Rx_can0</VALUE-REF>
+                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Rx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
@@ -107,7 +107,7 @@
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Tx_can0</VALUE-REF>
+                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Tx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
@@ -116,14 +116,14 @@
                     </CONTAINERS>
                 </ECUC-MODULE-CONFIGURATION-VALUES>
                 <ECUC-MODULE-CONFIGURATION-VALUES>
-                    <SHORT-NAME>Com_PrjMinimumCanV11</SHORT-NAME>
+                    <SHORT-NAME>Com_LittleEndianCanV11</SHORT-NAME>
                     <LONG-NAME>
                         <L-4 L="JA"></L-4>
                     </LONG-NAME>
                     <DEFINITION-REF>/eSOL/EcucDefs/Com</DEFINITION-REF>
                     <CONTAINERS>
                         <ECUC-CONTAINER-VALUE>
-                            <SHORT-NAME>ComConfig_PrjMinimumCanV11</SHORT-NAME>
+                            <SHORT-NAME>ComConfig_LittleEndianCanV11</SHORT-NAME>
                             <LONG-NAME>
                                 <L-4 L="JA"></L-4>
                             </LONG-NAME>
@@ -166,11 +166,11 @@
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Com_PrjMinimumCanV11/ComConfig_PrjMinimumCanV11/ComSignal_RxSig_can0_0</VALUE-REF>
+                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Com_LittleEndianCanV11/ComConfig_LittleEndianCanV11/ComSignal_RxSig_can0_0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Rx_can0</VALUE-REF>
+                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Rx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
@@ -205,11 +205,11 @@
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Com_PrjMinimumCanV11/ComConfig_PrjMinimumCanV11/ComSignal_TxSig_can0_0</VALUE-REF>
+                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Com_LittleEndianCanV11/ComConfig_LittleEndianCanV11/ComSignal_TxSig_can0_0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Tx_can0</VALUE-REF>
+                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Tx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
                                     <SUB-CONTAINERS>
@@ -231,7 +231,7 @@
                                     <PARAMETER-VALUES>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitPosition</DEFINITION-REF>
-                                            <VALUE>7</VALUE>
+                                            <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitSize</DEFINITION-REF>
@@ -243,7 +243,7 @@
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness</DEFINITION-REF>
-                                            <VALUE>BIG_ENDIAN</VALUE>
+                                            <VALUE>LITTLE_ENDIAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
@@ -257,7 +257,7 @@
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMinimumCanV11/ISignalToIPduMapping_RxSig_can0_0_Rx_can0</VALUE-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_LittleEndianCanV11/ISignalToIPduMapping_RxSig_can0_0_Rx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
@@ -270,7 +270,7 @@
                                     <PARAMETER-VALUES>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitPosition</DEFINITION-REF>
-                                            <VALUE>7</VALUE>
+                                            <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitSize</DEFINITION-REF>
@@ -282,7 +282,7 @@
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness</DEFINITION-REF>
-                                            <VALUE>BIG_ENDIAN</VALUE>
+                                            <VALUE>LITTLE_ENDIAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
                                             <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
@@ -296,7 +296,7 @@
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
                                             <DEFINITION-REF DEST="ECUC-FOREIGN-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef</DEFINITION-REF>
-                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_PrjMinimumCanV11/ISignalToIPduMapping_TxSig_can0_0_Tx_can0</VALUE-REF>
+                                            <VALUE-REF DEST="I-SIGNAL-TO-I-PDU-MAPPING">/SystemDesign/ISignalIPdu_LittleEndianCanV11/ISignalToIPduMapping_TxSig_can0_0_Tx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
                                 </ECUC-CONTAINER-VALUE>
@@ -305,14 +305,14 @@
                     </CONTAINERS>
                 </ECUC-MODULE-CONFIGURATION-VALUES>
                 <ECUC-MODULE-CONFIGURATION-VALUES>
-                    <SHORT-NAME>Ecuc_PrjMinimumCanV11</SHORT-NAME>
+                    <SHORT-NAME>Ecuc_LittleEndianCanV11</SHORT-NAME>
                     <LONG-NAME>
                         <L-4 L="JA"></L-4>
                     </LONG-NAME>
                     <DEFINITION-REF>/AUTOSAR/EcucDefs/EcuC</DEFINITION-REF>
                     <CONTAINERS>
                         <ECUC-CONTAINER-VALUE>
-                            <SHORT-NAME>EcucPduCollection_PrjMinimumCanV11</SHORT-NAME>
+                            <SHORT-NAME>EcucPduCollection_LittleEndianCanV11</SHORT-NAME>
                             <LONG-NAME>
                                 <L-4 L="JA"></L-4>
                             </LONG-NAME>
@@ -359,14 +359,14 @@
                     </CONTAINERS>
                 </ECUC-MODULE-CONFIGURATION-VALUES>
                 <ECUC-MODULE-CONFIGURATION-VALUES>
-                    <SHORT-NAME>PduR_PrjMinimumCanV11</SHORT-NAME>
+                    <SHORT-NAME>PduR_LittleEndianCanV11</SHORT-NAME>
                     <LONG-NAME>
                         <L-4 L="JA"></L-4>
                     </LONG-NAME>
                     <DEFINITION-REF>/AUTOSAR/EcucDefs/PduR</DEFINITION-REF>
                     <CONTAINERS>
                         <ECUC-CONTAINER-VALUE>
-                            <SHORT-NAME>PduRRoutingTables_PrjMinimumCanV11</SHORT-NAME>
+                            <SHORT-NAME>PduRRoutingTables_LittleEndianCanV11</SHORT-NAME>
                             <LONG-NAME>
                                 <L-4 L="JA"></L-4>
                             </LONG-NAME>
@@ -379,7 +379,7 @@
                             </PARAMETER-VALUES>
                             <SUB-CONTAINERS>
                                 <ECUC-CONTAINER-VALUE>
-                                    <SHORT-NAME>PduRRoutingTable_PrjMinimumCanV11</SHORT-NAME>
+                                    <SHORT-NAME>PduRRoutingTable_LittleEndianCanV11</SHORT-NAME>
                                     <LONG-NAME>
                                         <L-4 L="JA"></L-4>
                                     </LONG-NAME>
@@ -407,7 +407,7 @@
                                                     <REFERENCE-VALUES>
                                                         <ECUC-REFERENCE-VALUE>
                                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduRef</DEFINITION-REF>
-                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Rx_can0</VALUE-REF>
+                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Rx_can0</VALUE-REF>
                                                         </ECUC-REFERENCE-VALUE>
                                                     </REFERENCE-VALUES>
                                                 </ECUC-CONTAINER-VALUE>
@@ -426,7 +426,7 @@
                                                     <REFERENCE-VALUES>
                                                         <ECUC-REFERENCE-VALUE>
                                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSrcPduRef</DEFINITION-REF>
-                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Rx_can0</VALUE-REF>
+                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Rx_can0</VALUE-REF>
                                                         </ECUC-REFERENCE-VALUE>
                                                     </REFERENCE-VALUES>
                                                 </ECUC-CONTAINER-VALUE>
@@ -454,7 +454,7 @@
                                                     <REFERENCE-VALUES>
                                                         <ECUC-REFERENCE-VALUE>
                                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduRef</DEFINITION-REF>
-                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Tx_can0</VALUE-REF>
+                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Tx_can0</VALUE-REF>
                                                         </ECUC-REFERENCE-VALUE>
                                                     </REFERENCE-VALUES>
                                                 </ECUC-CONTAINER-VALUE>
@@ -473,7 +473,7 @@
                                                     <REFERENCE-VALUES>
                                                         <ECUC-REFERENCE-VALUE>
                                                             <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSrcPduRef</DEFINITION-REF>
-                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_PrjMinimumCanV11/EcucPduCollection_PrjMinimumCanV11/Pdu_Tx_can0</VALUE-REF>
+                                                            <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV11/EcucPduCollection_LittleEndianCanV11/Pdu_Tx_can0</VALUE-REF>
                                                         </ECUC-REFERENCE-VALUE>
                                                     </REFERENCE-VALUES>
                                                 </ECUC-CONTAINER-VALUE>

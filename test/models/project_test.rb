@@ -51,4 +51,17 @@ class ProjectTest < ActiveSupport::TestCase
     assert_not duplicate_project.valid?
   end
 
+  test "name should be unique from sql" do
+    project = Project.new(id:2, name: 'testProjectUnique', communication_protocol_id: '1', qines_version_id: '1')
+    project.save
+    before_project_count = Project.all.length
+    assert_raise(ActiveRecord::RecordNotUnique, "Not find exception") do
+      con = ActiveRecord::Base.connection
+      con.execute("INSERT INTO projects(name, communication_protocol_id, qines_version_id, created_at, updated_at) VALUES('TESTProjectUnique', '1', '1', 'Fri, 21 Apr 2017 15:40:43 JST +09:00', 'Fri, 21 Apr 2017 15:40:43 JST +09:00')")
+    end
+    after_project_count = Project.all.length
+    assert_equal(before_project_count, after_project_count)
+  end
+
+
 end

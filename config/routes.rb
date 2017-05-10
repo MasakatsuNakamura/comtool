@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   get 'database_manages/config_binexport'
   get 'database_manages/restore'
 
-  get 'messages/new'
-
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root 'static_pages#welcome'
   match 'welcome', to: 'static_pages#welcome', via: 'get'
@@ -21,6 +19,9 @@ Rails.application.routes.draw do
   resources :home,     only: [:index]
   resources :projects, only: [:index, :show, :new, :edit, :create, :update]
   resources :messages, only: [:index, :new, :edit, :create, :update, :destroy]
+  get 'messages/new'
+  get 'messages/export'
+  post 'messages/import'
   match 'messages/:id/add_signal(.:format)', to: 'messages#add_signal', via: 'put',    as: 'add_signal'
   match 'messages/:id/del_signal(.:format)', to: 'messages#del_signal', via: 'delete', as: 'del_signal'
   resources :projects, shallow: true do

@@ -22,4 +22,4 @@
 /comtool/
 /.project
 /gitlab_config.bat
-/Gemfile.lock
+#/Gemfile.lock

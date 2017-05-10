@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-2-2.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE S="">
+            <SHORT-NAME>SystemDesign</SHORT-NAME>
+            <ELEMENTS>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_TxSignal1</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_TxSignal1</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_TxSignal1</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_TxSignal2</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_TxSignal2</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_TxSignal2</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_TxSignal3</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_TxSignal3</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_TxSignal3</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_RxSignal1</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_RxSignal1</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_RxSignal1</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_RxSignal2</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_RxSignal2</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_RxSignal2</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_RxSignal3</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_RxSignal3</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_RxSignal3</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <I-SIGNAL-I-PDU>
+                    <SHORT-NAME>ISignalIPdu_PrjMultipleMessageSingalCanV20</SHORT-NAME>
+                    <I-SIGNAL-TO-I-PDU-MAPPINGS>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_TxSignal1_TxMessage1</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_TxSignal1</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_TxSignal2_TxMessage2</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_TxSignal2</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_TxSignal3_TxMessage2</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_TxSignal3</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_RxSignal1_RxMessage1</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_RxSignal1</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_RxSignal2_RxMessage2</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_RxSignal2</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_RxSignal3_RxMessage2</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_RxSignal3</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                    </I-SIGNAL-TO-I-PDU-MAPPINGS>
+                </I-SIGNAL-I-PDU>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

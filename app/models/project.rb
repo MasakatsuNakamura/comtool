@@ -1,6 +1,7 @@
 class Project < ApplicationRecord
   belongs_to :communication_protocol
   belongs_to :qines_version
+  enum byte_order: %w[big_endian little_endian]
 
   # TODO:disabled タスク #654
   attr_accessor :duplicate_source

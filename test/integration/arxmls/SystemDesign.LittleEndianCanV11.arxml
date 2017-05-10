@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes'?>
+<AUTOSAR xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://autosar.org/schema/r4.0 autosar_4-0-3.xsd">
+    <AR-PACKAGES>
+        <AR-PACKAGE S="">
+            <SHORT-NAME>SystemDesign</SHORT-NAME>
+            <ELEMENTS>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_RxSig_can0_0</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_RxSig_can0_0</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_RxSig_can0_0</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <SYSTEM-SIGNAL>
+                    <SHORT-NAME>SystemSignal_TxSig_can0_0</SHORT-NAME>
+                </SYSTEM-SIGNAL>
+                <I-SIGNAL>
+                    <SHORT-NAME>ISignal_TxSig_can0_0</SHORT-NAME>
+                    <SYSTEM-SIGNAL-REF DEST="SYSTEM-SIGNAL">/SystemDesign/SystemSignal_TxSig_can0_0</SYSTEM-SIGNAL-REF>
+                </I-SIGNAL>
+                <I-SIGNAL-I-PDU>
+                    <SHORT-NAME>ISignalIPdu_LittleEndianCanV11</SHORT-NAME>
+                    <I-SIGNAL-TO-I-PDU-MAPPINGS>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_RxSig_can0_0_Rx_can0</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_RxSig_can0_0</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                        <I-SIGNAL-TO-I-PDU-MAPPING>
+                            <SHORT-NAME>ISignalToIPduMapping_TxSig_can0_0_Tx_can0</SHORT-NAME>
+                            <I-SIGNAL-REF DEST="I-SIGNAL">/SystemDesign/ISignal_TxSig_can0_0</I-SIGNAL-REF>
+                        </I-SIGNAL-TO-I-PDU-MAPPING>
+                    </I-SIGNAL-TO-I-PDU-MAPPINGS>
+                </I-SIGNAL-I-PDU>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

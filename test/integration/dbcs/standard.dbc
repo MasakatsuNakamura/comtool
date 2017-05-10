@@ -1,0 +1,67 @@
+VERSION ""
+
+NS_ :
+	NS_DESC_
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	FILTER
+	BA_DEF_DEF_
+	EV_DATA_
+	ENVVAR_DATA_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	BA_SGTYPE_
+	SIG_TYPE_REF_
+	VAL_TABLE_
+	SIG_GROUP_
+	SIG_VALTYPE_
+	SIGTYPE_VALTYPE_
+
+BS_:
+
+BU_: Standard_Test
+
+BO_ 0 ExampleMessage0: 7 Vector_XXX
+ SG_ Signal_bool : 0|1@0+ (1,0) [0|1] "deg/K" Vector_XXX
+ SG_ Signal_uint_2 : 1|2@0+ (1,0) [0|255] "m" Vector_XXX
+ SG_ Signal_uint_8 : 3|8@0+ (1,0) [0|255] "-" Vector_XXX
+ SG_ Signal_uint_9 : 11|9@0+ (1,0) [0|65535] "-" Vector_XXX
+ SG_ Signal_uint_16 : 20|16@0+ (1,0) [0|65535] "-" Vector_XXX
+ SG_ Signal_uint_17 : 36|17@0+ (1,0) [0|4294967295] "-" Vector_XXX
+
+BO_ 1 ExampleMessage1: 4 Vector_XXX
+ SG_ Signal_uint_32 : 0|32@0+ (1,0) [0|4294967295] "-" Vector_XXX
+
+BO_ 2 ExampleMessage2: 5 Vector_XXX
+ SG_ Signal_uint_33 : 0|33@0+ (1,0) [0|18446744073709551615] "-" Vector_XXX
+
+BO_ 3 ExampleMessage3: 8 Vector_XXX
+ SG_ Signal_uint_64 : 0|64@0+ (1,0) [0|18446744073709551615] "-" Vector_XXX
+
+BO_ 4 ExampleMessage4: 7 Vector_XXX
+ SG_ Signal_sint_1 : 0|1@0- (1,0) [-128|127] "deg/K" Vector_XXX
+ SG_ Signal_sint_2 : 1|2@0- (1,0) [-128|127] "m" Vector_XXX
+ SG_ Signal_sint_8 : 3|8@0- (1,0) [-128|127] "-" Vector_XXX
+ SG_ Signal_sint_9 : 11|9@0- (1,0) [-32768|32767] "-" Vector_XXX
+ SG_ Signal_sint_16 : 20|16@0- (1,0) [-32768|32767] "-" Vector_XXX
+ SG_ Signal_sint_17 : 36|17@0- (1,0) [-2147483648|2147483647] "-" Vector_XXX
+
+BO_ 6 ExampleMessage6: 5 Vector_XXX
+ SG_ Signal_sint_33 : 0|33@0- (1,0) [-9223372036854775808|9223372036854775807] "-" Vector_XXX
+
+BO_ 5 ExampleMessage5: 4 Vector_XXX
+ SG_ Signal_sint_32 : 0|32@0- (1,0) [-2147483648|2147483647] "-" Vector_XXX
+
+BO_ 2047 ExampleMessage2047: 8 Vector_XXX
+ SG_ Signal_sint_64 : 0|64@0- (1,0) [-9223372036854775808|9223372036854775807] "-" Vector_XXX
+
+CM_ SG_ 0 Signal_bool "0 9 _ _name_ 0name ! # $ % & ' ( ) = ~ | \ [ ] @ * + < > ? ; : - * + ^ { }";
+CM_ SG_ 0 Signal_uint_9 "Description Signal_uint_9";
+CM_ SG_ 0 Signal_uint_16 "Description Signal_uint_16";
+CM_ SG_ 1 Signal_uint_32 "Description Test 1";
+CM_ SG_ 2047 Signal_sint_64 "Description Test 1023";
