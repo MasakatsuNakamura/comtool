@@ -144,11 +144,11 @@ module ArxmlExporter_r422
   def create_Com_r422
     # Com モジュール作成
     com = EcucModuleConfigurationValue.new(shortname:"Com_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/eSOL/EcucDefs/Com'), uuid:SecureRandom.uuid,
+                                                                    definitionref:DefinitionRef.new(value:'/QINeS/Com'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
     # ComConfig コンテナ作成
     comConfig = EcucContainerValue.new(shortname:"ComConfig_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig'),
+                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig'),
                             uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     # ComIPdu コンテナ作成
@@ -156,36 +156,36 @@ module ArxmlExporter_r422
     @messages.each { |message|
       if message.txrx == 0 then # 送信
         shortname = "ComIPdu_" + message.name
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu')
+        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComIPdu')
         # PARAMETER-VALUES 作成
         parametervalues = Hash.new([])
         parametervalues[:ComIPduCancellationSupport] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduCancellationSupport'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduCancellationSupport'),
                       value:0.to_s)
         parametervalues[:ComIPduDirection] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduDirection'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection'),
                       value:'SEND')
         parametervalues[:ComIPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduHandleId'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId'),
                       value:count_ComIPduHandleId.to_s)
         parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
                       value:'IMMEDIATE')
         parametervalues[:ComIPduType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduType'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduType'),
                       value:'NORMAL')
         # REFERENCE-VALUES 作成
         referencevalues = Hash.new([])
 #        referencevalues[:ComIPduGroupRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduGroupRef'),
+#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduGroupRef'),
 #                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/IPduGrp_can0"))
         message.com_signals.each { |signal|
           referencevalues["ComIPduSignalRef#{signal.name}".to_sym] = ReferenceValue.new(
-                        definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef"),
+                        definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalRef"),
                         valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + 'ComSignal_' + signal.name))
         }
         referencevalues[:ComPduIdRef] = ReferenceValue.new(
-                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComPduIdRef'),
                       valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
 
         # ComIPdu コンテナ作成
@@ -198,36 +198,36 @@ module ArxmlExporter_r422
         count_ComIPduHandleId += 1
       elsif message.txrx == 1 then  # 受信
         shortname = "ComIPdu_" + message.name
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu')
+        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComIPdu')
         # PARAMETER-VALUES 作成
         parametervalues = Hash.new([])
         parametervalues[:ComIPduCancellationSupport] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduCancellationSupport'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduCancellationSupport'),
                       value:0.to_s)
         parametervalues[:ComIPduDirection] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduDirection'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection'),
                       value:'RECEIVE')
         parametervalues[:ComIPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduHandleId'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId'),
                       value:count_ComIPduHandleId.to_s)
         parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
                       value:'IMMEDIATE')
         parametervalues[:ComIPduType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduType'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduType'),
                       value:'NORMAL')
         # REFERENCE-VALUES 作成
         referencevalues = Hash.new([])
 #        referencevalues[:ComIPduGroupRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduGroupRef'),
+#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduGroupRef'),
 #                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/IPduGrp_can0"))
         message.com_signals.each { |signal|
           referencevalues["ComIPduSignalRef#{signal.name}".to_sym] = ReferenceValue.new(
-                        definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalRef'),
                         valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + 'ComSignal_' + signal.name))
         }
         referencevalues[:ComPduIdRef] = ReferenceValue.new(
-                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComPduIdRef'),
                       valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
 
         # ComIPdu コンテナ作成
@@ -242,34 +242,34 @@ module ArxmlExporter_r422
     @messages.each_with_index { |message, index|
         message.com_signals.each { |signal|
           shortname = 'ComSignal_' + signal.name
-          definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal')
+          definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComSignal')
           # PARAMETER-VALUES 作成
           parametervalues = Hash.new([])
           parametervalues[:ComBitPosition] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitPosition'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComBitPosition'),
                         value:signal.bit_offset.to_s)
           parametervalues[:ComBitSize] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitSize'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComBitSize'),
                         value:signal.bit_size.to_s)
           parametervalues[:ComHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComHandleId'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComHandleId'),
                         value:count_ComHandleId.to_s)
           parametervalues[:ComInitialValueOnly] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComInitialValueOnly'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComInitialValueOnly'),
                         value:0.to_s)
           parametervalues[:ComSignalEndianness] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalEndianness'),
                         value: (@project.little_endian? ? 'LITTLE_ENDIAN' : 'BIG_ENDIAN'))
           parametervalues[:ComSignalInitValue] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-STRING-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-STRING-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalInitValue'),
                         value:signal.initial_value)
           parametervalues[:ComSignalType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType'),
+                        definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalType'),
                         value:signal.data_type.upcase)
           # REFERENCE-VALUES 作成
           referencevalues = nil # Hash.new([])
 #          referencevalues[:ComSystemTemplateSystemSignalRef] = ReferenceValue.new(
-#                        definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
+#                        definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
 #                        valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"))
 
           # ComSignal コンテナ作成
@@ -287,7 +287,7 @@ module ArxmlExporter_r422
   def create_ComTxIPdu_r422(message)
     # ComTxIPdu コンテナ作成
     comTxIPdu = EcucContainerValue.new(shortname:'ComTxIPdu_'+message.name, longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComTxIPdu'),
+                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComTxIPdu'),
                             parametervalues:nil, uuid:SecureRandom.uuid, subcontainers:nil)
 
     return comTxIPdu
