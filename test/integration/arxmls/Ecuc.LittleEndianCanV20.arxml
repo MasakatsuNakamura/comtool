@@ -120,50 +120,50 @@
                     <LONG-NAME>
                         <L-4 L="JA"></L-4>
                     </LONG-NAME>
-                    <DEFINITION-REF>/eSOL/EcucDefs/Com</DEFINITION-REF>
+                    <DEFINITION-REF>/QINeS/Com</DEFINITION-REF>
                     <CONTAINERS>
                         <ECUC-CONTAINER-VALUE>
                             <SHORT-NAME>ComConfig_LittleEndianCanV20</SHORT-NAME>
                             <LONG-NAME>
                                 <L-4 L="JA"></L-4>
                             </LONG-NAME>
-                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/eSOL/EcucDefs/Com/ComConfig</DEFINITION-REF>
+                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/Com/ComConfig</DEFINITION-REF>
                             <SUB-CONTAINERS>
                                 <ECUC-CONTAINER-VALUE>
                                     <SHORT-NAME>ComIPdu_Rx_can0</SHORT-NAME>
                                     <LONG-NAME>
                                         <L-4 L="JA"></L-4>
                                     </LONG-NAME>
-                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu</DEFINITION-REF>
+                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/Com/ComConfig/ComIPdu</DEFINITION-REF>
                                     <PARAMETER-VALUES>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduCancellationSupport</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduCancellationSupport</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduDirection</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection</DEFINITION-REF>
                                             <VALUE>RECEIVE</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduHandleId</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalProcessing</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing</DEFINITION-REF>
                                             <VALUE>IMMEDIATE</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduType</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduType</DEFINITION-REF>
                                             <VALUE>NORMAL</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalRef</DEFINITION-REF>
                                             <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Com_LittleEndianCanV20/ComConfig_LittleEndianCanV20/ComSignal_RxSig_can0_0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                         <ECUC-REFERENCE-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/QINeS/Com/ComConfig/ComIPdu/ComPduIdRef</DEFINITION-REF>
                                             <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV20/EcucConfigSet_LittleEndianCanV20/EcucPduCollection_LittleEndianCanV20/Pdu_Rx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
@@ -173,36 +173,36 @@
                                     <LONG-NAME>
                                         <L-4 L="JA"></L-4>
                                     </LONG-NAME>
-                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu</DEFINITION-REF>
+                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/Com/ComConfig/ComIPdu</DEFINITION-REF>
                                     <PARAMETER-VALUES>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduCancellationSupport</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduCancellationSupport</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduDirection</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection</DEFINITION-REF>
                                             <VALUE>SEND</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduHandleId</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId</DEFINITION-REF>
                                             <VALUE>1</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalProcessing</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing</DEFINITION-REF>
                                             <VALUE>IMMEDIATE</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduType</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduType</DEFINITION-REF>
                                             <VALUE>NORMAL</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
                                     <REFERENCE-VALUES>
                                         <ECUC-REFERENCE-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComIPduSignalRef</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalRef</DEFINITION-REF>
                                             <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Com_LittleEndianCanV20/ComConfig_LittleEndianCanV20/ComSignal_TxSig_can0_0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                         <ECUC-REFERENCE-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComPduIdRef</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-REFERENCE-DEF">/QINeS/Com/ComConfig/ComIPdu/ComPduIdRef</DEFINITION-REF>
                                             <VALUE-REF DEST="ECUC-CONTAINER-VALUE">/Ecuc/Ecuc_LittleEndianCanV20/EcucConfigSet_LittleEndianCanV20/EcucPduCollection_LittleEndianCanV20/Pdu_Tx_can0</VALUE-REF>
                                         </ECUC-REFERENCE-VALUE>
                                     </REFERENCE-VALUES>
@@ -212,7 +212,7 @@
                                             <LONG-NAME>
                                                 <L-4 L="JA"></L-4>
                                             </LONG-NAME>
-                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/eSOL/EcucDefs/Com/ComConfig/ComIPdu/ComTxIPdu</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/Com/ComConfig/ComIPdu/ComTxIPdu</DEFINITION-REF>
                                         </ECUC-CONTAINER-VALUE>
                                     </SUB-CONTAINERS>
                                 </ECUC-CONTAINER-VALUE>
@@ -221,34 +221,34 @@
                                     <LONG-NAME>
                                         <L-4 L="JA"></L-4>
                                     </LONG-NAME>
-                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal</DEFINITION-REF>
+                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/Com/ComConfig/ComSignal</DEFINITION-REF>
                                     <PARAMETER-VALUES>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitPosition</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComBitPosition</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitSize</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComBitSize</DEFINITION-REF>
                                             <VALUE>3</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComHandleId</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComHandleId</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComInitialValueOnly</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComInitialValueOnly</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComSignalEndianness</DEFINITION-REF>
                                             <VALUE>LITTLE_ENDIAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComSignalType</DEFINITION-REF>
                                             <VALUE>BOOLEAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
@@ -258,34 +258,34 @@
                                     <LONG-NAME>
                                         <L-4 L="JA"></L-4>
                                     </LONG-NAME>
-                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal</DEFINITION-REF>
+                                    <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/Com/ComConfig/ComSignal</DEFINITION-REF>
                                     <PARAMETER-VALUES>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitPosition</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComBitPosition</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComBitSize</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComBitSize</DEFINITION-REF>
                                             <VALUE>2</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComHandleId</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-INTEGER-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComHandleId</DEFINITION-REF>
                                             <VALUE>1</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-NUMERICAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComInitialValueOnly</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-BOOLEAN-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComInitialValueOnly</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-NUMERICAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalEndianness</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComSignalEndianness</DEFINITION-REF>
                                             <VALUE>LITTLE_ENDIAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-STRING-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComSignalInitValue</DEFINITION-REF>
                                             <VALUE>0</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                         <ECUC-TEXTUAL-PARAM-VALUE>
-                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/eSOL/EcucDefs/Com/ComConfig/ComSignal/ComSignalType</DEFINITION-REF>
+                                            <DEFINITION-REF DEST="ECUC-ENUMERATION-PARAM-DEF">/QINeS/Com/ComConfig/ComSignal/ComSignalType</DEFINITION-REF>
                                             <VALUE>BOOLEAN</VALUE>
                                         </ECUC-TEXTUAL-PARAM-VALUE>
                                     </PARAMETER-VALUES>
