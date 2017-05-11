@@ -1,7 +1,7 @@
 class MessagesController < ApplicationController
   def index
-    session[:project]  = params[:project] unless params[:project].nil?
-    @messages = Message.getOwnMessages(session[:project])
+    session[:project] = params[:project] unless params[:project].nil?
+    @messages = Message.where(project_id: session[:project])
   end
 
   def new
@@ -138,7 +138,7 @@ class MessagesController < ApplicationController
     used_signs = []
     msg.com_signals.each { |c| used_signs << c.sign_id }
 
-    unused_signs = Sign.getOwnSigns(pid).reject { |sign| used_signs.include?(sign.id) }
+    unused_signs = Sign.where(project_id: pid).reject { |sign| used_signs.include?(sign.id) }
 
     if unused_signs.empty?
       nil

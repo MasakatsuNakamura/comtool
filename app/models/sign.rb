@@ -1,10 +1,6 @@
 class Sign < ApplicationRecord
   belongs_to :project
 
-  def self.getOwnSigns(project)
-    Sign.where(project_id: project)
-  end
-
 # CSVを作成する
 #=== Args
 #-options_ : CSVの生成オプション
