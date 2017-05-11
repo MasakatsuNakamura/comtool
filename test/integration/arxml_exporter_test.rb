@@ -75,7 +75,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
   test 'Export the minimum ecu configuration of CAN with QINeS Version 1.1 ' do
     # arxml出力用プロジェクトの作成
-    @project = Project.create!(name: 'PrjMinimumCanV11', communication_protocol_id: '1', qines_version_id: '1')
+    @project = Project.create!(name: 'PrjMinimumCanV11', communication_protocol_id: 'can', qines_version_id: 'v1_0')
     @project.big_endian!
 
     # メッセージ設定
@@ -99,7 +99,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
   test 'Export the multiple messages and multiple signals ecu configuration of CAN with QINeS Version 1.1 ' do
     # arxml出力用プロジェクトの作成
-    @project = Project.create!(name: 'PrjMultipleMessageSingalCanV11', communication_protocol_id: '1', qines_version_id: '1')
+    @project = Project.create!(name: 'PrjMultipleMessageSingalCanV11', communication_protocol_id: 'can', qines_version_id: 'v1_0')
     @project.big_endian!
 
     # メッセージ設定
@@ -133,7 +133,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
   test 'Export the little_endian ecu configuration of CAN with QINeS Version 1.1 ' do
     # arxml出力用プロジェクトの作成
-    @project = Project.create!(name: 'LittleEndianCanV11', communication_protocol_id: '1', qines_version_id: '1', )
+    @project = Project.create!(name: 'LittleEndianCanV11', communication_protocol_id: 'can', qines_version_id: 'v1_0', )
     @project.little_endian!
 
     # メッセージ設定
@@ -157,7 +157,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
   test 'Export the minimum ecu configuration of CAN with QINeS Version 2.0 ' do
     # arxml出力用プロジェクトの作成
-    @project = Project.create!(name: 'PrjMinimumCanV20', communication_protocol_id: '1', qines_version_id: '2')
+    @project = Project.create!(name: 'PrjMinimumCanV20', communication_protocol_id: 'can', qines_version_id: 'v2_0')
     @project.big_endian!
 
     # メッセージ設定
@@ -181,7 +181,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
   test 'Export the multiple messages and multiple signals ecu configuration of CAN with QINeS Version 2.0 ' do
     # arxml出力用プロジェクトの作成
-    @project = Project.create!(name: 'PrjMultipleMessageSingalCanV20', communication_protocol_id: '1', qines_version_id: '2')
+    @project = Project.create!(name: 'PrjMultipleMessageSingalCanV20', communication_protocol_id: 'can', qines_version_id: 'v2_0')
     @project.big_endian!
 
     # メッセージ設定
@@ -215,7 +215,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
 
   test 'Export the little_endian ecu configuration of CAN with QINeS Version 2.0 ' do
     # arxml出力用プロジェクトの作成
-    @project = Project.create!(name: 'LittleEndianCanV20', communication_protocol_id: '1', qines_version_id: '2', )
+    @project = Project.create!(name: 'LittleEndianCanV20', communication_protocol_id: 'can', qines_version_id: 'v2_0', )
     @project.little_endian!
 
     # メッセージ設定

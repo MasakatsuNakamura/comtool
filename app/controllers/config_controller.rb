@@ -7,10 +7,12 @@ class ConfigController < ApplicationController
     messages = Message.where(project_id: session[:project])
     version = project[:qines_version_id]
 
-    if version == :v1_0
+    if version == 'v1_0'
       arxml = export_ecuc_comstack_r403(project: project, messages: messages)
-    elsif version == :v2_0
+    elsif version == 'v2_0'
       arxml = export_ecuc_comstack_r422(project: project, messages: messages)
+    else
+      raise 'invalid qines version'
     end
 
     send_data(
@@ -25,10 +27,12 @@ class ConfigController < ApplicationController
     messages = Message.where(project_id: session[:project])
     version = project[:qines_version_id]
 
-    if version == :v1_0
+    if version == 'v1_0'
       arxml = export_signals_r403(project: project, messages: messages)
-    elsif version == :v2_0
+    elsif version == 'v2_0'
       arxml = export_signals_r422(project: project, messages: messages)
+    else
+      raise 'invalid qines version'
     end
 
     send_data(

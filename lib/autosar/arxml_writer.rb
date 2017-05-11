@@ -4,11 +4,15 @@ module ArxmlWriter
   include REXML
   extend self
 
-  def create_arxml(xmlns:'', xsi:'', schemaLocation:'')
+  def create_arxml(xmlns:'', xsi:'', schemaLocation:'', version:'')
     @@document = Document.new
     @@document.context[:attribute_quote] = :quote
     @@document << XMLDecl.new('1.0', 'UTF-8', 'yes')
-    autosar = @@document.add_element('AUTOSAR', {'xmlns' => xmlns, 'xmlns:xsi' => xsi, 'xsi:schemaLocation' => schemaLocation})
+    if version.include? 'r403' then
+      autosar = @@document.add_element('AUTOSAR', {'xmlns' => xmlns, 'xmlns:xsi' => xsi, 'xsi:schemaLocation' => schemaLocation, })
+    else
+      autosar = @@document.add_element('AUTOSAR', {'xsi:schemaLocation' => schemaLocation, 'xmlns' => xmlns, 'xmlns:xsi' => xsi, })
+    end
     @@arpackages = autosar.add_element('AR-PACKAGES')
   end
 
@@ -27,12 +31,17 @@ module ArxmlWriter
     @@elements = arpackage.add_element('ELEMENTS')
   end
 
-  def create_ecuc_module_configuration_values(shortname, longname, definitionref,  uuid = '')
+  def create_ecuc_module_configuration_values(shortname, longname, definitionref,  uuid = '', edition:nil)
     module_configuration_values = @@elements.add_element('ECUC-MODULE-CONFIGURATION-VALUES', {'UUID' => uuid})
     module_configuration_values.add_element('SHORT-NAME').add_text(shortname)
     longname_element = module_configuration_values.add_element('LONG-NAME')
     longname_element.add_element('L-4', {'L' => longname.l4}).add_text('')
-    module_configuration_values.add_element('DEFINITION-REF').add_text(definitionref.value)
+    if edition.nil? then
+      module_configuration_values.add_element('DEFINITION-REF').add_text(definitionref.value)
+    else
+      module_configuration_values.add_element('DEFINITION-REF', {'DEST' => 'ECUC-MODULE-DEF'}).add_text(definitionref.value)
+      module_configuration_values.add_element('ECUC-DEF-EDITION').add_text(edition)
+    end
     return module_configuration_values.add_element('CONTAINERS')
   end
 
