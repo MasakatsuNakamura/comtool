@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170428083332) do
+ActiveRecord::Schema.define(version: 20170511004449) do
 
   create_table "com_signals", force: :cascade do |t|
     t.string   "name",                                   collation: "NOCASE"
@@ -28,13 +28,6 @@ ActiveRecord::Schema.define(version: 20170428083332) do
     t.index ["message_id", "name"], name: "index_com_signals_on_message_id_and_name", unique: true
     t.index ["message_id"], name: "index_com_signals_on_message_id"
     t.index ["sign_id"], name: "index_com_signals_on_sign_id"
-  end
-
-  create_table "communication_protocols", force: :cascade do |t|
-    t.string   "protocol_number"
-    t.string   "name"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
   end
 
   create_table "configs", force: :cascade do |t|
@@ -93,13 +86,6 @@ ActiveRecord::Schema.define(version: 20170428083332) do
     t.index ["communication_protocol_id"], name: "index_projects_on_communication_protocol_id"
     t.index ["name"], name: "index_projects_on_name", unique: true
     t.index ["qines_version_id"], name: "index_projects_on_qines_version_id"
-  end
-
-  create_table "qines_versions", force: :cascade do |t|
-    t.string   "qines_version_number"
-    t.string   "name"
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
   end
 
   create_table "signs", force: :cascade do |t|

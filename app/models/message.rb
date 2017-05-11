@@ -54,10 +54,6 @@ class Message < ApplicationRecord
             presence: true,
             numericality: true
 
-  def self.getOwnMessages(project)
-    Message.where(project_id: project)
-  end
-
   def com_signals_build
     # default com_signal
     c = self.com_signals.build(

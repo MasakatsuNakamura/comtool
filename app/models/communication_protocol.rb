@@ -1,2 +1,0 @@
-class CommunicationProtocol < ApplicationRecord
-end
