@@ -13,12 +13,13 @@ class Autosar < AutosarBase
   def to_arxml(version:'r422', kind:'Ecuc')
     xsd = version == 'r422' ? 'autosar_4-2-2.xsd' : 'autosar_4-0-3.xsd'
     create_arxml(xmlns:'http://autosar.org/schema/r4.0', xsi:'http://www.w3.org/2001/XMLSchema-instance',
-                                        schemaLocation:"http://autosar.org/schema/r4.0 #{xsd}")
+                                        schemaLocation:"http://autosar.org/schema/r4.0 #{xsd}", version:version)
     if kind == 'Ecuc' then
       @arpackages.each_value { |arpackage|
         create_arpackage(shortname:arpackage.shortname, longname:arpackage.longname, uuid:arpackage.uuid)
         arpackage.elements.each_value { |element|
-          root_container = create_ecuc_module_configuration_values(element.shortname, element.longname, element.definitionref, element.uuid)
+          edition = (version == 'r422') ? '4.2.2' : nil
+          root_container = create_ecuc_module_configuration_values(element.shortname, element.longname, element.definitionref, element.uuid, edition:edition)
           create_container(root_container, element.containers)
         }
       }

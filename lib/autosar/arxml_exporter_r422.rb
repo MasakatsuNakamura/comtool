@@ -164,16 +164,16 @@ module ArxmlExporter_r422
                       value:0.to_s)
         parametervalues[:ComIPduDirection] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection'),
-                      value:'SEND')
+                      value:'COM_Q_IPDU_DIR_SEND')
         parametervalues[:ComIPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId'),
                       value:count_ComIPduHandleId.to_s)
         parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
-                      value:'IMMEDIATE')
+                      value:'COM_Q_IPDU_SIGPRO_IMMEDIATE')
         parametervalues[:ComIPduType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduType'),
-                      value:'NORMAL')
+                      value:'COM_Q_IPDU_TYPE_NORMAL')
         # REFERENCE-VALUES 作成
         referencevalues = Hash.new([])
 #        referencevalues[:ComIPduGroupRef] = ReferenceValue.new(
@@ -206,16 +206,16 @@ module ArxmlExporter_r422
                       value:0.to_s)
         parametervalues[:ComIPduDirection] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection'),
-                      value:'RECEIVE')
+                      value:'COM_Q_IPDU_DIR_RECEIVE')
         parametervalues[:ComIPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId'),
                       value:count_ComIPduHandleId.to_s)
         parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
-                      value:'IMMEDIATE')
+                      value:'COM_Q_IPDU_SIGPRO_IMMEDIATE')
         parametervalues[:ComIPduType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                       definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduType'),
-                      value:'NORMAL')
+                      value:'COM_Q_IPDU_TYPE_NORMAL')
         # REFERENCE-VALUES 作成
         referencevalues = Hash.new([])
 #        referencevalues[:ComIPduGroupRef] = ReferenceValue.new(
@@ -259,18 +259,20 @@ module ArxmlExporter_r422
                         value:0.to_s)
           parametervalues[:ComSignalEndianness] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalEndianness'),
-                        value: (@project.little_endian? ? 'LITTLE_ENDIAN' : 'BIG_ENDIAN'))
+                        value: (@project.little_endian? ? 'COM_Q_SIG_ENDIAN_LITTLE_ENDIAN' : 'COM_Q_SIG_ENDIAN_BIG_ENDIAN'))
           parametervalues[:ComSignalInitValue] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-STRING-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalInitValue'),
                         value:signal.initial_value)
+          sigtype_value = "COM_Q_SIGTYPE_#{signal.data_type.upcase}"
+          sigtype_value.sub!(/COM_Q_SIGTYPE_BOOLEAN/, 'COM_Q_SIGTYPE_BOOL')
           parametervalues[:ComSignalType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
                         definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalType'),
-                        value:signal.data_type.upcase)
+                        value:sigtype_value)
           # REFERENCE-VALUES 作成
-          referencevalues = nil # Hash.new([])
-#          referencevalues[:ComSystemTemplateSystemSignalRef] = ReferenceValue.new(
-#                        definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
-#                        valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"))
+          referencevalues = Hash.new([])
+          referencevalues[:ComSystemTemplateSystemSignalRef] = ReferenceValue.new(
+                        definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
+                        valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"))
 
           # ComSignal コンテナ作成
           comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
@@ -296,28 +298,28 @@ module ArxmlExporter_r422
   def create_Ecuc_r422
     # Ecuc モジュール作成
     ecuc = EcucModuleConfigurationValue.new(shortname:"Ecuc_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/EcuC'), uuid:SecureRandom.uuid,
+                                                                    definitionref:DefinitionRef.new(value:'/QINeS/EcuC'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
 
     #EcucConfigSet コンテナ作成
     ecucConfigSet =  EcucContainerValue.new(shortname:"EcucConfigSet_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/AUTOSAR/EcucDefs/EcuC/EcucConfigSet'),
+                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/EcuC/EcucConfigSet'),
                             parametervalues:nil, uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     # EcucPduCollection コンテナ作成
     ecucPduCollection = EcucContainerValue.new(shortname:"EcucPduCollection_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection'),
+                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/EcuC/EcucConfigSet/EcucPduCollection'),
                             parametervalues:nil, uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     ecucConfigSet.subcontainers[:EcucPduCollection] = ecucPduCollection
 
     @messages.each { |message|
         shortname = "Pdu_#{message.name}"
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/Pdu')
+        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/EcuC/EcucConfigSet/EcucPduCollection/Pdu')
         # PARAMETER-VALUES 作成
         parametervalues = Hash.new([])
         parametervalues[:PduLength] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/AUTOSAR/EcucDefs/EcuC/EcucConfigSet/EcucPduCollection/Pdu/PduLength'),
+                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/EcuC/EcucConfigSet/EcucPduCollection/Pdu/PduLength'),
                       value:message.bytesize.to_s)
 
         # Pdu コンテナ作成
@@ -332,24 +334,24 @@ module ArxmlExporter_r422
   def create_PduR_r422
     # PduR モジュール作成
     pduR = EcucModuleConfigurationValue.new(shortname:"PduR_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/AUTOSAR/EcucDefs/PduR'), uuid:SecureRandom.uuid,
+                                                                    definitionref:DefinitionRef.new(value:'/QINeS/PduR'), uuid:SecureRandom.uuid,
                                                                     containers:Hash.new([]))
     # PduRRoutingTables コンテナ作成
     # PARAMETER-VALUES 作成
     parametervalues = Hash.new([])
     parametervalues[:PduRConfigurationId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
-                  definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRConfigurationId"),
+                  definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/QINeS/PduR/PduRRoutingTables/PduRConfigurationId"),
                   value:0.to_s)
 
     pduRRoutingTables = EcucContainerValue.new(shortname:"PduRRoutingTables_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables'),
+                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/PduR/PduRRoutingTables'),
                             parametervalues: parametervalues,
                             uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
 
     # PduRRoutingTable コンテナ作成
     pduRRoutingTable = EcucContainerValue.new(shortname:"PduRRoutingTable_#{@project.name}", longname:@longname,
                             definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                                                  value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable'),
+                                                                  value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable'),
                             uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
     pduRRoutingTables.subcontainers[:PduRRoutingTable] = pduRRoutingTable
 
@@ -357,7 +359,7 @@ module ArxmlExporter_r422
       # PduRRoutingPath コンテナ作成
       shortname = "PduRRoutingPath_#{message.name}"
       definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                              value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath')
+                                              value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath')
       pduRRoutingPath = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
                                                                                         uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
       pduRRoutingTable.subcontainers[":#{shortname}"] = pduRRoutingPath
@@ -365,18 +367,18 @@ module ArxmlExporter_r422
       # PduRDestPdu コンテナ作成
       shortname = "PduRDestPdu_#{message.name}"
       definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                                value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu')
+                                                value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu')
       # PARAMETER-VALUES 作成
       parametervalues = Hash.new([])
       parametervalues[:PduRDestPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
                     definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF',
-                        value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduHandleId'),
+                        value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduHandleId'),
                     value:index.to_s)
       # REFERENCE-VALUES 作成
       referencevalues = Hash.new([])
       referencevalues[:PduRDestPduRef] = ReferenceValue.new(
                     definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF',
-                            value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduRef'),
+                            value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduRef'),
                     valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',
                                 value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
       pduRDestPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
@@ -386,18 +388,18 @@ module ArxmlExporter_r422
       # PduRSrcPdu コンテナ作成
       shortname = "PduRSrcPdu_#{message.name}"
       definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                                value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu')
+                                                value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu')
       # PARAMETER-VALUES 作成
       parametervalues = Hash.new([])
       parametervalues[:PduRSourcePduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
                     definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF',
-                        value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSourcePduHandleId'),
+                        value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSourcePduHandleId'),
                     value:index.to_s)
       # REFERENCE-VALUES 作成
       referencevalues = Hash.new([])
       referencevalues[:PduRSrcPduRef] = ReferenceValue.new(
                     definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF',
-                            value:'/AUTOSAR/EcucDefs/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSrcPduRef'),
+                            value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSrcPduRef'),
                     valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',
                                 value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
       pduRSrcPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
