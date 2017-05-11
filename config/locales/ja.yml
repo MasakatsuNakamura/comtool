@@ -5,10 +5,10 @@ ja:
       byte_order:
         little_endian: リトルエンディアン
         big_endian: ビッグエンディアン
-      qines_version:
+      qines_version_id:
         v1_0: v1.0
         v2_0: v2.0
-      communication_protocol:
+      communication_protocol_id:
         can: CAN
     message:
       data_frame:
