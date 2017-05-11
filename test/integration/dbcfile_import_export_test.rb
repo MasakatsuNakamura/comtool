@@ -12,7 +12,7 @@ class DbcfileimportExportTest < ActionDispatch::IntegrationTest
 
   def setup_standard
     # create project for import.
-    prj = Project.create!(name: 'Standard_Test', communication_protocol_id: '1', qines_version_id: '2', byte_order: 'little_endian')
+    prj = Project.create!(name: 'Standard_Test', communication_protocol_id: 'can', qines_version_id: 'v2_0', byte_order: 'little_endian')
     prj.save
 
     # メッセージ設定
@@ -74,7 +74,7 @@ class DbcfileimportExportTest < ActionDispatch::IntegrationTest
 
   def setup_exframe
     # create project for import.
-    prj = Project.create!(name: 'Exframe_Test', communication_protocol_id: '1', qines_version_id: '2', byte_order: 'big_endian')
+    prj = Project.create!(name: 'Exframe_Test', communication_protocol_id: 'can', qines_version_id: 'v2_0', byte_order: 'big_endian')
     prj.save
 
     # メッセージ設定
@@ -139,7 +139,7 @@ class DbcfileimportExportTest < ActionDispatch::IntegrationTest
   end
 
   def parse_test (name, endian)
-    actual_prj   = Project.create!(name: name, communication_protocol_id: '1', qines_version_id: '2', byte_order: endian)
+    actual_prj   = Project.create!(name: name, communication_protocol_id: 'can', qines_version_id: 'v2_0', byte_order: endian)
     expected_prj = ""
     eval("expected_prj  = setup_#{name}")
 

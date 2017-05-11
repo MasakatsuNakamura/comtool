@@ -3,9 +3,7 @@ require 'test_helper'
 class ProjectTest < ActiveSupport::TestCase
 
   def setup
-    CommunicationProtocol.create!(name: 'CAN', protocol_number: "1")
-    QinesVersion.create!(name: 'V1.0', qines_version_number: "1")
-    @project = Project.new(id:2, name: 'testProject1', communication_protocol_id: '1', qines_version_id: '1')
+    @project = Project.new(id:2, name: 'testProject1', communication_protocol_id: 'can', qines_version_id: 'v1_0')
   end
 
   test "should be valid" do
@@ -52,7 +50,7 @@ class ProjectTest < ActiveSupport::TestCase
   end
 
   test "name should be unique from sql" do
-    project = Project.new(id:2, name: 'testProjectUnique', communication_protocol_id: '1', qines_version_id: '1')
+    project = Project.new(id:2, name: 'testProjectUnique', communication_protocol_id: 'can', qines_version_id: 'v1_0')
     project.save
     before_project_count = Project.all.length
     assert_raise(ActiveRecord::RecordNotUnique, "Not find exception") do

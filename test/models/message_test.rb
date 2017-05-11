@@ -3,9 +3,7 @@ require 'test_helper'
 class MessageTest < ActiveSupport::TestCase
 
   def setup
-    CommunicationProtocol.create!(name: 'CAN', protocol_number: "1")
-    QinesVersion.create!(name: 'V1.0', qines_version_number: "1")
-    @project = Project.create!(id:2, name: 'testProject1', communication_protocol_id: '1', qines_version_id: '1')
+    @project = Project.create!(id:2, name: 'testProject1', communication_protocol_id: 'can', qines_version_id: 'v1_0')
     @sign1   = Sign.create!(id:2, name: 'testSignal1', project:@project)
     @sign2   = Sign.create!(id:3, name: 'testSignal2', project:@project)
 
@@ -201,7 +199,7 @@ class MessageTest < ActiveSupport::TestCase
     assert_not duplicate_message.valid?
 
     duplicate_message = @message.dup
-    project2 = Project.create!(id:3, name: 'testProject2', communication_protocol_id: '1', qines_version_id: '1')
+    project2 = Project.create!(id:3, name: 'testProject2', communication_protocol_id: 'can', qines_version_id: 'v1_0')
     @message.project_id = 3
     @message.save
     assert duplicate_message.valid?
