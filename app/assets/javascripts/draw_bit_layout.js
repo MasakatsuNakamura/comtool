@@ -41,8 +41,8 @@ function makeBitLayout(){
 
   var signalnum = $("#signal_table")[0].rows.length - 2
   for (sig_no = 0; sig_no < signalnum; sig_no++) {
-    var bit_offset = parseInt($(`#message_com_signals_attributes_${String(sig_no)}_bit_offset`).val())
-    var bit_size   = parseInt($(`#message_com_signals_attributes_${String(sig_no)}_bit_size`).val())
+    var bit_offset = parseInt($("#message_com_signals_attributes_"+String(sig_no)+"_bit_offset").val())
+    var bit_size   = parseInt($("#message_com_signals_attributes_"+String(sig_no)+"_bit_size").val())
     var byte = Math.floor(bit_offset / 8)
     var bit  = bit_offset % 8
 
@@ -94,14 +94,14 @@ function paintBitLayout(){
         color = 'lightgrey'
       }
 
-      $(this).css('background-color', `${color}`);
+      $(this).css('background-color', color);
     }
 
     if ($(this)[0].cellIndex == 0){
       if (byte < bytesize) {
-        $(this).css('background-color', `white`);
+        $(this).css('background-color', "white");
       }else{
-        $(this).css('background-color', `dimgray`);
+        $(this).css('background-color', "dimgray");
       }
     }
   });
@@ -112,12 +112,12 @@ function paintBitLayout(){
       if (sig_colors.length==0) sig_colors = colors.concat()
 
       var c = hexToRgb(sig_colors.shift())
-      $(this).css('background-color', `rgba(${c.r},${c.g},${c.b},0.3)`);
+      $(this).css('background-color', "rgba("+c.r+","+c.g+","+c.b+",0.3)");
     }
    });
 
    $('#signal_table a').each(function() {
-     $(this).parent().css('background-color', `white`);
+     $(this).parent().css('background-color', "white");
    });
 }
 
@@ -130,17 +130,17 @@ function initBitLayoutTable(){
 
   var bit
   for (bit = 7; bit >= 0; bit--) {
-    html +=  `<th>bit${String(bit)}`
+    html +=  "<th>bit"+String(bit)
   }
 
   //items
   var byte,bit
   for (byte = 0; byte < 8; byte++) {
-    html += `<tr>`
-    html += `<td>byte${String(byte)}`
+    html += "<tr>"
+    html += "<td>byte"+String(byte)
 
     for (bit = 7; bit >= 0; bit--) {
-      html += `<td>`
+      html += "<td>"
     }
   }
 
