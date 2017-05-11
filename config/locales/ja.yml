@@ -5,6 +5,11 @@ ja:
       byte_order:
         little_endian: リトルエンディアン
         big_endian: ビッグエンディアン
+      qines_version:
+        v1_0: v1.0
+        v2_0: v2.0
+      communication_protocol:
+        can: CAN
     message:
       data_frame:
         standard_can: 標準フォーマット
