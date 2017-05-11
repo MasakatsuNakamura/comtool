@@ -58,7 +58,7 @@ class MessagesController < ApplicationController
     project_id = session[:project]
     if uploadfile
       prj = Project.find_by_id(project_id)
-      messages = MessagesHelper::DbcFileParser.parse(prj, uploadfile.read)
+      messages = MessagesHelper::DbcFileParser.parse(prj, uploadfile.read.force_encoding("UTF-8"))
 
       flash[:import_info] = view_context.import_messages(project_id, messages)
     else
