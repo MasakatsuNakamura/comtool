@@ -56,13 +56,15 @@ class Message < ApplicationRecord
 
   def com_signals_build
     # default com_signal
+    project = Project.find(self.project_id)
     c = self.com_signals.build(
-        name: "Signal#{self.com_signals.length}",
+        name: "Signal#{project.com_signals.length}",
         unit: 'Enter a unit',
         description: 'Enter a description',
         bit_offset: 0,
         bit_size:   1,
         message: self,
+        project: Project.find(self.project_id)
 #       sign: Sign.find_by(project_id: self.project_id)
       )
   end

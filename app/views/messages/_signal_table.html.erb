@@ -18,13 +18,13 @@
         <td class="col-md-1"><%= s.text_field :name, class: 'form-control'%></td>
         <td class="col-md-1"><%= s.text_field :unit, class: 'form-control' %></td>
         <td class="col-md-2"><%= s.text_field :description, class: 'form-control' %></td>
-        <td class="col-md-1"><%= s.select :data_type, ComSignal.data_types_i18n.invert, { :selected => s.object.data_type }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :data_type, ComSignal.data_types_i18n.invert, { :selected => s.object&.data_type }, class: 'form-control'%></td>
         <td class="col-md-2"><%= s.text_field :initial_value, class: 'form-control' %></td>
-        <td class="col-md-1"><%= s.select :bit_offset, 0..63, { :selected => s.object.bit_offset.to_i }, class: 'form-control'%></td>
-        <td class="col-md-1"><%= s.select :bit_size,   1..64,   { :selected => s.object.bit_size.to_i }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :bit_offset, 0..63, { :selected => s.object&.bit_offset.to_i }, class: 'form-control'%></td>
+        <td class="col-md-1"><%= s.select :bit_size,   1..64,   { :selected => s.object&.bit_size.to_i }, class: 'form-control'%></td>
         <td class="col-md-1">
-          <%= link_to image_tag("delete_images.png", alt: "Delete"), del_signal_path(@message, com_signal_id: s.object.id), method: :delete, data: { confirm: "You sure?" }  %>
-          <%= link_to "delete", del_signal_path(@message, com_signal_id: s.object.id), method: :delete, data: { confirm: "You sure?" } %>
+          <%= link_to image_tag("delete_images.png", alt: "Delete"), del_signal_path(@message, com_signal_id: s.object&.id), method: :delete, data: { confirm: "You sure?" }  %>
+          <%= link_to "delete", del_signal_path(@message, com_signal_id: s.object&.id), method: :delete, data: { confirm: "You sure?" } %>
         </td>
       </tr>
     <% end %>

@@ -4,9 +4,12 @@ class ComSignalTest < ActiveSupport::TestCase
 
   def setup
     @project = Project.create!(id:2, name: 'testProject1', communication_protocol_id: 'can', qines_version_id: 'v1_0')
+    @project1 = Project.create!(id:3, name: 'testProject2', communication_protocol_id: 'can', qines_version_id: 'v1_0')
     @sign1   = Sign.create!(id:2, name: 'testSignal1', project:@project)
     @sign2   = Sign.create!(id:3, name: 'testSignal2', project:@project)
     @message = Message.create!(id:1, name: 'testMessage', project:@project, bytesize:1, canid:1)
+    @message1 = Message.create!(id:2, name: 'test1Message', project:@project, bytesize:1, canid:1)
+    @message2 = Message.create!(id:3, name: 'test2Message', project:@project, bytesize:1, canid:1)
 
     @com_signal = @message.com_signals.build(
       name: 'ExampleComSignal',
@@ -15,6 +18,7 @@ class ComSignalTest < ActiveSupport::TestCase
       description: 'Example Description',
       bit_size: 8,
       bit_offset: 7,
+      project: @project,
       sign: @sign1
       )
   end
@@ -31,6 +35,7 @@ class ComSignalTest < ActiveSupport::TestCase
       description: 'Example Description',
       bit_size: 8,
       bit_offset: 7,
+      project: @project,
       sign: @sign1
       )
     assert c.invalid?
@@ -44,6 +49,7 @@ class ComSignalTest < ActiveSupport::TestCase
       description: 'Example Description',
       bit_size: 8,
       bit_offset: 7,
+      project: @project,
       )
     # TODO:タスク #653
 #    assert c.invalid?
@@ -132,25 +138,54 @@ class ComSignalTest < ActiveSupport::TestCase
     end
   end
 
-
-  test "name should be unique in message" do
+  test "name should be unique in project" do
     duplicate_com_signal = @com_signal.dup
-    @com_signal.save
-    assert_not duplicate_com_signal.valid?
+    duplicate_com_signal.save
+    assert_not @com_signal.valid?
 
     duplicate_com_signal.name = @com_signal.name.upcase
-    assert_not duplicate_com_signal.valid?
+    assert_not @com_signal.valid?
 
-    duplicate_com_signal = @com_signal.dup
-    message  = Message.create!(id:2, name: 'testMessage2', project:@project, bytesize:1, canid:1)
-    @com_signal.message_id = 2
-    @com_signal.save
-    assert duplicate_com_signal.valid?
+    ComSignal.create!(
+      name: 'ExampleComSignalSame',
+      message: @message1,
+      unit: 'Example Unit',
+      description: 'Example Description',
+      bit_size: 8,
+      bit_offset: 7,
+      project: @project,
+      sign: @sign1
+    )
+
+    com_signal = ComSignal.new(
+      name: 'ExampleComSignalSame',
+      message: @message2,
+      unit: 'Example Unit',
+      description: 'Example Description',
+      bit_size: 8,
+      bit_offset: 7,
+      project: @project1,
+      sign: @sign1
+    )
+    assert com_signal.save
+
+    com_signal = ComSignal.new(
+      name: 'ExampleComSignalSame',
+      message: @message2,
+      unit: 'Example Unit',
+      description: 'Example Description',
+      bit_size: 8,
+      bit_offset: 7,
+      project: @project,
+      sign: @sign1
+    )
+    assert_not com_signal.save
   end
 
   test "name should be unique from sql" do
     com_signal = ComSignal.new(
       name: 'ExampleComSignal',
+      project_id: 2,
       message_id: 1,
       bit_size: 8,
       bit_offset: 7
@@ -160,7 +195,7 @@ class ComSignalTest < ActiveSupport::TestCase
     before_com_signal_count = ComSignal.all.length
     assert_raise(ActiveRecord::RecordNotUnique, "Not find exception") do
       con = ActiveRecord::Base.connection
-      con.execute("INSERT INTO com_signals(name, message_id, created_at, updated_at) VALUES('EXAMPLECOMSIGNAL', 1, 'Fri, 21 Apr 2017 15:40:43 JST +09:00', 'Fri, 21 Apr 2017 15:40:43 JST +09:00')")
+      con.execute("INSERT INTO com_signals(name, message_id, project_id, created_at, updated_at) VALUES('EXAMPLECOMSIGNAL', 1, 2, 'Fri, 21 Apr 2017 15:40:43 JST +09:00', 'Fri, 21 Apr 2017 15:40:43 JST +09:00')")
     end
     after_com_signal_count = ComSignal.all.length
     assert_equal(before_com_signal_count, after_com_signal_count)

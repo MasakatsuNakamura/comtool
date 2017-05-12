@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170511004449) do
+ActiveRecord::Schema.define(version: 20170512012355) do
 
   create_table "com_signals", force: :cascade do |t|
     t.string   "name",                                   collation: "NOCASE"
@@ -25,8 +25,10 @@ ActiveRecord::Schema.define(version: 20170511004449) do
     t.datetime "updated_at",                null: false
     t.string   "initial_value"
     t.integer  "data_type",     default: 0, null: false
-    t.index ["message_id", "name"], name: "index_com_signals_on_message_id_and_name", unique: true
+    t.integer  "project_id"
     t.index ["message_id"], name: "index_com_signals_on_message_id"
+    t.index ["project_id", "name"], name: "index_com_signals_on_project_id_and_name", unique: true
+    t.index ["project_id"], name: "index_com_signals_on_project_id"
     t.index ["sign_id"], name: "index_com_signals_on_sign_id"
   end
 
