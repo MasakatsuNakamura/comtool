@@ -151,6 +151,7 @@ module MessagesHelper
               args = import_captures(grammar[:signal], s)
               args.merge!(
                 { data_type: import_data_type(cap),
+                  project_id:project.id,
                   message: m,
                 }
               )
@@ -339,7 +340,7 @@ BS_:
             raise unless exist_message.update_attributes update_params
 
             m.com_signals.each do |s|
-              exist_com_signal = ComSignal.find_by(name:s.name, message_id:message_id)
+              exist_com_signal = ComSignal.find_by(name:s.name, project_id:project_id)
               if exist_com_signal.nil?
                 raise unless s.save
               else

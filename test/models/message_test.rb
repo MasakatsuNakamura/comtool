@@ -18,6 +18,7 @@ class MessageTest < ActiveSupport::TestCase
     msg = Message.new(name: 'testMessage', project:@project, bytesize:1,canid:1)
     c1 = msg.com_signals.build(
       name: "c1",
+      project: @project,
       message: msg,
       bit_size: 1,
       bit_offset: 0,
@@ -26,6 +27,7 @@ class MessageTest < ActiveSupport::TestCase
 
     c2 = msg.com_signals.build(
       name: "c2",
+      project: @project,
       message: msg,
       bit_size: 1,
       bit_offset: 1,
@@ -86,6 +88,7 @@ class MessageTest < ActiveSupport::TestCase
   test "(bit_offset + bit_size) should be less than or equal to message.bytesize" do
     @com_signal = @message.com_signals.build(
       name: "c1",
+      project: @project,
       message: @message,
       bit_size: 1,
       bit_offset: 0,
