@@ -10,6 +10,9 @@ class Project < ApplicationRecord
   # TODO: disabled タスク #654
   attr_accessor :duplicate_source
 
+  accepts_nested_attributes_for :com_signals, reject_if: true
+  validates_associated :com_signals
+
   validates :name,
             presence: true,
             uniqueness: { case_sensitive: false },

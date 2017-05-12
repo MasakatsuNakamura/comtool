@@ -112,7 +112,7 @@ class MessagesController < ApplicationController
     end
     params.require(:message).permit(
       :data_frame, :canid, :txrx, :bytesize, :baudrate,
-      com_signals_attributes: [:data_type, :initial_value, :id, :name, :unit, :description, :bit_offset, :bit_size, :sign_id])
+      com_signals_attributes: [:project_id, :data_type, :initial_value, :id, :name, :unit, :description, :bit_offset, :bit_size, :sign_id])
   end
 
   def correct_message
