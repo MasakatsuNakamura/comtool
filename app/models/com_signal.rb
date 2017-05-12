@@ -11,7 +11,7 @@ class ComSignal < ApplicationRecord
 
   validates :name,
     presence: true,
-    uniqueness: { case_sensitive: false, scope: :message_id },
+    uniqueness: { case_sensitive: false, scope: :project_id },
     length: { maximum: 50 },
     format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
 
