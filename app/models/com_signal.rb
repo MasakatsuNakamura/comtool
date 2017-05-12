@@ -1,6 +1,7 @@
 # encoding: utf-8
 
 class ComSignal < ApplicationRecord
+  belongs_to :project
   belongs_to :message
   belongs_to :sign, optional: true
   enum data_type: %w[
