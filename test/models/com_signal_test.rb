@@ -15,6 +15,7 @@ class ComSignalTest < ActiveSupport::TestCase
       description: 'Example Description',
       bit_size: 8,
       bit_offset: 7,
+      project: Project.find(@message.id),
       sign: @sign1
       )
   end
@@ -31,6 +32,7 @@ class ComSignalTest < ActiveSupport::TestCase
       description: 'Example Description',
       bit_size: 8,
       bit_offset: 7,
+      project: Project.find(@message.id),
       sign: @sign1
       )
     assert c.invalid?
@@ -44,6 +46,7 @@ class ComSignalTest < ActiveSupport::TestCase
       description: 'Example Description',
       bit_size: 8,
       bit_offset: 7,
+      project: Project.find(@message.id),
       )
     # TODO:タスク #653
 #    assert c.invalid?
