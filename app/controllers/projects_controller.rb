@@ -1,6 +1,13 @@
+include ArxmlExporter_r403
+include ArxmlExporter_r422
+
 class ProjectsController < ApplicationController
   before_action :find_master, only: [:create, :new, :update]
-  def index; end
+  def index
+    redirect_to welcome_path unless signed_in?
+    #    @projects = Project.where(project_id: User.where(project_id: params[:project_id]).select(project_id))
+    @projects = Project.all
+  end
 
   def new
     @project = Project.new
@@ -19,7 +26,7 @@ class ProjectsController < ApplicationController
 
     if @project.save
       DatabaseManage.create!(backup_file_path: 'CAN/test',backup_date: Date.today, project: @project)
-      redirect_to home_index_path
+      redirect_to projects_path
     else
       render :new
     end
@@ -43,10 +50,23 @@ class ProjectsController < ApplicationController
     session[:project] = params[:id]
     return nil unless @project.nil?
     flash[:danger] = '選択されたプロジェクトが存在しません'
-    redirect_to home_index_path
+    redirect_to projects_path
+  end
+
+  def export_ecuc
+    arxml = Project.find(session[:project]).to_arxml('ecuc')
+    raise 'invalid qines version' if arxml.nil?
+    send_data arxml, filename: 'Ecuc.arxml'
+  end
+
+  def export_systemdesign
+    arxml = Project.find(session[:project]).to_arxml('systemdesign')
+    raise 'invalid qines version' if arxml.nil?
+    send_data arxml, filename: 'SystemDesign.arxml'
   end
 
   private
+
   def find_master
     @qines_version_number = :v2_0
     @communication_protocol = :can

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170512012355) do
+ActiveRecord::Schema.define(version: 20170518070353) do
 
   create_table "com_signals", force: :cascade do |t|
     t.string   "name",                                   collation: "NOCASE"
@@ -76,6 +76,33 @@ ActiveRecord::Schema.define(version: 20170512012355) do
     t.integer  "data_frame", default: 0, null: false
     t.index ["project_id", "name"], name: "index_messages_on_project_id_and_name", unique: true
     t.index ["project_id"], name: "index_messages_on_project_id"
+  end
+
+  create_table "modes", force: :cascade do |t|
+    t.string   "title"
+    t.text     "param"
+    t.integer  "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_modes_on_project_id"
+  end
+
+  create_table "project_configs", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "config_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["config_id"], name: "index_project_configs_on_config_id"
+    t.index ["project_id"], name: "index_project_configs_on_project_id"
+  end
+
+  create_table "project_users", force: :cascade do |t|
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_users_on_project_id"
+    t.index ["user_id"], name: "index_project_users_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|

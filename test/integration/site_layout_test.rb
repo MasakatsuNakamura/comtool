@@ -2,7 +2,7 @@ require 'test_helper'
 
 class SiteLayoutTest < ActionDispatch::IntegrationTest
   def setup
-    # HOMEƒƒOƒCƒ“—pƒ†[ƒU[‚Ìì¬
+    # HOMEï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½pï¿½ï¿½ï¿½[ï¿½Uï¿½[ï¿½Ìì¬
     # user = users(:michael)
     u_params ={ name: "Michael Example", email: "michael@example.com", password: "password", password_confirmation: "password"}
     @user = User.create!(u_params)
@@ -17,21 +17,21 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_template 'home/index'
 
     assert_select 'a[href=?]', root_path, count: 0
-    # HOME INDEX PATH‚ÌƒŠƒ“ƒN‚Í1‚Â‚µ‚©‚È‚¢‚ÆŽv‚í‚ê‚é
-    # assert_select 'a[href=?]', home_index_path, count: 2
-    assert_select 'a[href=?]', home_index_path, count: 1
+    # HOME INDEX PATHï¿½Ìƒï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½1ï¿½Â‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ÆŽvï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    # assert_select 'a[href=?]', projects_path, count: 2
+    assert_select 'a[href=?]', projects_path, count: 1
     assert_select 'a[href=?]', help_path, count: 1
-    # ABOUT PATH‚ÌƒŠƒ“ƒN‚Í1‚Â‚µ‚©‚È‚¢‚ÆŽv‚í‚ê‚é
+    # ABOUT PATHï¿½Ìƒï¿½ï¿½ï¿½ï¿½Nï¿½ï¿½1ï¿½Â‚ï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ÆŽvï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     # assert_select 'a[href=?]', about_path, count: 2
     assert_select 'a[href=?]', about_path, count: 1
-    # CONTACT PATH ‚ÌƒŠƒ“ƒN‚ÍŽÀ‘•‚³‚ê‚Ä‚¢‚È‚¢‚Ì‚ÅƒRƒƒ“ƒgƒAƒEƒg
+    # CONTACT PATH ï¿½Ìƒï¿½ï¿½ï¿½ï¿½Nï¿½ÍŽï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½È‚ï¿½ï¿½Ì‚ÅƒRï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Aï¿½Eï¿½g
     # assert_select 'a[href=?]', contact_path, count: 1
   end
 
   test 'access signup' do
     get root_path
     get signup_path
-    # Sig‚ŽUpŽž‚Ìƒ^ƒCƒgƒ‹‚ÉSignUp‚ª–³‚¢‚Ì‚ÅƒRƒƒ“ƒgƒAƒEƒg
+    # Sigï¿½ï¿½Upï¿½ï¿½ï¿½Ìƒ^ï¿½Cï¿½gï¿½ï¿½ï¿½ï¿½SignUpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì‚ÅƒRï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Aï¿½Eï¿½g
     # assert_select "title", full_title("Sign up")
   end
 end
