@@ -103,7 +103,7 @@ class DbcfileimportExportTest < ActionDispatch::IntegrationTest
     [diff_file, actual_file].each {|f| File.delete(f) if FileTest.exist?(f)}
 
     # dump results unless diffs empty
-    unless diffs.empty? then
+    unless diffs.empty?
       File.open(diff_file, 'w') do |f|
         diffs.each do |diff|
           f.puts '------'

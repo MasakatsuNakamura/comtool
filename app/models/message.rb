@@ -1,37 +1,3 @@
-class MessageValidator < ActiveModel::Validator
-  def validate(record)
-    msg = record
-    project = Project.find_by_id(msg.project_id)
-
-    message_layout = Array.new(msg.bytesize*8, false)
-    msg.com_signals.each do |c|
-      offset = c.bit_offset
-      bit_size = c.bit_size
-      while bit_size > 0
-        if message_layout[offset].nil? then
-          msg.errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
-          break
-        elsif message_layout[offset] then
-          msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
-          break
-        end
-        message_layout[offset] = true
-
-        bit_size -= 1
-        if project.little_endian? then
-          offset += 1
-        else
-          if offset % 8 == 0 then
-            offset += 15
-          else
-            offset -= 1
-          end
-        end
-      end
-    end
-  end
-end
-
 class Message < ApplicationRecord
   attr_accessor :duplicate_source
 
@@ -41,57 +7,73 @@ class Message < ApplicationRecord
 
   accepts_nested_attributes_for :com_signals, reject_if: true
   validates_associated :com_signals
-  include ActiveModel::Validations
-  validates_with MessageValidator
 
   validates :name,
             presence: true,
             uniqueness: { case_sensitive: false, scope: :project_id },
             length: { maximum: 50 },
-            format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
+            format: { with: /\A[a-zA-Z]\w*\z/, message: '半角英数とアンダースコアが利用できます'}
 
   validates :canid,
             presence: true,
             numericality: true
 
+  validate :message_layout_should_be_correct
+
   def com_signals_build
     # default com_signal
-    project = Project.find(self.project_id)
-    c = self.com_signals.build(
-        name: "Signal#{project.com_signals.length}",
-        unit: 'Enter a unit',
-        description: 'Enter a description',
-        bit_offset: 0,
-        bit_size:   1,
-        message: self,
-        project: Project.find(self.project_id)
-#       sign: Sign.find_by(project_id: self.project_id)
-      )
+    c = com_signals.build(
+      name: "Signal#{project.com_signals.length}",
+      unit: 'Enter a unit',
+      description: 'Enter a description',
+      bit_offset: 0,
+      bit_size:   1,
+      message: self,
+      project: project
+      #       sign: Sign.find_by(project_id: self.project_id)
+    )
   end
 
-  def Message.duplicate_from_arxml(params, opt = {})
+  def self.duplicate_from_arxml(params, opt = {})
     m = Message.new(params)
 
-    # TODO arxmlからメッセージのプロパティを読み込む
-    if (opt[:duplicate_source]) then
-      m.canid = 100
-      m.txrx  = opt[:duplicate_source].to_i % 2
-      m.baudrate = 2
-      m.bytesize  = 1
-    else
-      m.canid = 100
-      m.txrx  = 0
-      m.baudrate = 2
-      m.bytesize  = 1
+    # TODO: arxmlからメッセージのプロパティを読み込む
+    m.canid = 100
+    m.txrx = opt[:duplicate_source] ? opt[:duplicate_source].to_i % 2 : 0
+    m.baudrate = 2
+    m.bytesize = 1
+
+    if opt[:project]
+      m.project = Project.find(opt[:project])
+      m.com_signals_build
     end
-
-    if (opt[:project]) then
-      prj = opt[:project]
-
-      m.project = Project.find_by_id(prj)
-      c = m.com_signals_build
-    end
-
     m
+  end
+
+  private
+
+  def message_layout_should_be_correct
+    message_layout = Array.new(bytesize * 8, false)
+    com_signals.each do |c|
+      offset = c.bit_offset
+      bit_size = c.bit_size
+      bit_size.times do
+        if message_layout[offset].nil?
+          errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
+          break
+        elsif message_layout[offset]
+          errors[:bit_offset] << 'メッセージレイアウトが重複しています'
+          break
+        end
+        message_layout[offset] = true
+        if project.little_endian?
+          offset += 1
+        elsif (offset % 8).zero?
+          offset += 15
+        else
+          offset -= 1
+        end
+      end
+    end
   end
 end

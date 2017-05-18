@@ -1,0 +1,87 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/js-yaml/3.4.2/js-yaml.min.js"></script>
+<style type="text/css">
+    #mynetwork {
+        width: 600px;
+        height: 600px;
+        border: 1px solid lightgray;
+    }
+</style>
+<div class="row">
+  <%= form_for @mode do |f| %>
+    <div class="col-md-6">
+        <%= f.label :param, 'モード記述' %>
+        <div id='ace-editor' style='height: 600px;'><%= @mode.param %></div>
+        <%= f.hidden_field :param, id: :param %>
+        <%= f.submit "Edit mode", class: "btn btn-primary" %>
+        <%= link_to 'Back', project_modes_path(@mode.project_id) %>
+    </div>
+  <% end %>
+  <div class="col-md-6">
+    <p>
+      プレビュー
+    </p>
+    <%= button_tag '更新', type: :button, onclick: 'preview()' %>
+    <div id="mynetwork"></div>
+  </div>
+</div>
+<script>
+  function preview() {
+    var editor = ace.edit("ace-editor");
+    $('#param').val(editor.getValue());
+    var doc;
+    try {
+      doc = jsyaml.load($('#param').val());
+    } catch (e) {
+      doc = {'Error': 'YAMLフォーマットで入力してください'}
+    }
+    var i = 1;
+    var elements = [];
+    var arrows = [];
+    for (key in doc) {
+      elements.push({id: i, label: key, shape: 'box'});
+      if ($.isArray(doc[key])) {
+        for (var k = 0; k < doc[key].length; k++) {
+          i++;
+          elements.push({id: i, label: doc[key][k], shape: 'box'});
+          arrows.push({from: i - 1, to: i, arrows:'to'});
+        }
+      } else {
+        j = 1;
+        for (key2 in doc) {
+          if (doc[key]['true'] == key2) {
+            arrows.push({from: i, to: j, arrows:'to', label:'true'});
+          } else if (doc[key]['false'] == key2) {
+            arrows.push({from: i, to: j, arrows:'to', label:'false'});
+          }
+          j++;
+        }
+      }
+      i++;
+    }
+    // create an array with nodes
+    var nodes = new vis.DataSet(elements);
+
+    // create an array with edges
+    var edges = new vis.DataSet(arrows);
+
+    // create a network
+    var container = document.getElementById('mynetwork');
+    var data = {
+      nodes: nodes,
+      edges: edges
+    };
+    var options = {};
+    var network = new vis.Network(container, data, options);
+  }
+  $('form').submit(function(){
+    var editor = ace.edit("ace-editor");
+    $('#param').val(editor.getValue());
+    return true;
+  });
+  $(document).ready(function(){
+    var editor = ace.edit("ace-editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.getSession().setMode("ace/mode/html");
+    preview();
+  });
+</script>

@@ -29,7 +29,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
     actual_file = expected_file+'.actual.arxml'
     [diff_file, actual_file].each {|f| File.delete(f) if FileTest.exist?(f)}
 
-    unless diffs.empty? then
+    unless diffs.empty?
       File.open(diff_file, 'w') do |f|
         diffs.each do |diff|
           f.puts '------'

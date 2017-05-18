@@ -13,7 +13,7 @@ class DatabaseManagesController < ApplicationController
 
 # Todo 復活は未実装
   def restore
-    redirect_to database_manages_show_path(:project => params[:project_id])
+    redirect_to database_manage_path(:project => params[:project_id])
   end
   # 符号ＤＢのCSVエクスポート
   def sign_csvexport
@@ -91,7 +91,7 @@ class DatabaseManagesController < ApplicationController
     rescue Exception => e
       logger.error "#{tablename.to_s} export error Exception=#{e.to_s}"
       flash[:danger] = "#{tablename.to_s} Binary Exportに失敗しました"
-      redirect_to database_manages_show_path(:project => params[:project_id])
+      redirect_to database_manage_path(:project => params[:project_id])
     ensure
       # Tempfileをリアルタイム削除する
       tmpfl.close(true) if tmpfl

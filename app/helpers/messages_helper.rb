@@ -12,7 +12,7 @@ module MessagesHelper
     end
 
     def self.capture(name, pattern)
-      if name.nil? then
+      if name.nil?
         "(#{pattern})"
       else
         "(?<#{name}>#{pattern})"
@@ -360,7 +360,7 @@ BS_:
         import_info[:info] << m.name + ' ( ' + signames + " ) "
       end
     rescue => e
-      if messages.nil? then
+      if messages.nil?
         import_info[:danger] = ['サポートされないフォーマットです']
       else
         import_info[:danger] = ['インポートに失敗しました。']

@@ -1,7 +1,11 @@
 # coding: utf-8
 
+include ArxmlExporter_r403
+include ArxmlExporter_r422
+
 class Project < ApplicationRecord
   has_many :messages
+  has_many :modes
   has_many :com_signals
   enum byte_order: %w[big_endian little_endian]
   enum qines_version_id: { v1_0: 1, v2_0: 2 }
@@ -21,5 +25,29 @@ class Project < ApplicationRecord
 
   def self.qines_version_number
     ''
+  end
+
+  def import_dbc(uploadfile)
+    MessagesHelper::DbcFileParser.parse(self, uploadfile.read.force_encoding('UTF-8'))
+  end
+
+  def export_dbc
+    MessagesHelper::DbcFileGenerator.generate(self)
+  end
+
+  def to_ecuc_arxml
+    if v1_0?
+      export_ecuc_comstack_r403(project: self, messages: messages)
+    elsif v2_0?
+      export_ecuc_comstack_r422(project: self, messages: messages)
+    end
+  end
+
+  def to_systemdesign_arxml
+    if v1_0?
+      export_signals_r403(project: self, messages: messages)
+    elsif v2_0?
+      export_signals_r422(project: self, messages: messages)
+    end
   end
 end

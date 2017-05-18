@@ -8,7 +8,7 @@ module ArxmlWriter
     @@document = Document.new
     @@document.context[:attribute_quote] = :quote
     @@document << XMLDecl.new('1.0', 'UTF-8', 'yes')
-    if version.include? 'r403' then
+    if version.include? 'r403'
       autosar = @@document.add_element('AUTOSAR', {'xmlns' => xmlns, 'xmlns:xsi' => xsi, 'xsi:schemaLocation' => schemaLocation, })
     else
       autosar = @@document.add_element('AUTOSAR', {'xsi:schemaLocation' => schemaLocation, 'xmlns' => xmlns, 'xmlns:xsi' => xsi, })
@@ -18,13 +18,11 @@ module ArxmlWriter
 
   def create_arpackage(shortname:'', longname:'', uuid:'', attributes:nil)
     arpackage = @@arpackages.add_element('AR-PACKAGE', {'UUID' => uuid})
-    if attributes != nil then
-      attributes.each_pair { |key, val|
-        arpackage.add_attributes({"#{key}" => "#{val}"})
-      }
+    attributes&.each_pair do |key, val|
+      arpackage.add_attributes(key.to_s => val.to_s)
     end
     arpackage.add_element('SHORT-NAME').add_text(shortname)
-    if longname != '' then
+    if longname != ''
       longname_element = arpackage.add_element('LONG-NAME')
       longname_element.add_element('L-4', {'L' => longname.l4}).add_text('')
     end
@@ -36,7 +34,7 @@ module ArxmlWriter
     module_configuration_values.add_element('SHORT-NAME').add_text(shortname)
     longname_element = module_configuration_values.add_element('LONG-NAME')
     longname_element.add_element('L-4', {'L' => longname.l4}).add_text('')
-    if edition.nil? then
+    if edition.nil?
       module_configuration_values.add_element('DEFINITION-REF').add_text(definitionref.value)
     else
       module_configuration_values.add_element('DEFINITION-REF', {'DEST' => 'ECUC-MODULE-DEF'}).add_text(definitionref.value)
