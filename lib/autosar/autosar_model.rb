@@ -14,7 +14,7 @@ class Autosar < AutosarBase
     xsd = version == 'r422' ? 'autosar_4-2-2.xsd' : 'autosar_4-0-3.xsd'
     create_arxml(xmlns:'http://autosar.org/schema/r4.0', xsi:'http://www.w3.org/2001/XMLSchema-instance',
                                         schemaLocation:"http://autosar.org/schema/r4.0 #{xsd}", version:version)
-    if kind == 'Ecuc' then
+    if kind == 'Ecuc'
       @arpackages.each_value { |arpackage|
         create_arpackage(shortname:arpackage.shortname, longname:arpackage.longname, uuid:arpackage.uuid)
         arpackage.elements.each_value { |element|
@@ -23,17 +23,17 @@ class Autosar < AutosarBase
           create_container(root_container, element.containers)
         }
       }
-    elsif kind == 'SystemDesign' then
+    elsif kind == 'SystemDesign'
       @arpackages.each_value { |arpackage|
         attributes = Hash.new([])
         attributes[:S] = ''
         create_arpackage(shortname:arpackage.shortname, uuid:arpackage.uuid, attributes:attributes)
         arpackage.elements.each_value { |element|
-          if element.instance_of?(SystemSignal) then
+          if element.instance_of?(SystemSignal)
             create_systemsignal(shortname:element.shortname, uuid:element.uuid)
-          elsif element.instance_of?(ISignal) then
+          elsif element.instance_of?(ISignal)
             create_isignal(shortname:element.shortname, systemsignalref:element.systemsignalref, uuid:element.uuid)
-          elsif element.instance_of?(ISignalIPdu) then
+          elsif element.instance_of?(ISignalIPdu)
             create_isignalpdu(shortname:element.shortname, uuid:element.uuid, isignaltoipdumappings:element.isignaltoipdumappings)
           end
         }

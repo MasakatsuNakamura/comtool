@@ -7,25 +7,21 @@ class MessageValidator < ActiveModel::Validator
     msg.com_signals.each do |c|
       offset = c.bit_offset
       bit_size = c.bit_size
-      while bit_size > 0
-        if message_layout[offset].nil? then
+      bit_size.times do
+        if message_layout[offset].nil?
           msg.errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
           break
-        elsif message_layout[offset] then
+        elsif message_layout[offset]
           msg.errors[:bit_offset] << 'メッセージレイアウトが重複しています'
           break
         end
         message_layout[offset] = true
-
-        bit_size -= 1
-        if project.little_endian? then
+        if project.little_endian?
           offset += 1
+        elsif (offset % 8).zero?
+          offset += 15
         else
-          if offset % 8 == 0 then
-            offset += 15
-          else
-            offset -= 1
-          end
+          offset -= 1
         end
       end
     end
@@ -57,41 +53,32 @@ class Message < ApplicationRecord
   def com_signals_build
     # default com_signal
     project = Project.find(self.project_id)
-    c = self.com_signals.build(
-        name: "Signal#{project.com_signals.length}",
-        unit: 'Enter a unit',
-        description: 'Enter a description',
-        bit_offset: 0,
-        bit_size:   1,
-        message: self,
-        project: Project.find(self.project_id)
-#       sign: Sign.find_by(project_id: self.project_id)
-      )
+    c = com_signals.build(
+      name: "Signal#{project.com_signals.length}",
+      unit: 'Enter a unit',
+      description: 'Enter a description',
+      bit_offset: 0,
+      bit_size:   1,
+      message: self,
+      project: Project.find(project_id)
+      #       sign: Sign.find_by(project_id: self.project_id)
+    )
   end
 
   def Message.duplicate_from_arxml(params, opt = {})
     m = Message.new(params)
 
-    # TODO arxmlからメッセージのプロパティを読み込む
-    if (opt[:duplicate_source]) then
-      m.canid = 100
-      m.txrx  = opt[:duplicate_source].to_i % 2
-      m.baudrate = 2
-      m.bytesize  = 1
-    else
-      m.canid = 100
-      m.txrx  = 0
-      m.baudrate = 2
-      m.bytesize  = 1
-    end
+    # TODO: arxmlからメッセージのプロパティを読み込む
+    m.canid = 100
+    m.txrx = opt[:duplicate_source] ? opt[:duplicate_source].to_i % 2 : 0
+    m.baudrate = 2
+    m.bytesize = 1
 
-    if (opt[:project]) then
+    if opt[:project]
       prj = opt[:project]
-
-      m.project = Project.find_by_id(prj)
+      m.project = Project.find(prj)
       c = m.com_signals_build
     end
-
     m
   end
 end

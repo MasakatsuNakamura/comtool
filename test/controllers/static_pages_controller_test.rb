@@ -10,9 +10,9 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  # Home‚ÍStaticƒy[ƒW‚Å‚Í‚È‚¢‚½‚ßƒRƒƒ“ƒgƒAƒEƒgTODO:³‚µ‚¢‰ÓŠ‚É‹LÚ‚·‚é
+  # Homeï¿½ï¿½Staticï¿½yï¿½[ï¿½Wï¿½Å‚Í‚È‚ï¿½ï¿½ï¿½ï¿½ßƒRï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Aï¿½Eï¿½gTODO:ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óï¿½ï¿½É‹Lï¿½Ú‚ï¿½ï¿½ï¿½
   # test 'should get home' do
-  #   get home_index_path
+  #   get projects_path
   #   assert_response :success
   #   assert_select 'title', "Home | #{@base_title}"
   # end
@@ -29,7 +29,7 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'title', "About | #{@base_title}"
   end
 
-  # Contact path‚Í‘¶Ý‚µ‚È‚¢‚Ì‚Å‚¢‚Á‚½‚ñƒRƒƒ“ƒgƒAƒEƒgAŽÀ‘•Žž‚ÉƒRƒƒ“ƒg‚ð‰ðœ
+  # Contact pathï¿½Í‘ï¿½ï¿½Ý‚ï¿½ï¿½È‚ï¿½ï¿½Ì‚Å‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½gï¿½Aï¿½Eï¿½gï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉƒRï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
   #   test "should get contact" do
   #     get contact_path
   #     assert_response :success
