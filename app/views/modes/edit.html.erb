@@ -1,8 +1,23 @@
+<script src="//cdnjs.cloudflare.com/ajax/libs/js-yaml/3.8.4/js-yaml.js"></script>
+<style>
+/* IME Fix */
+@font-face {
+  font-family: 'ime_jp_rp';
+  src: url('/ime_jp_rp.woff') format('woff');
+}
+.ace_editor > .ace_text-input {
+  padding-top: 1px;
+  padding-left: 1px;
+  letter-spacing: 1px;
+  font-family: ime_jp_rp, Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
+}
+</style>
 <div class="row">
   <%= form_for @mode do |f| %>
-    <div class="col-md-8 col-md-offset-2">
+    <div class="col-md-6">
         <%= f.label :param, 'モード記述' %>
-        <%= f.text_area :param, cols: 80, rows: 20 %>
+        <div id="ace-editor" style="height: 600px;"><%= @mode.param %></div>
+        <%= f.hidden_field :param, id: :param, value: @mode.param %>
         <%= f.submit "Edit mode", class: "btn btn-primary" %>
         <%= link_to 'Back', project_modes_path(@mode.project_id) %>
     </div>
@@ -11,43 +26,67 @@
     <p>
       プレビュー
     </p>
-    <%= button_tag '更新', type: :button, onclick: 'preview()' %>
-    <div id="mynetwork"></div>
+    <%= button_tag '描画', type: :button, onclick: 'preview()' %>
+    <div id="mynetwork" style="height: 600px"></div>
   </div>
 </div>
 <script>
   function preview() {
     var editor = ace.edit("ace-editor");
     $('#param').val(editor.getValue());
-    var doc;
-    try {
-      doc = jsyaml.load($('#param').val());
-    } catch (e) {
-      doc = {'Error': 'YAMLフォーマットで入力してください'}
-    }
-    var i = 1;
+    var doc = jsyaml.load($('#param').val());
     var elements = [];
     var arrows = [];
+    var i = 1;
     for (key in doc) {
-      elements.push({id: i, label: key, shape: 'box'});
       if ($.isArray(doc[key])) {
-        for (var k = 0; k < doc[key].length; k++) {
-          i++;
-          elements.push({id: i, label: doc[key][k], shape: 'box'});
-          arrows.push({from: i - 1, to: i, arrows:'to'});
+        elements.push({id: i, label: key, shape: 'box', color: {background:'moccasin', border:'orange'}});
+      } else {
+        elements.push({id: i, label: key + (doc[key]['condition'] ? '\n' + doc[key]['condition'] : ''), shape: 'box', color: {background:'pink', border:'purple'}});
+      }
+      doc[key].node_no = i;
+      i++
+    }
+    for (key in doc) {
+      if ($.isArray(doc[key])) {
+        var from = doc[key].node_no;
+        for (var j = 0; j < doc[key].length; j++) {
+          var to;
+          if (doc[doc[key][j]]) {
+            to = doc[doc[key][j]].node_no;
+          } else {
+            elements.push({id: i, label: doc[key][j], shape: 'box'});
+            to = i;
+            i++;
+          }
+          arrows.push({from: from, to: to, arrows:'to'});
+          from = to;
         }
       } else {
-        j = 1;
-        for (key2 in doc) {
-          if (doc[key]['true'] == key2) {
-            arrows.push({from: i, to: j, arrows:'to', label:'true'});
-          } else if (doc[key]['false'] == key2) {
-            arrows.push({from: i, to: j, arrows:'to', label:'false'});
+        var to;
+        if ('true' in doc[key]) {
+          if (doc[doc[key]['true']]) {
+            to = doc[doc[key]['true']].node_no;
+          } else {
+            elements.push({id: i, label: doc[key]['true'], shape: 'box'});
+            doc[key]['true'].node_no = i;
+            to = i;
+            i++;
           }
-          j++;
+          arrows.push({from: doc[key].node_no, to: to, arrows:'to', label:'true'});
+        }
+        if ('false' in doc[key]) {
+          if (doc[doc[key]['false']]) {
+            to = doc[doc[key]['false']].node_no;
+          } else {
+            elements.push({id: i, label: doc[key]['false'], shape: 'box'});
+            doc[key]['false'].node_no = i;
+            to = i;
+            i++;
+          }
+          arrows.push({from: doc[key].node_no, to: to, arrows:'to', label:'false'});
         }
       }
-      i++;
     }
     // create an array with nodes
     var nodes = new vis.DataSet(elements);
@@ -69,10 +108,17 @@
     $('#param').val(editor.getValue());
     return true;
   });
+  $(window).keydown(function(e){
+    if(event.ctrlKey){
+      if(e.keyCode === 83){
+        preview();
+        return false;
+      }
+    }
+  });
   $(document).ready(function(){
     var editor = ace.edit("ace-editor");
     editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/html");
-    preview();
+    editor.getSession().setMode("ace/mode/yaml");
   });
 </script>
