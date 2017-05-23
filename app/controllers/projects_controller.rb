@@ -47,20 +47,21 @@ class ProjectsController < ApplicationController
 
   def show
     @project = Project.find(params[:id])
-    session[:project] = params[:id]
     return nil unless @project.nil?
     flash[:danger] = '選択されたプロジェクトが存在しません'
     redirect_to projects_path
   end
 
   def export_ecuc
-    arxml = Project.find(session[:project]).to_arxml('ecuc')
+    @project = Project.find(params[:id])
+    arxml = @project.to_ecuc_arxml
     raise 'invalid qines version' if arxml.nil?
     send_data arxml, filename: 'Ecuc.arxml'
   end
 
   def export_systemdesign
-    arxml = Project.find(session[:project]).to_arxml('systemdesign')
+    @project = Project.find(params[:id])
+    arxml = @project.to_systemdesign_arxml
     raise 'invalid qines version' if arxml.nil?
     send_data arxml, filename: 'SystemDesign.arxml'
   end
@@ -72,8 +73,8 @@ class ProjectsController < ApplicationController
     @communication_protocol = :can
   end
 
-  # TODO:disabled タスク #654
-  def create_sign(name, project )
+  # TODO: disabled タスク #654
+  def create_sign(name, project)
     Sign.create!(name: name, active: '1', vartype:'2', unit:'3',
     exchange_rate:'4.0', priority:'5', input_module:'6', output_moduel:'7',
     input_period:'8', output_period:'9', access_level:'10', project:project,

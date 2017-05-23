@@ -1,14 +1,14 @@
 <h1><%= @project.name %></h1>
 
-<div class="project_link"><%= link_to 'メッセージ設計', messages_path(:project => @project) %></div>
+<div class="project_link"><%= link_to 'メッセージ設計', project_messages_path(@project) %></div>
 <div class="project_link"><%= link_to 'モード設計', project_modes_path(@project) %></div>
-<div class="project_link"><%= link_to 'DB管理',  database_manage_path(:project => @project) %></div>
+<div class="project_link"><%= link_to 'DB管理',  database_manage_path(@project) %></div>
 
 <div class="container">
   <ul class="list-inline pull-right">
     <li>エクスポート：</li>
-    <li><%= link_to "Ecuc.arxml", project_export_ecuc_path(project_id: @project.id), :target=>["_blank"] %></li>
+    <li><%= link_to "Ecuc.arxml", export_ecuc_project_path(project_id: @project.id) %></li>
     <li>｜</li>
-    <li><%= link_to "SystemDesign.arxml", project_export_systemdesign_path(project_id: @project.id), :target=>["_blank"] %></li>
+    <li><%= link_to "SystemDesign.arxml", export_systemdesign_project_path(project_id: @project.id) %></li>
   </ul>
 </div>

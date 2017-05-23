@@ -18,10 +18,8 @@ module ArxmlWriter
 
   def create_arpackage(shortname:'', longname:'', uuid:'', attributes:nil)
     arpackage = @@arpackages.add_element('AR-PACKAGE', {'UUID' => uuid})
-    unless attributes&.nil?
-      attributes.each_pair { |key, val|
-        arpackage.add_attributes({"#{key}" => "#{val}"})
-      }
+    attributes&.each_pair do |key, val|
+      arpackage.add_attributes(key.to_s => val.to_s)
     end
     arpackage.add_element('SHORT-NAME').add_text(shortname)
     if longname != ''

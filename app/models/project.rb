@@ -1,5 +1,8 @@
 # coding: utf-8
 
+include ArxmlExporter_r403
+include ArxmlExporter_r422
+
 class Project < ApplicationRecord
   has_many :messages
   has_many :modes
@@ -24,14 +27,26 @@ class Project < ApplicationRecord
     ''
   end
 
-  def to_arxml(mode)
-    if mode == 'ecuc' && v1_0?
+  def import_dbc(uploadfile)
+    MessagesHelper::DbcFileParser.parse(self, uploadfile.read.force_encoding('UTF-8'))
+  end
+
+  def export_dbc
+    MessagesHelper::DbcFileGenerator.generate(self)
+  end
+
+  def to_ecuc_arxml
+    if v1_0?
       export_ecuc_comstack_r403(project: self, messages: messages)
-    elsif mode == 'ecuc' && v2_0?
+    elsif v2_0?
       export_ecuc_comstack_r422(project: self, messages: messages)
-    elsif mode == 'systemdesign' && v1_0?
+    end
+  end
+
+  def to_systemdesign_arxml
+    if v1_0?
       export_signals_r403(project: self, messages: messages)
-    elsif mode == 'systemdesign' && v2_0?
+    elsif v2_0?
       export_signals_r422(project: self, messages: messages)
     end
   end

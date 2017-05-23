@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :database_manages, only: :show do
-    collection do
+    member do
       get 'sign_csvexport'
       get 'sign_binexport'
       get 'config_csvexport'
@@ -19,18 +19,20 @@ Rails.application.routes.draw do
   resources :users,    except: :destroy
   resources :sessions, only: [:new, :create, :destroy]
   resources :projects, except: :destroy, shallow: true do
-    get 'export_ecuc'
-    get 'export_systemdesign'
-    resources :modes
-  end
-  resources :messages, except: :show do
-    collection do
-      get 'export'
-      post 'import'
-    end
     member do
-      put 'add_signal'
-      delete 'del_signal'
+      get 'export_ecuc'
+      get 'export_systemdesign'
+    end
+    resources :modes
+    resources :messages, except: :show do
+      collection do
+        get 'export'
+        post 'import'
+      end
+      member do
+        put 'add_signal'
+        delete 'del_signal'
+      end
     end
   end
 end

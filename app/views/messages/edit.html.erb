@@ -37,7 +37,7 @@
     </div>
     <div class="col-md-2 col-md-offset-3">
         <%= f.submit "Edit message", class: "btn btn-primary　col-md-1" %>
-        <%= link_to 'Back', messages_path %>
+        <%= link_to 'Back', project_messages_path(project_id: @message.project_id) %>
     </div>
   <% end %>
 </div>
