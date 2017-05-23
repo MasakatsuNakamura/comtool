@@ -1,17 +1,8 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/js-yaml/3.4.2/js-yaml.min.js"></script>
-<style type="text/css">
-    #mynetwork {
-        width: 600px;
-        height: 600px;
-        border: 1px solid lightgray;
-    }
-</style>
 <div class="row">
   <%= form_for @mode do |f| %>
-    <div class="col-md-6">
+    <div class="col-md-8 col-md-offset-2">
         <%= f.label :param, 'モード記述' %>
-        <div id='ace-editor' style='height: 600px;'><%= @mode.param %></div>
-        <%= f.hidden_field :param, id: :param %>
+        <%= f.text_area :param, cols: 80, rows: 20 %>
         <%= f.submit "Edit mode", class: "btn btn-primary" %>
         <%= link_to 'Back', project_modes_path(@mode.project_id) %>
     </div>

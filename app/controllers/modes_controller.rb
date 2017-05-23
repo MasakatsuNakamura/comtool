@@ -1,6 +1,6 @@
 class ModesController < ApplicationController
   before_action :set_project, only: %w[index new create]
-  before_action :set_mode, only: %w[show edit update destroy save]
+  before_action :set_mode, only: %w[show edit update destroy]
 
   def index; end
 

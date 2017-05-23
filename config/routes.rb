@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :database_manages, only: :show do
-    collection do
+    member do
       get 'sign_csvexport'
       get 'sign_binexport'
       get 'config_csvexport'

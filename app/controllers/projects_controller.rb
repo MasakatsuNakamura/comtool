@@ -1,3 +1,6 @@
+include ArxmlExporter_r403
+include ArxmlExporter_r422
+
 class ProjectsController < ApplicationController
   before_action :find_master, only: [:create, :new, :update]
   def index
@@ -45,27 +48,22 @@ class ProjectsController < ApplicationController
   def show
     @project = Project.find(params[:id])
     return nil unless @project.nil?
-    redirect_to projects_path, danger: '選択されたプロジェクトが存在しません'
+    flash[:danger] = '選択されたプロジェクトが存在しません'
+    redirect_to projects_path
   end
 
   def export_ecuc
     @project = Project.find(params[:id])
     arxml = @project.to_ecuc_arxml
-    if arxml.nil?
-      raise 'invalid qines version'
-    else
-      send_data arxml, filename: 'Ecuc.arxml'
-    end
+    raise 'invalid qines version' if arxml.nil?
+    send_data arxml, filename: 'Ecuc.arxml'
   end
 
   def export_systemdesign
     @project = Project.find(params[:id])
     arxml = @project.to_systemdesign_arxml
-    if arxml.nil?
-      raise 'invalid qines version'
-    else
-      send_data arxml, filename: 'SystemDesign.arxml'
-    end
+    raise 'invalid qines version' if arxml.nil?
+    send_data arxml, filename: 'SystemDesign.arxml'
   end
 
   private
