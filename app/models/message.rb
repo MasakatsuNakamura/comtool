@@ -1,3 +1,5 @@
+# coding: utf-8
+
 class Message < ApplicationRecord
   attr_accessor :duplicate_source
 
@@ -12,7 +14,7 @@ class Message < ApplicationRecord
             presence: true,
             uniqueness: { case_sensitive: false, scope: :project_id },
             length: { maximum: 50 },
-            format: { with: /\A[a-zA-Z]\w*\z/, message: '半角英数とアンダースコアが利用できます'}
+            format: { with: /\A[a-zA-Z]\w*\z/, message: '半角英数とアンダースコアが利用できます' }
 
   validates :canid,
             presence: true,
@@ -21,9 +23,15 @@ class Message < ApplicationRecord
   validate :message_layout_should_be_correct
 
   def com_signals_build
+    unused_name =
+      project.com_signals.where("name like 'Signal%'").map do |com_signal|
+        com_signal.name =~ /Signal([0-9]+)/i
+        $LAST_MATCH_INFO[1].to_i
+      end.max + 1
+
     # default com_signal
-    c = com_signals.build(
-      name: "Signal#{project.com_signals.length}",
+    com_signals.build(
+      name: "Signal#{unused_name}",
       unit: 'Enter a unit',
       description: 'Enter a description',
       bit_offset: 0,
@@ -34,20 +42,34 @@ class Message < ApplicationRecord
     )
   end
 
-  def self.duplicate_from_arxml(params, opt = {})
-    m = Message.new(params)
-
+  def duplicate_from_arxml(duplicate_source)
     # TODO: arxmlからメッセージのプロパティを読み込む
-    m.canid = 100
-    m.txrx = opt[:duplicate_source] ? opt[:duplicate_source].to_i % 2 : 0
-    m.baudrate = 2
-    m.bytesize = 1
+    self.canid = 100
+    self.txrx = duplicate_source ? duplicate_source.to_i % 2 : 0
+    self.baudrate = 2
+    self.bytesize = 1
+    com_signals_build
+    self
+  end
 
-    if opt[:project]
-      m.project = Project.find(opt[:project])
-      m.com_signals_build
+  def unused_sign
+    used_signs = com_signals.map(&:sign_id)
+    unused_signs = Sign.where(project_id: project_id).reject do |sign|
+      used_signs.include?(sign.id)
     end
-    m
+    unused_signs.empty? ? nil : unused_signs[0].id
+  end
+
+  def unused_bit
+    unused_bit = Array.new(bytesize * 8, true)
+    com_signals.each do |c|
+      offset = c.bit_offset
+      c.bit_size.times do
+        unused_bit[offset] = false if offset < bytesize * 8
+        offset = next_bit(offset)
+      end
+    end
+    unused_bit.index(true)
   end
 
   private
@@ -56,24 +78,27 @@ class Message < ApplicationRecord
     message_layout = Array.new(bytesize * 8, false)
     com_signals.each do |c|
       offset = c.bit_offset
-      bit_size = c.bit_size
-      bit_size.times do
+      c.bit_size.times do
         if message_layout[offset].nil?
-          errors[:bit_offset] << 'メッセージレイアウトが範囲外です'
+          errors.add(:bit_offset, 'メッセージレイアウトが範囲外です')
           break
         elsif message_layout[offset]
-          errors[:bit_offset] << 'メッセージレイアウトが重複しています'
+          errors.add(:bit_offset, 'メッセージレイアウトが重複しています')
           break
         end
         message_layout[offset] = true
-        if project.little_endian?
-          offset += 1
-        elsif (offset % 8).zero?
-          offset += 15
-        else
-          offset -= 1
-        end
+        offset = next_bit(offset)
       end
+    end
+  end
+
+  def next_bit(offset)
+    if project.little_endian?
+      1
+    elsif (offset % 8).zero?
+      15
+    else
+      -1
     end
   end
 end

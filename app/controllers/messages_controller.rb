@@ -7,6 +7,7 @@ class MessagesController < ApplicationController
   def new
     @project = Project.find(params[:project_id])
     @message = Message.new
+    @message.project = @project
   end
 
   def edit
@@ -15,7 +16,9 @@ class MessagesController < ApplicationController
 
   def create
     @project = Project.find(params[:project_id])
-    @message = Message.duplicate_from_arxml(create_params, { project: @project.id, duplicate_source: params[:message][:duplicate_source] })
+    @message = Message.new(create_params)
+    @message.project = @project
+    @message.duplicate_from_arxml(params[:message][:duplicate_source])
     if @message.save
       redirect_to project_messages_path(@project)
     else
@@ -59,15 +62,10 @@ class MessagesController < ApplicationController
 
   def add_signal
     @message = Message.find(params[:id])
-
-    #    sign_id = unused_sign(@message, session[:project])
-    bit_offset = unused_bit(@message, @message.project_id)
-
     # default com_signal
     c = @message.com_signals_build
-
-    #    c.sign_id    = sign_id
-    c.bit_offset = bit_offset
+    #    c.sign_id    = @message.unused_sign
+    c.bit_offset = @message.unused_bit
     c.bit_size   = 1
 
     if c.save
@@ -121,46 +119,4 @@ class MessagesController < ApplicationController
     #    end
   end
 
-  def unused_sign(msg, pid)
-    used_signs = []
-    msg.com_signals.each { |c| used_signs << c.sign_id }
-
-    unused_signs = Sign.where(project_id: pid).reject { |sign| used_signs.include?(sign.id) }
-
-    if unused_signs.empty?
-      nil
-    else
-      unused_signs[0].id
-    end
-  end
-
-  def unused_bit(msg, pid)
-    unused_bit = Array.new(msg.bytesize * 8, true)
-
-    project = Project.find(msg.project_id)
-
-    msg.com_signals.each do |c|
-      if project.little_endian?
-        c.bit_size.times do |bit|
-          offset = bit + c.bit_offset
-          unused_bit[offset] = false if offset < msg.bytesize * 8
-        end
-      else
-        offset = c.bit_offset
-        bit_size = c.bit_size
-        bit_size.times do
-          unused_bit[offset] = false if offset < msg.bytesize * 8
-          bit_size -= 1
-
-          if (offset % 8).zero?
-            offset += 15
-          else
-            offset -= 1
-          end
-        end
-      end
-    end
-
-    unused_bit.index(true)
-  end
 end

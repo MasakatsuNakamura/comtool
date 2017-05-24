@@ -18,8 +18,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       sign_in @user
-      flash[:success] = 'Welcome to the Q-Ape tools!'
-      redirect_to projects_path
+      redirect_to projects_path, success: 'Welcome to the Q-Ape tools!'
     else
       render 'new'
     end

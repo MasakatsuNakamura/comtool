@@ -7,8 +7,8 @@
 <div class="container">
   <ul class="list-inline pull-right">
     <li>エクスポート：</li>
-    <li><%= link_to "Ecuc.arxml", export_ecuc_project_path(@project) %></li>
+    <li><%= link_to "Ecuc.arxml", export_ecuc_project_path(@project, format: :xml) %></li>
     <li>｜</li>
-    <li><%= link_to "SystemDesign.arxml", export_systemdesign_project_path(@project) %></li>
+    <li><%= link_to "SystemDesign.arxml", export_systemdesign_project_path(@project, format: :xml) %></li>
   </ul>
 </div>

@@ -1,3 +1,14 @@
 // Place all the styles related to the modes controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@font-face {
+  font-family: 'ime_jp_rp';
+  src: url('/ime_jp_rp.woff') format('woff');
+}
+
+.ace_editor > .ace_text-input {
+  padding-top: 1px;
+  padding-left: 1px;
+  letter-spacing: 1px;
+  font-family: ime_jp_rp, Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
+}

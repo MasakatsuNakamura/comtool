@@ -1,9 +1,9 @@
 # coding: utf-8
 
-include ArxmlExporter_r403
-include ArxmlExporter_r422
-
 class Project < ApplicationRecord
+  include ArxmlExporter_r403
+  include ArxmlExporter_r422
+
   has_many :messages
   has_many :modes
   has_many :com_signals
@@ -38,7 +38,7 @@ class Project < ApplicationRecord
   def to_ecuc_arxml
     if v1_0?
       export_ecuc_comstack_r403(project: self, messages: messages)
-    elsif v2_0?
+    else
       export_ecuc_comstack_r422(project: self, messages: messages)
     end
   end
@@ -46,7 +46,7 @@ class Project < ApplicationRecord
   def to_systemdesign_arxml
     if v1_0?
       export_signals_r403(project: self, messages: messages)
-    elsif v2_0?
+    else
       export_signals_r422(project: self, messages: messages)
     end
   end
