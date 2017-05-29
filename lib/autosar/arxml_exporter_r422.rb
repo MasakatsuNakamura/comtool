@@ -1,444 +1,267 @@
-require 'securerandom'
-
 module ArxmlExporter_r422
-  def export_ecuc_comstack_r422(project:nil, messages:nil)
+  def export_ecuc_comstack_r422(project: nil, messages: nil)
     @project = project
     @messages = messages
-    @longname = LongName.new(l4:'JA')
 
-    autosar = Autosar.new()
-    autosar.arpackages = Hash.new([])
-    autosar.arpackages[:Ecuc] = ArPackage.new(shortname:'Ecuc', longname:@longname, uuid:SecureRandom.uuid)
-    autosar.arpackages[:Ecuc] .elements = Hash.new([])
-    autosar.arpackages[:Ecuc] .elements[:CanIf] = create_CanIf_r422()
-    autosar.arpackages[:Ecuc] .elements[:Com] = create_Com_r422()
-    autosar.arpackages[:Ecuc] .elements[:Ecuc] = create_Ecuc_r422()
-    autosar.arpackages[:Ecuc] .elements[:PduR] = create_PduR_r422()
+    cEcucConfig = ArxmlManager.new(version: 'r422', kind: 'Ecuc')
+    cEcucConfig['Ecuc'] = {
+      "CanIf_#{@project.name}" => create_CanIf_r422,
+      "Com_#{@project.name}" => create_Com_r422,
+      "Ecuc_#{@project.name}" => create_Ecuc_r422,
+      "PduR_#{@project.name}" => create_PduR_r422
+    }
 
-#    pp autosar
-    return autosar.to_arxml(version:'r422')
+    #    pp cEcucConfig
+    cEcucConfig.to_arxml
   end
 
-  def export_signals_r422(project:nil, messages:nil)
+  def export_signals_r422(project: nil, messages: nil)
     @project = project
     @messages = messages
 
-    autosar = Autosar.new()
-    autosar.arpackages = Hash.new([])
-    autosar.arpackages[:SystemDesign] = ArPackage.new(shortname:'SystemDesign', uuid:SecureRandom.uuid)
-    autosar.arpackages[:SystemDesign].elements = Hash.new([])
-    create_SystemSignal_r422(autosar.arpackages[:SystemDesign].elements)
-    autosar.arpackages[:SystemDesign].elements[:ISignalIPdu] = create_ISignalIPdu_r422()
+    cSystemDesign = ArxmlManager.new(version: 'r422', kind: 'SystemDesign')
+    cSystemDesign['SystemDesign'] = {
+      'SYSTEM-SIGNAL' => create_SystemSignal_r422,
+      'I-SIGNAL-I-PDU' => create_ISignalIPdu_r422
+    }
 
-    return autosar.to_arxml(version:'r422', kind:'SystemDesign')
+    #    pp cSystemDesign
+    cSystemDesign.to_arxml
   end
 
   private
+
   def create_CanIf_r422
-    # CanIf モジュール作成
-    canIf = EcucModuleConfigurationValue.new(shortname:"CanIf_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/QINeS/CanIf'), uuid:SecureRandom.uuid,
-                                                                    containers:Hash.new([]))
-    # CanIfInitCfg コンテナ作成
-    canIfInitCfg = EcucContainerValue.new(shortname:"CanIfInitCfg_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/CanIf/CanIfInitCfg'),
-                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
+    hCanIfContainers = {}
+    hCanIfSubContainers = {}
 
     count_CanIfTxPduCfg = 0
     count_CanIfRxPduCfg = 0
-    @messages.each { |message|
-      if message.txrx == 0 then # 送信
-        shortname = "CanIfTxPduCfg_" + message.name
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg')
-        # PARAMETER-VALUES 作成
-        parametervalues = Hash.new([])
-        parametervalues[:CanIfTxPduCanId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduCanId'),
-                      value:sprintf("0x%08x", message.canid))
-        parametervalues[:CanIfTxPduId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduId'),
-                      value:count_CanIfTxPduCfg.to_s)
-        parametervalues[:CanIfTxPduType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduType'),
-                      value:'STATIC')
-        parametervalues[:CanIfTxPduDlc] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduDlc'),
-                      value:message.bytesize.to_s)
-        parametervalues[:CanIfTxPduCanIdType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduCanIdType'),
-                      value:message.data_frame.upcase)
-        parametervalues[:CanIfTxPduPnFilterPdu] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduPnFilterPdu'),
-                      value:0.to_s)
-        parametervalues[:CanIfTxPduReadNotifyStatus] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduReadNotifyStatus'),
-                      value:0.to_s)
-        parametervalues[:CanIfTxPduUserTxConfirmationUL] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduUserTxConfirmationUL'),
-                      value:"PDUR")
-        # REFERENCE-VALUES 作成
-        referencevalues = Hash.new([])
-#        referencevalues[:CanIfTxPduBswSchExclAreaIdRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduBswSchExclAreaIdRef'),
-#                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:'/Ecuc/Rte/CanIf/CriticalSection'))
-#        referencevalues[:CanIfTxPduBufferRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduBufferRef'),
-#                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/CanIf_#{@project.name}/CanIfInitCfg_#{@project.name}/BufCfg0"))
-        referencevalues[:CanIfTxPduRef] = ReferenceValue.new(
-                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfTxPduCfg/CanIfTxPduRef'),
-                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
-
-        # CanIfTxPduCfg コンテナ作成
-        canIfInitCfg.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
+    @messages.each do |message|
+      if message.txrx == 0 # 送信
+        hParameter = {}
+        hParameter['DefinitionRef']                  = 'CanIfTxPduCfg'
+        hParameter['CanIfTxPduCanId']                = sprintf('0x%08x', message.canid)
+        hParameter['CanIfTxPduId']                   = count_CanIfTxPduCfg.to_s
+        hParameter['CanIfTxPduType']                 = 'STATIC'
+        hParameter['CanIfTxPduDlc']                  = message.bytesize.to_s
+        hParameter['CanIfTxPduCanIdType']            = message.data_frame.upcase
+        hParameter['CanIfTxPduPnFilterPdu']          = 0.to_s
+        hParameter['CanIfTxPduReadNotifyStatus']     = 0.to_s
+        hParameter['CanIfTxPduUserTxConfirmationUL'] = 'PDUR'
+        hParameter['CanIfTxPduRef']                  =
+          "/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"
+        # CanIfTxPduCfg サブコンテナ
+        hCanIfSubContainers["CanIfTxPduCfg_#{message.name}"] = hParameter.sort.to_h
         count_CanIfTxPduCfg += 1
-      elsif message.txrx == 1 then  # 受信
-        shortname = "CanIfRxPduCfg_" + message.name
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg')
-        # PARAMETER-VALUES 作成
-        parametervalues = Hash.new([])
-        parametervalues[:CanIfRxPduCanId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduCanId'),
-                      value:sprintf("0x%08x", message.canid))
-        parametervalues[:CanIfRxPduDlc] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduDlc'),
-                      value:message.bytesize.to_s)
-        parametervalues[:CanIfRxPduCanIdType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduCanIdType'),
-                      value:message.data_frame.upcase)
-        parametervalues[:CanIfRxPduId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduId'),
-                      value:count_CanIfRxPduCfg.to_s)
-        parametervalues[:CanIfRxPduReadData] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduReadData'),
-                      value:0.to_s)
-        parametervalues[:CanIfRxPduReadNotifyStatus] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduReadNotifyStatus'),
-                      value:0.to_s)
-        parametervalues[:CanIfRxPduUserRxIndicationUL] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduUserRxIndicationUL'),
-                      value:"PDUR")
-        # REFERENCE-VALUES 作成
-        referencevalues = Hash.new([])
-#        referencevalues[:CanIfRxPduBswSchExclAreaIdRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduBswSchExclAreaIdRef'),
-#                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:'/Ecuc/Rte/CanIf/CriticalSection'))
-#        referencevalues[:CanIfRxPduHrhIdRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduHrhIdRef'),
-#                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/CanIf_#{@project.name}/CanIfInitCfg_#{@project.name}/InitHohCfg0/CanIfHrhCfg_can0"))
-        referencevalues[:CanIfRxPduRef] = ReferenceValue.new(
-                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/CanIf/CanIfInitCfg/CanIfRxPduCfg/CanIfRxPduRef'),
-                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
-
-        # CanIfRxPduCfg コンテナ作成
-        canIfInitCfg.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
+      elsif message.txrx == 1 # 受信
+        hParameter = {}
+        hParameter['DefinitionRef']                 = 'CanIfRxPduCfg'
+        hParameter['CanIfRxPduCanId']               = sprintf('0x%08x', message.canid)
+        hParameter['CanIfRxPduDlc']                 = message.bytesize.to_s
+        hParameter['CanIfRxPduCanIdType']           = message.data_frame.upcase
+        hParameter['CanIfRxPduId']                  = count_CanIfRxPduCfg.to_s
+        hParameter['CanIfRxPduReadData']            = 0.to_s
+        hParameter['CanIfRxPduReadNotifyStatus']    = 0.to_s
+        hParameter['CanIfRxPduUserRxIndicationUL']  = 'PDUR'
+        hParameter['CanIfRxPduRef']                 =
+          "/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"
+        # CanIfRxPduCfg サブコンテナ
+        hCanIfSubContainers["CanIfRxPduCfg_#{message.name}"] = hParameter.sort.to_h
         count_CanIfRxPduCfg += 1
       end
-    }
+    end
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'CanIfInitCfg'
+    hCanIfSubContainers.merge!(hParameter)
 
-    canIf.containers[:CanIfInitCfg] = canIfInitCfg
-    return canIf
+    # CanIfInitCfg コンテナ
+    hCanIfContainers["CanIfInitCfg_#{@project.name}"] = hCanIfSubContainers.sort.to_h
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'CanIf'
+    hCanIfContainers.merge!(hParameter)
+
+    # CanIf モジュール
+    hCanIfContainers.sort.to_h
   end
 
   def create_Com_r422
-    # Com モジュール作成
-    com = EcucModuleConfigurationValue.new(shortname:"Com_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/QINeS/Com'), uuid:SecureRandom.uuid,
-                                                                    containers:Hash.new([]))
-    # ComConfig コンテナ作成
-    comConfig = EcucContainerValue.new(shortname:"ComConfig_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig'),
-                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
+    hComContainers = {}
+    hComSubContainers = {}
 
-    # ComIPdu コンテナ作成
-    count_ComIPduHandleId = 0
-    @messages.each { |message|
-      if message.txrx == 0 then # 送信
-        shortname = "ComIPdu_" + message.name
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComIPdu')
-        # PARAMETER-VALUES 作成
-        parametervalues = Hash.new([])
-        parametervalues[:ComIPduCancellationSupport] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduCancellationSupport'),
-                      value:0.to_s)
-        parametervalues[:ComIPduDirection] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection'),
-                      value:'COM_Q_IPDU_DIR_SEND')
-        parametervalues[:ComIPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId'),
-                      value:count_ComIPduHandleId.to_s)
-        parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
-                      value:'COM_Q_IPDU_SIGPRO_IMMEDIATE')
-        parametervalues[:ComIPduType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduType'),
-                      value:'COM_Q_IPDU_TYPE_NORMAL')
-        # REFERENCE-VALUES 作成
-        referencevalues = Hash.new([])
-#        referencevalues[:ComIPduGroupRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduGroupRef'),
-#                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/IPduGrp_can0"))
-        message.com_signals.each { |signal|
-          referencevalues["ComIPduSignalRef#{signal.name}".to_sym] = ReferenceValue.new(
-                        definitionref:DefinitionRef.new(dest:"ECUC-REFERENCE-DEF", value:"/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalRef"),
-                        valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + 'ComSignal_' + signal.name))
-        }
-        referencevalues[:ComPduIdRef] = ReferenceValue.new(
-                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComPduIdRef'),
-                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
-
-        # ComIPdu コンテナ作成
-        txComIPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref, parametervalues:parametervalues,
-                                                            referencevalues:referencevalues, uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
-
-        txComIPdu.subcontainers[:ComTxIPdu] = create_ComTxIPdu_r422(message)
-
-        comConfig.subcontainers[":#{shortname}"] = txComIPdu
-        count_ComIPduHandleId += 1
-      elsif message.txrx == 1 then  # 受信
-        shortname = "ComIPdu_" + message.name
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComIPdu')
-        # PARAMETER-VALUES 作成
-        parametervalues = Hash.new([])
-        parametervalues[:ComIPduCancellationSupport] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduCancellationSupport'),
-                      value:0.to_s)
-        parametervalues[:ComIPduDirection] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduDirection'),
-                      value:'COM_Q_IPDU_DIR_RECEIVE')
-        parametervalues[:ComIPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduHandleId'),
-                      value:count_ComIPduHandleId.to_s)
-        parametervalues[:ComIPduSignalProcessing] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalProcessing'),
-                      value:'COM_Q_IPDU_SIGPRO_IMMEDIATE')
-        parametervalues[:ComIPduType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduType'),
-                      value:'COM_Q_IPDU_TYPE_NORMAL')
-        # REFERENCE-VALUES 作成
-        referencevalues = Hash.new([])
-#        referencevalues[:ComIPduGroupRef] = ReferenceValue.new(
-#                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduGroupRef'),
-#                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/IPduGrp_can0"))
-        message.com_signals.each { |signal|
-          referencevalues["ComIPduSignalRef#{signal.name}".to_sym] = ReferenceValue.new(
-                        definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComIPduSignalRef'),
-                        valueref:ValueRef.new(dest:"ECUC-CONTAINER-VALUE", value:"/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/" + 'ComSignal_' + signal.name))
-        }
-        referencevalues[:ComPduIdRef] = ReferenceValue.new(
-                      definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComPduIdRef'),
-                      valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE', value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
-
-        # ComIPdu コンテナ作成
-        comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
-        count_ComIPduHandleId += 1
+    @messages.each_with_index do |message, index|
+      hParameter = {}
+      hParameter['DefinitionRef']               = 'ComIPdu'
+      hParameter['ComIPduCancellationSupport']  = 0.to_s
+      hParameter['ComIPduHandleId']             = index.to_s
+      hParameter['ComIPduSignalProcessing']     = 'COM_Q_IPDU_SIGPRO_IMMEDIATE'
+      hParameter['ComIPduType']                 = 'COM_Q_IPDU_TYPE_NORMAL'
+      message.com_signals.each do |signal|
+        hParameter['ComIPduSignalRef'] =
+          "/Ecuc/Com_#{@project.name}/ComConfig_#{@project.name}/ComSignal_#{signal.name}"
       end
-    }
+      hParameter['ComPduIdRef'] =
+        "/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"
+      if message.txrx == 0 # 送信
+        hParameter['ComIPduDirection'] = 'COM_Q_IPDU_DIR_SEND'
+        # ComTxIPdu サブコンテナ
+        hParameter["ComTxIPdu_#{message.name}"] = create_ComTxIPdu_r422
+      elsif message.txrx == 1 # 受信
+        hParameter['ComIPduDirection'] = 'COM_Q_IPDU_DIR_RECEIVE'
+      end
+      # ComIPdu サブコンテナ
+      hComSubContainers["ComIPdu_#{message.name}"] = hParameter.sort.to_h
+    end
 
-    # ComSignal コンテナ作成
     count_ComHandleId = 0
-    @messages.each_with_index { |message, index|
-        message.com_signals.each { |signal|
-          shortname = 'ComSignal_' + signal.name
-          definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComSignal')
-          # PARAMETER-VALUES 作成
-          parametervalues = Hash.new([])
-          parametervalues[:ComBitPosition] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComBitPosition'),
-                        value:signal.bit_offset.to_s)
-          parametervalues[:ComBitSize] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComBitSize'),
-                        value:signal.bit_size.to_s)
-          parametervalues[:ComHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComHandleId'),
-                        value:count_ComHandleId.to_s)
-          parametervalues[:ComInitialValueOnly] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-BOOLEAN-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComInitialValueOnly'),
-                        value:0.to_s)
-          parametervalues[:ComSignalEndianness] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalEndianness'),
-                        value: (@project.little_endian? ? 'COM_Q_SIG_ENDIAN_LITTLE_ENDIAN' : 'COM_Q_SIG_ENDIAN_BIG_ENDIAN'))
-          parametervalues[:ComSignalInitValue] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-STRING-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalInitValue'),
-                        value:signal.initial_value)
-          sigtype_value = "COM_Q_SIGTYPE_#{signal.data_type.upcase}"
-          sigtype_value.sub!(/COM_Q_SIGTYPE_BOOLEAN/, 'COM_Q_SIGTYPE_BOOL')
-          parametervalues[:ComSignalType] = ParameterValue.new(type:'ECUC-TEXTUAL-PARAM-VALUE',
-                        definitionref:DefinitionRef.new(dest:'ECUC-ENUMERATION-PARAM-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSignalType'),
-                        value:sigtype_value)
-          # REFERENCE-VALUES 作成
-          referencevalues = Hash.new([])
-          referencevalues[:ComSystemTemplateSystemSignalRef] = ReferenceValue.new(
-                        definitionref:DefinitionRef.new(dest:'ECUC-FOREIGN-REFERENCE-DEF', value:'/QINeS/Com/ComConfig/ComSignal/ComSystemTemplateSystemSignalRef'),
-                        valueref:ValueRef.new(dest:'I-SIGNAL-TO-I-PDU-MAPPING', value:"/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"))
+    @messages.each do |message|
+      message.com_signals.each do |signal|
+        hParameter = {}
+        hParameter['DefinitionRef']       = 'ComSignal'
+        hParameter['ComBitPosition']      = signal.bit_offset.to_s
+        hParameter['ComBitSize']          = signal.bit_size.to_s
+        hParameter['ComHandleId']         = count_ComHandleId.to_s
+        hParameter['ComInitialValueOnly'] = 0.to_s
+        hParameter['ComSignalEndianness'] = (@project.little_endian? ? 'COM_Q_SIG_ENDIAN_LITTLE_ENDIAN' : 'COM_Q_SIG_ENDIAN_BIG_ENDIAN')
+        hParameter['ComSignalInitValue']  = signal.initial_value
+        sigtype_value = "COM_Q_SIGTYPE_#{signal.data_type.upcase}"
+        sigtype_value.sub!(/COM_Q_SIGTYPE_BOOLEAN/, 'COM_Q_SIGTYPE_BOOL')
+        hParameter['ComSignalType'] = sigtype_value
+        hParameter['ComSystemTemplateSystemSignalRef'] =
+          "/SystemDesign/ISignalIPdu_#{@project.name}/ISignalToIPduMapping_#{signal.name}_#{message.name}"
+        # ComSignal サブコンテナ
+        hComSubContainers["ComSignal_#{signal.name}"] = hParameter.sort.to_h
+        count_ComHandleId += 1
+      end
+    end
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'ComConfig'
+    hComSubContainers.merge!(hParameter)
 
-          # ComSignal コンテナ作成
-          comConfig.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                  parametervalues:parametervalues,  referencevalues:referencevalues, uuid:SecureRandom.uuid)
+    # ComConfig コンテナ
+    hComContainers["ComConfig_#{@project.name}"] = hComSubContainers.sort.to_h
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'Com'
+    hComContainers.merge!(hParameter)
 
-          count_ComHandleId += 1
-      }
-    }
-
-    com.containers[:ComConfig] = comConfig
-    return com
+    # Com モジュール
+    hComContainers.sort.to_h
   end
 
-  def create_ComTxIPdu_r422(message)
-    # ComTxIPdu コンテナ作成
-    comTxIPdu = EcucContainerValue.new(shortname:'ComTxIPdu_'+message.name, longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/Com/ComConfig/ComIPdu/ComTxIPdu'),
-                            parametervalues:nil, uuid:SecureRandom.uuid, subcontainers:nil)
+  def create_ComTxIPdu_r422
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'ComTxIPdu'
 
-    return comTxIPdu
+    # ComTxIPdu コンテナ
+    hParameter.sort.to_h
   end
 
   def create_Ecuc_r422
-    # Ecuc モジュール作成
-    ecuc = EcucModuleConfigurationValue.new(shortname:"Ecuc_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/QINeS/EcuC'), uuid:SecureRandom.uuid,
-                                                                    containers:Hash.new([]))
+    hEcucContainers = {}
+    hEcucSubContainers = {}
+    hEcucSubSubContainers = {}
 
-    #EcucConfigSet コンテナ作成
-    ecucConfigSet =  EcucContainerValue.new(shortname:"EcucConfigSet_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/EcuC/EcucConfigSet'),
-                            parametervalues:nil, uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
+    @messages.each do |message|
+      hParameter = {}
+      hParameter['DefinitionRef'] = 'Pdu'
+      hParameter['PduLength']     = message.bytesize.to_s
+      # Pdu サブコンテナ
+      hEcucSubSubContainers["Pdu_#{message.name}"] = hParameter.sort.to_h
+    end
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'EcucPduCollection'
+    hEcucSubSubContainers.merge!(hParameter)
 
-    # EcucPduCollection コンテナ作成
-    ecucPduCollection = EcucContainerValue.new(shortname:"EcucPduCollection_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/EcuC/EcucConfigSet/EcucPduCollection'),
-                            parametervalues:nil, uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
+    # EcucPduCollection サブコンテナ
+    hEcucSubContainers["EcucPduCollection_#{@project.name}"] = hEcucSubSubContainers.sort.to_h
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'EcucConfigSet'
+    hEcucSubContainers.merge!(hParameter)
 
-    ecucConfigSet.subcontainers[:EcucPduCollection] = ecucPduCollection
+    # EcucConfigSet コンテナ
+    hEcucContainers["EcucConfigSet_#{@project.name}"] = hEcucSubContainers.sort.to_h
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'EcuC'
+    hEcucContainers.merge!(hParameter)
 
-    @messages.each { |message|
-        shortname = "Pdu_#{message.name}"
-        definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/EcuC/EcucConfigSet/EcucPduCollection/Pdu')
-        # PARAMETER-VALUES 作成
-        parametervalues = Hash.new([])
-        parametervalues[:PduLength] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                      definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF', value:'/QINeS/EcuC/EcucConfigSet/EcucPduCollection/Pdu/PduLength'),
-                      value:message.bytesize.to_s)
-
-        # Pdu コンテナ作成
-        ecucPduCollection.subcontainers[":#{shortname}"] = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                        parametervalues:parametervalues, uuid:SecureRandom.uuid)
-    }
-
-    ecuc.containers[:EcucConfigSet] = ecucConfigSet
-    return ecuc
+    # Ecuc モジュール
+    hEcucContainers.sort.to_h
   end
 
   def create_PduR_r422
-    # PduR モジュール作成
-    pduR = EcucModuleConfigurationValue.new(shortname:"PduR_#{@project.name}", longname:@longname,
-                                                                    definitionref:DefinitionRef.new(value:'/QINeS/PduR'), uuid:SecureRandom.uuid,
-                                                                    containers:Hash.new([]))
-    # PduRRoutingTables コンテナ作成
-    # PARAMETER-VALUES 作成
-    parametervalues = Hash.new([])
-    parametervalues[:PduRConfigurationId] = ParameterValue.new(type:"ECUC-NUMERICAL-PARAM-VALUE",
-                  definitionref:DefinitionRef.new(dest:"ECUC-INTEGER-PARAM-DEF", value:"/QINeS/PduR/PduRRoutingTables/PduRConfigurationId"),
-                  value:0.to_s)
+    hPduRContainers = {}
+    hPduRSubContainers = {}
+    hPduRSubSubContainers = {}
 
-    pduRRoutingTables = EcucContainerValue.new(shortname:"PduRRoutingTables_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF', value:'/QINeS/PduR/PduRRoutingTables'),
-                            parametervalues: parametervalues,
-                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
+    @messages.each_with_index do |message, index|
+      # PduRRoutingPath コンテナ
+      sPduRRoutingPath = "PduRRoutingPath_#{message.name}"
+      hPduRSubSubContainers[sPduRRoutingPath] = {}
+      hParameter = {}
+      hParameter['DefinitionRef']       = 'PduRDestPdu'
+      hParameter['PduRDestPduHandleId'] = index.to_s
+      hParameter['PduRDestPduRef'] =
+        "/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"
+      # PduRDestPdu コンテナ
+      hPduRSubSubContainers[sPduRRoutingPath]["PduRDestPdu_#{message.name}"] = hParameter.sort.to_h
+      hParameter = {}
+      hParameter['DefinitionRef']         = 'PduRSrcPdu'
+      hParameter['PduRSourcePduHandleId'] = index.to_s
+      hParameter['PduRSrcPduRef'] =
+        "/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"
+      # PduRSrcPdu コンテナ
+      hPduRSubSubContainers[sPduRRoutingPath]["PduRSrcPdu_#{message.name}"] = hParameter.sort.to_h
+      hParameter = {}
+      hParameter['DefinitionRef'] = 'PduRRoutingPath'
+      hPduRSubSubContainers[sPduRRoutingPath].merge!(hParameter)
+    end
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'PduRRoutingTable'
+    hPduRSubSubContainers.merge!(hParameter)
 
-    # PduRRoutingTable コンテナ作成
-    pduRRoutingTable = EcucContainerValue.new(shortname:"PduRRoutingTable_#{@project.name}", longname:@longname,
-                            definitionref:DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                                                  value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable'),
-                            uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
-    pduRRoutingTables.subcontainers[:PduRRoutingTable] = pduRRoutingTable
+    # PduRRoutingTable コンテナ
+    hPduRSubContainers["PduRRoutingTable_#{@project.name}"] = hPduRSubSubContainers.sort.to_h
+    hParameter = {}
+    hParameter['DefinitionRef']       = 'PduRRoutingTables'
+    hParameter['PduRConfigurationId'] = 0.to_s
+    hPduRSubContainers.merge!(hParameter)
 
-    @messages.each_with_index { |message, index|
-      # PduRRoutingPath コンテナ作成
-      shortname = "PduRRoutingPath_#{message.name}"
-      definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                              value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath')
-      pduRRoutingPath = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                                                        uuid:SecureRandom.uuid, subcontainers:Hash.new([]))
-      pduRRoutingTable.subcontainers[":#{shortname}"] = pduRRoutingPath
+    # PduRRoutingTables コンテナ
+    hPduRContainers["PduRRoutingTables_#{@project.name}"] = hPduRSubContainers.sort.to_h
+    hParameter = {}
+    hParameter['DefinitionRef'] = 'PduR'
+    hPduRContainers.merge!(hParameter)
 
-      # PduRDestPdu コンテナ作成
-      shortname = "PduRDestPdu_#{message.name}"
-      definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                                value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu')
-      # PARAMETER-VALUES 作成
-      parametervalues = Hash.new([])
-      parametervalues[:PduRDestPduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                    definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF',
-                        value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduHandleId'),
-                    value:index.to_s)
-      # REFERENCE-VALUES 作成
-      referencevalues = Hash.new([])
-      referencevalues[:PduRDestPduRef] = ReferenceValue.new(
-                    definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF',
-                            value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRDestPdu/PduRDestPduRef'),
-                    valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',
-                                value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
-      pduRDestPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                parametervalues: parametervalues, referencevalues:referencevalues, uuid:SecureRandom.uuid)
-      pduRRoutingPath.subcontainers[":#{shortname}"] = pduRDestPdu
-
-      # PduRSrcPdu コンテナ作成
-      shortname = "PduRSrcPdu_#{message.name}"
-      definitionref = DefinitionRef.new(dest:'ECUC-PARAM-CONF-CONTAINER-DEF',
-                                                value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu')
-      # PARAMETER-VALUES 作成
-      parametervalues = Hash.new([])
-      parametervalues[:PduRSourcePduHandleId] = ParameterValue.new(type:'ECUC-NUMERICAL-PARAM-VALUE',
-                    definitionref:DefinitionRef.new(dest:'ECUC-INTEGER-PARAM-DEF',
-                        value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSourcePduHandleId'),
-                    value:index.to_s)
-      # REFERENCE-VALUES 作成
-      referencevalues = Hash.new([])
-      referencevalues[:PduRSrcPduRef] = ReferenceValue.new(
-                    definitionref:DefinitionRef.new(dest:'ECUC-REFERENCE-DEF',
-                            value:'/QINeS/PduR/PduRRoutingTables/PduRRoutingTable/PduRRoutingPath/PduRSrcPdu/PduRSrcPduRef'),
-                    valueref:ValueRef.new(dest:'ECUC-CONTAINER-VALUE',
-                                value:"/Ecuc/Ecuc_#{@project.name}/EcucConfigSet_#{@project.name}/EcucPduCollection_#{@project.name}/Pdu_#{message.name}"))
-      pduRSrcPdu = EcucContainerValue.new(shortname:shortname, longname:@longname, definitionref:definitionref,
-                                                parametervalues: parametervalues, referencevalues:referencevalues, uuid:SecureRandom.uuid)
-      pduRRoutingPath.subcontainers[":#{shortname}"] = pduRSrcPdu
-    }
-
-    pduR.containers[:PduRRoutingTables] = pduRRoutingTables
-    return pduR
+    # PduR モジュール
+    hPduRContainers.sort.to_h
   end
 
-  def create_SystemSignal_r422(elements)
-    @messages.each { |message|
-      message.com_signals.each { |signal|
-        # SystemSignal 作成
+  def create_SystemSignal_r422
+    hSystemSignal = {}
+    @messages.each do |message|
+      message.com_signals.each do |signal|
         shortname_systemSignal = "SystemSignal_#{signal.name}"
-        systemSignal = SystemSignal.new(shortname:shortname_systemSignal, uuid:SecureRandom.uuid)
-        # ISignal 作成
-        shortname_isignal = "ISignal_#{signal.name}"
-        systemsignalref =  SystemSignalRef.new(dest:'SYSTEM-SIGNAL', value:"/SystemDesign/#{shortname_systemSignal}")
-        iSignal = ISignal.new(shortname:shortname_isignal, systemsignalref:systemsignalref, uuid:SecureRandom.uuid)
-
-        elements[":#{shortname_systemSignal}"] = systemSignal
-        elements[":#{shortname_isignal}"] = iSignal
-      }
-    }
+        hParameter = {}
+        hParameter['I-SIGNAL']          = "ISignal_#{signal.name}"
+        hParameter['SYSTEM-SIGNAL-REF'] = "/SystemDesign/#{shortname_systemSignal}"
+        hSystemSignal[shortname_systemSignal.to_s] = hParameter
+      end
+    end
+    hSystemSignal.sort.to_h
   end
 
   def create_ISignalIPdu_r422
-    # ISignalIPdu 作成
-    iSignalIPdu = ISignalIPdu.new(shortname:"ISignalIPdu_#{@project.name}", uuid:SecureRandom.uuid, isignaltoipdumappings:Hash.new([]))
-
-    @messages.each { |message|
-      message.com_signals.each { |signal|
-        shortname = "ISignalToIPduMapping_#{signal.name}_#{message.name}"
-        iSignalIPdu.isignaltoipdumappings[":#{shortname}"] = ISignalToIPduMapping.new(shortname:shortname,
-                                  isignalref:ISignalRef.new(dest:'I-SIGNAL', value:"/SystemDesign/ISignal_#{signal.name}"), uuid:SecureRandom.uuid)
-      }
-    }
-    return iSignalIPdu
+    hISignalIPdu = {}
+    aContents = []
+    @messages.each do |message|
+      message.com_signals.each do |signal|
+        hParameter = {}
+        hParameter['I-SIGNAL-TO-I-PDU-MAPPING'] = "ISignalToIPduMapping_#{signal.name}_#{message.name}"
+        hParameter['I-SIGNAL-REF']              = "/SystemDesign/ISignal_#{signal.name}"
+        aContents << hParameter
+      end
+    end
+    hISignalIPdu["ISignalIPdu_#{@project.name}"] = aContents
+    hISignalIPdu.sort.to_h
   end
 end
