@@ -24,7 +24,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     end
     follow_redirect!
     # ƒ†[ƒU“o˜^Œã‚Íhome#index‚É‘JˆÚ‚·‚é
-    assert_template 'home/index'
+    assert_template 'projects/index'
     assert_not flash.empty?
   end
 end
