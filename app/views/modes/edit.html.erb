@@ -1,40 +1,24 @@
 <%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/js-yaml/3.8.4/js-yaml.js' %>
-<script>
-  $(document).ready(function(){
-    editor = ace.edit("ace-editor");
-    editor.getSession().setMode("ace/mode/yaml");
-    editor.setValue($('#param').val(), -1);
-    preview();
-
-    $(window).keydown(function(e){
-      if (event.ctrlKey) {
-        if (e.keyCode == 83) {
-          preview();
-          return(false);
-        }
-      }
-    });
-
-    $('form').submit(function(){
-      editor = ace.edit("ace-editor");
-      $('#param').val(editor.getValue);
-      return(true);
-    });
-  });
-</script>
 <div class="row">
-  <%= form_for @mode do |f| %>
-    <div class="col-sm-6">
-        <%= f.label :param, 'モード記述' %>
-        <div id="ace-editor" style="height: 550px; margin-bottom: 20px;"></div>
-        <%= f.hidden_field :param, id: :param, value: @mode.param %>
-        <div class="row">
-          <%= f.submit "Edit", class: "btn btn-primary col-sm-5 col-sm-offset-1" %>
-          <%= button_tag 'プレビュー', type: :button, onclick: 'preview()', class: "btn col-sm-5 col-sm-offset-1" %>
-        </div>
+  <div class="col-sm-8">
+    <%= form_for @mode do |f| %>
+    <%= f.hidden_field :image_json, id: :image_json, value: @mode.image_json %>
+    <% end %>
+    <div class="col-sm-7">
+      <select id="node-to-add" class="form-control"></select>
     </div>
-  <% end %>
-  <div class="col-sm-6">
-    <div id="mynetwork" style="height: 580px"></div>
+    <div class="col-sm-5">
+      <button id="remove-button" type="button" class="btn btn-danger">ノード削除</button>
+      <button id="form-submit" type="button" class="btn btn-primary">保存して閉じる</button>
+    </div>
+    <div id="mynetwork" style="height: 600px; font: 10pt sans;"></div>
+  </div>
+  <div class="col-sm-4">
+    <label>Node ID</label>
+    <input id="node_id" type="text" value="" class="form-control" readonly="readonly"/>
+    <label>Node Name</label>
+    <input id="node_name" type="text" value="" class="form-control" readonly="readonly" />
+    <label>Description</label>
+    <textarea id="node_desc" class="form-control" rows="20" wrap="off" style="font-family: monospace"></textarea>
   </div>
 </div>

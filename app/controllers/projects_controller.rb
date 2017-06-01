@@ -39,7 +39,8 @@ class ProjectsController < ApplicationController
     if @project.update(project_params)
       redirect_to @project
     else
-      render :edit, danger: 'プロジェクトの更新に失敗しました'
+      flash[:danger] = 'プロジェクトの更新に失敗しました'
+      render :edit
     end
   end
 

@@ -34,11 +34,8 @@ class ModesController < ApplicationController
   end
 
   def destroy
-    if @mode.destroy
-      redirect_to project_modes_path(@mode.project_id)
-    else
-      redirect_to project_modes_path(@mode.project_id), danger: 'メッセージの削除に失敗しました'
-    end
+    flash[:danger] = '調停の削除に失敗しました' unless @mode.destroy
+    redirect_to project_modes_path(@mode.project_id)
   end
 
   private
@@ -52,6 +49,6 @@ class ModesController < ApplicationController
   end
 
   def mode_params
-    params[:mode].permit(:title, :project_id, :param)
+    params[:mode].permit(:title, :project_id, :param, :image_json)
   end
 end

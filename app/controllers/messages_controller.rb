@@ -111,7 +111,9 @@ class MessagesController < ApplicationController
 
   def edit_setup
     @message = Message.find(params[:id])
-    redirect_to messages_path, danger: '選択されたメッセージが存在しません' if @message.nil?
+    return nil unless @message.nil?
+    flash[:danger] = '選択されたメッセージが存在しません'
+    redirect_to project_messages_path(@message.project)
     #    @signs = Sign.getOwnSigns(session[:project])
     #    if @signs.nil?
     #      flash[:danger] = '符号が存在しません'

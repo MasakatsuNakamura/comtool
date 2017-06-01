@@ -6,7 +6,8 @@ class DatabaseManagesController < ApplicationController
   # ＤＢ管理の表示
   def show
     return nil unless @database_manage.nil?
-    redirect_to project_path(params[:project]), danger: '選択されたＤＢ管理が存在しません'
+    flash[:danger] = '選択されたＤＢ管理が存在しません'
+    redirect_to project_path(params[:project])
   end
 
   # TODO: 復活は未実装
@@ -56,7 +57,8 @@ class DatabaseManagesController < ApplicationController
     send_data contents, filename: "#{tablename}.sql"
   rescue StandardError => e
     logger.error "#{tablename} export error Exception=#{e}"
-    redirect_to database_manage_path(project_id: params[:project_id]), danger: "#{tablename} Binary Exportに失敗しました"
+    flash[:danger] = "#{tablename} Binary Exportに失敗しました"
+    redirect_to database_manage_path(project_id: params[:project_id])
   ensure
     tempfile&.close(true)
   end

@@ -66,7 +66,7 @@ class Message < ApplicationRecord
       offset = c.bit_offset
       c.bit_size.times do
         unused_bit[offset] = false if offset < bytesize * 8
-        offset = next_bit(offset)
+        offset += next_bit(offset)
       end
     end
     unused_bit.index(true)
@@ -87,7 +87,7 @@ class Message < ApplicationRecord
           break
         end
         message_layout[offset] = true
-        offset = next_bit(offset)
+        offset += next_bit(offset)
       end
     end
   end

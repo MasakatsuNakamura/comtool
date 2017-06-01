@@ -1,4 +1,4 @@
-<h1>モード設計</h1>
+<h1>BswMコンフィグ設計</h1>
 
 <div style="text-align: right;">
   <%= link_to "＋", new_project_mode_path, class:"btn btn-success  btn-xs" %>
@@ -10,11 +10,11 @@
     <% @project.modes.each do |mode| %>
     <tr>
         <td class="mode_table">
-          <%= link_to mode.title, edit_mode_path(mode.id), class: 'h4' %>
+          <%= link_to mode.title, edit_mode_path(mode.id), class: 'h4', data: { no_turbolink: true } %>
         </td>
         <td>
-          <%= link_to image_tag("edit_images.png", alt: "Edit"), edit_mode_path(mode.id) %>
-          <%= link_to "edit", edit_mode_path(mode.id) %>
+          <%= link_to image_tag("edit_images.png", alt: "Edit"), edit_mode_path(mode.id), data: { no_turbolink: true }  %>
+          <%= link_to "edit", edit_mode_path(mode.id), data: { no_turbolink: true }  %>
           <%= link_to image_tag("delete_images.png", alt: "Delete"), mode, method: :delete, data: { confirm: "You sure?" }  %>
           <%= link_to "delete", mode, method: :delete, data: { confirm: "You sure?" } %>
         </td>

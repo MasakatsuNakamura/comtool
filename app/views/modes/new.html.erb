@@ -1,7 +1,7 @@
 <script>
 $(document).ready(function(){
   $('#mode_title').focus();
-  $('#mode_title').keyup(function(){
+  $('#mode_title').on ("change keyup paste input", function(){
     if ($('#mode_title').val().length > 0) {
       $(':submit').prop('disabled', false);
     } else {

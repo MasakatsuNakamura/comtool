@@ -14,7 +14,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
                                              password: 'password' } }
     # assert_redirected_to @user
     follow_redirect!
-    assert_template 'home/index'
+    assert_template 'projects/index'
 
     assert_select 'a[href=?]', root_path, count: 0
     # HOME INDEX PATH�̃����N��1�����Ȃ��Ǝv������
