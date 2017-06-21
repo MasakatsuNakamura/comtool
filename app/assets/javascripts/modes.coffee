@@ -58,54 +58,99 @@ $(window).load ->
 
   update_listbox = ->
     $('#node-to-add > option').remove()
-    $('#node-to-add').append($('<option>').html('Select a node to add...').val('0'))
-    mylabel = nodes.get($('#node_id').val()).label
-    if mylabel.match(/^[1-9][0-9]*$/)
-      $('#node-to-add').append($('<option>').html('New Action').val('Action'))
-      $('#node-to-add').append($('<option>').html('New ActionList').val('ActionList'))
+    if $('#node_id').val() == ''
+      $('#node-to-add').append($('<option>').html('Select a node to add...').val(''))
       $('#node-to-add').append($('<option>').html('New Rule').val('Rule'))
-      nodes.forEach (node) ->
-        unless node.label.match(/^[1-9][0-9]*$/)
-          if mylabel.match(/^[1-9][0-9]*$/)
-            $('#node-to-add').append($('<option>').html(node.label).val(node.id))
-    else if mylabel.match(/^Rule_/)
-      $('#node-to-add').append($('<option>').html('True Action List').val('TrueActionList'))
-      $('#node-to-add').append($('<option>').html('False Action List').val('FalseActionList'))
-    else if mylabel.match(/^ActionList_/)
-      $('#node-to-add').append($('<option>').html('New Item').val('NewItem'))
+      $('#node-to-add').val('')
+    else
+      $('#node-to-add').append($('<option>').html('Select a node to add...').val('0'))
+      mylabel = nodes.get($('#node_id').val()).label
+      if mylabel.match(/^[1-9][0-9]*$/)
+        $('#node-to-add').append($('<option>').html('New Action').val('Action'))
+        $('#node-to-add').append($('<option>').html('New ActionList').val('ActionList'))
+        $('#node-to-add').append($('<option>').html('New Rule').val('Rule'))
+        nodes.forEach (node) ->
+          unless node.label.match(/^[1-9][0-9]*$/)
+            if mylabel.match(/^[1-9][0-9]*$/)
+              $('#node-to-add').append($('<option>').html(node.label).val(node.id))
+      else if mylabel.match(/^Rule_/)
+        $('#node-to-add').append($('<option>').html('True Action List').val('TrueActionList'))
+        $('#node-to-add').append($('<option>').html('False Action List').val('FalseActionList'))
+        nodes.forEach (node) ->
+          if node.label.match(/^ActionList_/)
+            $('#node-to-add').append($('<option>').html('Change True Action List to: ' + node.label).val(node.id))
+            $('#node-to-add').append($('<option>').html('Change False Action List to: ' + node.label).val(node.id))
+      else if mylabel.match(/^ActionList_/)
+        $('#node-to-add').append($('<option>').html('New Item').val('NewItem'))
 
-  $('#node_id').val('1')
   update_listbox()
 
   update_event = ->
-    return false if $('#node_id').val() == ''
-    max = 0
-    nodes.forEach (node) ->
-      if !node.label.match(/^Action_/) && max <= node.level
-        max = node.level
+    if $('#node_id').val() != ''
+      max = 0
+      nodes.forEach (node) ->
+        if !node.label.match(/^Action_/) && max <= node.level
+          max = node.level
 
-    nodes.forEach (node) ->
-      if node.label.match(/^Action_/)
-        nodes.update({
-          id: node.id,
-          level: max + 2
-        })
+      nodes.forEach (node) ->
+        if node.label.match(/^Action_/)
+          nodes.update({
+            id: node.id,
+            level: max + 2
+          })
 
-    nodes.forEach (node) ->
-      if node.label.match(/^[1-9][0-9]*$/)
-        edges.forEach (edge) ->
-          if edge.label == 'Do' && edge.from == node.id
-            $('#node-to-add').val(edge.to)
+      nodes.forEach (node) ->
+        if node.label.match(/^[1-9][0-9]*$/)
+          edges.forEach (edge) ->
+            if edge.label == 'Do' && edge.from == node.id
+              $('#node-to-add').val(edge.to)
     update_listbox()
 
   network.on 'click', (params) =>
     clickednodes = nodes.get(params.nodes)
+    $('#node_id').val('')
+    $('#node-to-add-div').show()
+    $('#description, #actions, #node_type_name').hide()
     for node in clickednodes
       $('#node_id').val(node.id)
-      $('#node_name').val(node.label)
+      $('#node_type').text(node.label.replace(/^(.*_).*$/, '$1'))
+      $('#node_name').val(node.label.replace(/^.*_/, ''))
       $('#node_desc').val(node.title)
       $('#node-to-add').val('Action')
-      update_listbox()
+      if node.label.match(/^Action_/)
+        $('#description, #actions, #node_type_name').show()
+        $('#node-to-add-div').hide()
+        $('#node_desc').prop 'placeholder', '''
+# Write parameter for BswMAvailableActions as below:
+BswMUserCalloutFunctionMultipleInput: |
+  ComM_RequestComMode(ComMConf_ComMUser_ComMUser,
+  COMM_FULL_COMMUNICATION );
+'''
+        try
+          desc = JSON.parse(node.title)
+          for key, value of desc.BswMAvailableActions
+            $('#actions_list').val(key)
+            $('#node_desc').val(value)
+        catch e
+          $('#actions_list').val('')
+          $('#node_desc').val('')
+      else if node.label.match(/^Rule_/)
+        $('#description, #node-to-add-div, #node_type_name').show()
+        $('#actions').hide()
+        $('#node_desc').prop 'placeholder', '''
+# Sample as below:
+AND(
+  NvMJobModeIndication(...) ==  NVM_REQ_OK,
+  EcuMIndication(...) ==  ECUM_STATE_STARTUP_TWO
+)
+'''
+      else if node.label.match(/^[1-9][0-9]*$/)
+        $('#node-to-add-div').show()
+        $('#actions, #description, #node_type_name').hide()
+      else
+        $('#node-to-add-div, #node_type_name').show()
+        $('#actions, #description').hide()
+    update_listbox()
 
   $('#node-to-add').on 'change', () =>
     return false if $('#node-to-add').val() == '0'
@@ -119,9 +164,11 @@ $(window).load ->
     update_event()
 
   add_action = ->
-    return false unless nodes.get($('#node_id').val()).label.match(/^[1-9][0-9]*/)
+    mylabel = nodes.get($('#node_id').val())
+    mylabel = if mylabel then mylabel.label else ''
+    return false unless mylabel.match(/^($|Rule_.*|[1-9][0-9]*$)/)
     new_id = 0
-    unless $('#node-to-add').val().match(/^[1-9][0-9]*/)
+    unless $('#node-to-add').val().match(/^[1-9][0-9]*$/)
       nodes.forEach (node) ->
         if new_id <= node.id
           new_id = parseInt(node.id) + 1
@@ -138,7 +185,6 @@ $(window).load ->
       else
         new_level = 1
         new_color = { background:'pink', border:'purple' }
-
       nodes.add({
         id: new_id.toString(),
         level: new_level,
@@ -147,16 +193,16 @@ $(window).load ->
         font: { face: 'courier', align: 'left' },
         color: new_color
       })
-
+    m = $('#node-to-add option:selected').text().match(/^Change\s*(True|False)/)
+    m = if m then m[1] else 'Not'
     edge_id = false
     edges.forEach (edge) ->
-      if edge.from == $('#node_id').val() && edge.label == 'Do'
+      if edge.from == $('#node_id').val() && (edge.label == 'Do' || edge.label == m)
         edge_id = edge.id
-
     if edge_id
       edges.update({
         id: edge_id,
-        to: if new_id == 0 then $('#node-to-add').val() else new_id.toString(),
+        to: if new_id == 0 then $('#node-to-add').val() else new_id.toString()
       })
     else
       edges.add({
@@ -165,6 +211,7 @@ $(window).load ->
         label: 'Do',
         arrows: 'to'
       })
+    update_event()
 
   last_child = (node_id) ->
     next_id = false
@@ -235,7 +282,7 @@ $(window).load ->
     return if $('#node_id').val() == '1'
     haschild = false
     edges.forEach (edge) ->
-      if edge.from == $('#node_id').val()
+      if edge.from == $('#node_id').val() && edge.label != 'Do'
         haschild = true
     return false if haschild
     edges_remove = []
@@ -253,10 +300,46 @@ $(window).load ->
     currentVal = $(this).val()
     unless currentVal == @oldVal
       @oldVal = currentVal
+      if nodes.get($('#node_id').val()).label.match(/^Action_/)
+        nodes.update({
+          id: $('#node_id').val(),
+          title: '{"BswMAvailableActions": {"' + $('#actions_list').val() + '":"' + $('#node_desc').val() + '"}}'
+        })
+      else
+        nodes.update({
+          id: $('#node_id').val(),
+          title: $('#node_desc').val()
+        })
+
+  @oldVal2 = ""
+  $("#node_name").on "change keyup paste", ->
+    currentVal = $(this).val()
+    unless currentVal == @oldVal2
+      @oldVal2 = currentVal
       nodes.update({
         id: $('#node_id').val(),
-        title: $('#node_desc').val(),
+        label: $('#node_type').text() + $('#node_name').val()
       })
+      update_event()
+
+  $('#actions_list').on 'change', () =>
+    return false if !nodes.get($('#node_id').val()).label.match(/^Action_/) || $('#actions_list').val().length == 0
+    nodes.update({
+      id: $('#node_id').val(),
+      title: '{"BswMAvailableActions": {"' + $('#actions_list').val() + '":"' + $('#node_desc').val() + '"}}'
+    })
+    update_event()
+
+  document.getElementById('node_desc').addEventListener 'keydown', (e) ->
+    if e.keyCode is 9
+      e.preventDefault() if e.preventDefault
+      elem = e.target
+      start = elem.selectionStart
+      end = elem.selectionEnd
+      value = elem.value
+      elem.value = "#{value.substring 0, start}  #{value.substring end}"
+      elem.selectionStart = elem.selectionEnd = start + 2
+      false
 
   $('#form-submit').on 'click', () =>
     image_json = {

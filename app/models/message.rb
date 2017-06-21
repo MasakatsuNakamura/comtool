@@ -31,12 +31,8 @@ class Message < ApplicationRecord
         else
           -1
         end
-      end.max
-    if unused_name.nil?
-      unused_name = 1
-    else
-      unused_name += 1
-    end
+      end
+    unused_name = unused_name.blank? ? 1 : unused_name.max + 1
     com_signals.build(
       name: "Signal#{unused_name}",
       unit: 'Enter a unit',

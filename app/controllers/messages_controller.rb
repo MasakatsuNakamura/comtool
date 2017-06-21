@@ -38,6 +38,7 @@ class MessagesController < ApplicationController
 
   def destroy
     @message = Message.find(params[:id])
+    @project = @message.project
     flash[:danger] = 'メッセージの削除に失敗しました' unless @message.destroy
     redirect_to project_messages_path(@project)
   end
