@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170518070353) do
+ActiveRecord::Schema.define(version: 20170619043828) do
 
   create_table "com_signals", force: :cascade do |t|
     t.string   "name",                                   collation: "NOCASE"
@@ -84,25 +84,8 @@ ActiveRecord::Schema.define(version: 20170518070353) do
     t.integer  "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text     "image_json"
     t.index ["project_id"], name: "index_modes_on_project_id"
-  end
-
-  create_table "project_configs", force: :cascade do |t|
-    t.integer  "project_id"
-    t.integer  "config_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["config_id"], name: "index_project_configs_on_config_id"
-    t.index ["project_id"], name: "index_project_configs_on_project_id"
-  end
-
-  create_table "project_users", force: :cascade do |t|
-    t.integer  "project_id"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["project_id"], name: "index_project_users_on_project_id"
-    t.index ["user_id"], name: "index_project_users_on_user_id"
   end
 
   create_table "projects", force: :cascade do |t|

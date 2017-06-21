@@ -7,9 +7,11 @@ class SessionsController < ApplicationController
     user = User.find_by(name: params[:session][:name])
     if user && user.authenticate(params[:session][:password])
       sign_in user
+      flash[:success] = 'ログインしました'
       redirect_to projects_path
     else
-      redirect_to signin_path, warning: 'ログインに失敗しました。ユーザ名、パスワードを確認してください。'
+      flash[:warning] = 'ログインに失敗しました。ユーザ名、パスワードを確認してください。'
+      redirect_to signin_path
     end
   end
 

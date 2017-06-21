@@ -12,7 +12,5 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
-//= require ace-rails-ap
 //= require vis
 //= require_tree .

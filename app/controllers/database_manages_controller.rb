@@ -1,33 +1,26 @@
 require 'csv'
 require 'tempfile'
 class DatabaseManagesController < ApplicationController
-    before_action :set_database_manage, only: [:show]
+  before_action :set_database_manage, only: [:show]
 
   # ＤＢ管理の表示
   def show
-    if @database_manage == nil
-      flash[:danger] = '選択されたＤＢ管理が存在しません'
-      redirect_to project_path(params[:project])
-    end
+    return nil unless @database_manage.nil?
+    flash[:danger] = '選択されたＤＢ管理が存在しません'
+    redirect_to project_path(params[:project])
   end
 
-# Todo 復活は未実装
+  # TODO: 復活は未実装
   def restore
-    redirect_to database_manage_path(:project => params[:project_id])
+    redirect_to database_manage_path(params[:id])
   end
+
   # 符号ＤＢのCSVエクスポート
   def sign_csvexport
     project_id = params[:project_id]
     project_id = nil if params[:all]
-    csv = Sign.to_csv({encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true}, project_id)
-    send_data(
-      # ファイル
-      csv,
-      # 固定
-      type: 'application/octet-stream',
-      # ダウンロード出力ファイル名
-      filename: 'Sign.csv'
-    )
+    csv = Sign.to_csv(project_id: project_id)
+    send_data csv, filename: 'Sign.csv'
   end
 
   # 符号ＤＢのBinaryエクスポート
@@ -39,15 +32,8 @@ class DatabaseManagesController < ApplicationController
   def config_csvexport
     project_id = params[:project_id]
     project_id = nil if params[:all]
-    csv = Config.to_csv({encoding: Encoding::SJIS, row_sep: "\r\n", force_quotes: true}, project_id)
-    send_data(
-      # ファイル
-      csv,
-      # 固定
-      type: 'application/octet-stream',
-      # ダウンロード出力ファイル名
-      filename: 'Config.csv'
-    )
+    csv = Config.to_csv(project_id: project_id)
+    send_data csv, filename: 'Config.csv'
   end
 
   # コンフィグＤＢのBinaryエクスポート
@@ -56,44 +42,24 @@ class DatabaseManagesController < ApplicationController
   end
 
   private
-    # DatabaseManageを外部キーで読込む
-    def set_database_manage
-      @database_manage = DatabaseManage.find_by_project_id(params[:project])
-    end
 
-    # エキスポート
-    def export(tablename)
-      temp_directory = ComConst::DownloadTempDir
-      # Tempfileを利用し一時ファイルを生成、そのTempfile名をダウンロード用一時ファイルとしてexport出力する
-      tmpfl = Tempfile.new(tablename.to_s, temp_directory)
-      dump_outfile =tmpfl.path
-      dump_outfile += ".sql"
-      dump = BatchExport.new.invoke(tablename,dump_outfile)
-      if dump
-        file = File.open(dump_outfile, "rb")
-        contents = file.read
-        file.close
+  # DatabaseManageを外部キーで読込む
+  def set_database_manage
+    @database_manage = DatabaseManage.find_by(project_id: params[:project])
+  end
 
-        # バッチでExportしたダウンロード用一時ファイルを削除する
-        File.delete(dump_outfile) if File.exist?(dump_outfile)
-
-        send_data(
-          # ファイル
-          contents,
-          # 固定
-          type: 'application/octet-stream',
-          # ダウンロード出力ファイル名
-          filename: tablename.to_s + ".sql"
-        )
-      else
-        raise "BatchExport error"
-      end
-    rescue Exception => e
-      logger.error "#{tablename.to_s} export error Exception=#{e.to_s}"
-      flash[:danger] = "#{tablename.to_s} Binary Exportに失敗しました"
-      redirect_to database_manage_path(:project => params[:project_id])
-    ensure
-      # Tempfileをリアルタイム削除する
-      tmpfl.close(true) if tmpfl
-    end
+  # エキスポート
+  def export(tablename)
+    tempfile = Tempfile.new
+    BatchExport.new.invoke(tablename, tempfile)
+    tempfile.rewind
+    contents = tempfile.read
+    send_data contents, filename: "#{tablename}.sql"
+  rescue StandardError => e
+    logger.error "#{tablename} export error Exception=#{e}"
+    flash[:danger] = "#{tablename} Binary Exportに失敗しました"
+    redirect_to database_manage_path(project_id: params[:project_id])
+  ensure
+    tempfile&.close(true)
+  end
 end

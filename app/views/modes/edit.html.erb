@@ -1,124 +1,24 @@
-<script src="//cdnjs.cloudflare.com/ajax/libs/js-yaml/3.8.4/js-yaml.js"></script>
-<style>
-/* IME Fix */
-@font-face {
-  font-family: 'ime_jp_rp';
-  src: url('/ime_jp_rp.woff') format('woff');
-}
-.ace_editor > .ace_text-input {
-  padding-top: 1px;
-  padding-left: 1px;
-  letter-spacing: 1px;
-  font-family: ime_jp_rp, Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro, monospace;
-}
-</style>
+<%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/js-yaml/3.8.4/js-yaml.js' %>
 <div class="row">
-  <%= form_for @mode do |f| %>
-    <div class="col-md-6">
-        <%= f.label :param, 'モード記述' %>
-        <div id="ace-editor" style="height: 600px;"><%= @mode.param %></div>
-        <%= f.hidden_field :param, id: :param, value: @mode.param %>
-        <%= f.submit "Edit mode", class: "btn btn-primary" %>
-        <%= link_to 'Back', project_modes_path(@mode.project_id) %>
+  <div class="col-sm-8">
+    <%= form_for @mode do |f| %>
+    <%= f.hidden_field :image_json, id: :image_json, value: @mode.image_json %>
+    <% end %>
+    <div class="col-sm-7">
+      <select id="node-to-add" class="form-control"></select>
     </div>
-  <% end %>
-  <div class="col-md-6">
-    <p>
-      プレビュー
-    </p>
-    <%= button_tag '描画', type: :button, onclick: 'preview()' %>
-    <div id="mynetwork" style="height: 600px"></div>
+    <div class="col-sm-5">
+      <button id="remove-button" type="button" class="btn btn-danger">ノード削除</button>
+      <button id="form-submit" type="button" class="btn btn-primary">保存して閉じる</button>
+    </div>
+    <div id="mynetwork" style="height: 600px; font: 10pt sans;"></div>
+  </div>
+  <div class="col-sm-4">
+    <label>Node ID</label>
+    <input id="node_id" type="text" value="" class="form-control" readonly="readonly"/>
+    <label>Node Name</label>
+    <input id="node_name" type="text" value="" class="form-control" readonly="readonly" />
+    <label>Description</label>
+    <textarea id="node_desc" class="form-control" rows="20" wrap="off" style="font-family: monospace"></textarea>
   </div>
 </div>
-<script>
-  function preview() {
-    var editor = ace.edit("ace-editor");
-    $('#param').val(editor.getValue());
-    var doc = jsyaml.load($('#param').val());
-    var elements = [];
-    var arrows = [];
-    var i = 1;
-    for (key in doc) {
-      if ($.isArray(doc[key])) {
-        elements.push({id: i, label: key, shape: 'box', color: {background:'moccasin', border:'orange'}});
-      } else {
-        elements.push({id: i, label: key + (doc[key]['condition'] ? '\n' + doc[key]['condition'] : ''), shape: 'box', color: {background:'pink', border:'purple'}});
-      }
-      doc[key].node_no = i;
-      i++
-    }
-    for (key in doc) {
-      if ($.isArray(doc[key])) {
-        var from = doc[key].node_no;
-        for (var j = 0; j < doc[key].length; j++) {
-          var to;
-          if (doc[doc[key][j]]) {
-            to = doc[doc[key][j]].node_no;
-          } else {
-            elements.push({id: i, label: doc[key][j], shape: 'box'});
-            to = i;
-            i++;
-          }
-          arrows.push({from: from, to: to, arrows:'to'});
-          from = to;
-        }
-      } else {
-        var to;
-        if ('true' in doc[key]) {
-          if (doc[doc[key]['true']]) {
-            to = doc[doc[key]['true']].node_no;
-          } else {
-            elements.push({id: i, label: doc[key]['true'], shape: 'box'});
-            doc[key]['true'].node_no = i;
-            to = i;
-            i++;
-          }
-          arrows.push({from: doc[key].node_no, to: to, arrows:'to', label:'true'});
-        }
-        if ('false' in doc[key]) {
-          if (doc[doc[key]['false']]) {
-            to = doc[doc[key]['false']].node_no;
-          } else {
-            elements.push({id: i, label: doc[key]['false'], shape: 'box'});
-            doc[key]['false'].node_no = i;
-            to = i;
-            i++;
-          }
-          arrows.push({from: doc[key].node_no, to: to, arrows:'to', label:'false'});
-        }
-      }
-    }
-    // create an array with nodes
-    var nodes = new vis.DataSet(elements);
-
-    // create an array with edges
-    var edges = new vis.DataSet(arrows);
-
-    // create a network
-    var container = document.getElementById('mynetwork');
-    var data = {
-      nodes: nodes,
-      edges: edges
-    };
-    var options = {};
-    var network = new vis.Network(container, data, options);
-  }
-  $('form').submit(function(){
-    var editor = ace.edit("ace-editor");
-    $('#param').val(editor.getValue());
-    return true;
-  });
-  $(window).keydown(function(e){
-    if(event.ctrlKey){
-      if(e.keyCode === 83){
-        preview();
-        return false;
-      }
-    }
-  });
-  $(document).ready(function(){
-    var editor = ace.edit("ace-editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.getSession().setMode("ace/mode/yaml");
-  });
-</script>

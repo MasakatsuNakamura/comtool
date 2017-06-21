@@ -10,17 +10,16 @@ class ComSignal < ApplicationRecord
   ]
 
   validates :name,
-    presence: true,
-    uniqueness: { case_sensitive: false, scope: :project_id },
-    length: { maximum: 50 },
-    format: { with: /\A[a-zA-Z]\w*\z/, message: "半角英数とアンダースコアが利用できます"}
+            presence: true,
+            uniqueness: { case_sensitive: false, scope: :project_id },
+            length: { maximum: 50 },
+            format: { with: /\A[a-zA-Z]\w*\z/, message: '半角英数とアンダースコアが利用できます' }
 
   validates :bit_offset,
-    presence: true,
-    numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validates :bit_size,
-    presence: true,
-    numericality: { only_integer: true, greater_than_or_equal_to: 1 }
-
+            presence: true,
+            numericality: { only_integer: true, greater_than_or_equal_to: 1 }
 end
