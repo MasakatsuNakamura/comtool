@@ -22,8 +22,23 @@ class Message < ApplicationRecord
 
   def com_signals_build
     # default com_signal
-    c = com_signals.build(
-      name: "Signal#{project.com_signals.length}",
+    unused_name =
+      project.com_signals.where("name like 'Signal%'").map do |com_signal|
+        if com_signal.name =~ /Signal([0-9]+)/i
+          $LAST_MATCH_INFO[1].to_i
+        else
+          -1
+        end
+      end.max
+    if unused_name.nil?
+      unused_name = 1
+    else
+      unused_name += 1
+    end
+
+    # default com_signal
+    com_signals.build(
+      name: "Signal#{unused_name}",
       unit: 'Enter a unit',
       description: 'Enter a description',
       bit_offset: 0,
