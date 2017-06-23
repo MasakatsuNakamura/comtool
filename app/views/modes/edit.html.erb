@@ -4,21 +4,56 @@
     <%= form_for @mode do |f| %>
     <%= f.hidden_field :image_json, id: :image_json, value: @mode.image_json %>
     <% end %>
-    <div class="col-sm-7">
-      <select id="node-to-add" class="form-control"></select>
-    </div>
-    <div class="col-sm-5">
-      <button id="remove-button" type="button" class="btn btn-danger">ノード削除</button>
-      <button id="form-submit" type="button" class="btn btn-primary">保存して閉じる</button>
-    </div>
-    <div id="mynetwork" style="height: 600px; font: 10pt sans;"></div>
+    <div id="mynetwork" style="height: 600px; width: 748px; font: 10pt sans;"></div>
   </div>
   <div class="col-sm-4">
+    <button id="form-submit" type="button" class="btn btn-primary btn-block">保存して閉じる</button>
+    <p></p>
     <label>Node ID</label>
-    <input id="node_id" type="text" value="" class="form-control" readonly="readonly"/>
-    <label>Node Name</label>
-    <input id="node_name" type="text" value="" class="form-control" readonly="readonly" />
-    <label>Description</label>
-    <textarea id="node_desc" class="form-control" rows="20" wrap="off" style="font-family: monospace"></textarea>
+    <div class="input-group">
+      <input id="node_id" type="text" value="" class="form-control" readonly="readonly"/>
+      <span class="input-group-btn">
+        <button id="remove-button" type="button" class="btn btn-danger">ノード削除</button>
+      </span>
+    </div>
+    <p></p>
+    <div id="node_type_name" style="display:none">
+      <label>Node Name</label>
+      <div class="input-group">
+        <span id='node_type' class="input-group-addon" id="basic-addon1">Rule_</span>
+        <input id='node_name' type="text" class="form-control" aria-describedby="basic-addon1">
+      </div>
+      <p></p>
+    </div>
+    <div id="node-to-add-div">
+      <label>Node to add</label>
+      <select id="node-to-add" class="form-control"></select>
+      <p></p>
+    </div>
+    <div id="actions" style="display:none">
+      <label>BswMAvailableActions</label>
+      <select id="actions_list" class="form-control">
+        <option value="">Choice an action...</option>
+        <option value="BswMComMAllowCom">BswMComMAllowCom</option>
+        <option value="BswMComMModeSwitch">BswMComMModeSwitch</option>
+        <option value="BswMCoreHaltMode">BswMCoreHaltMode</option>
+        <option value="BswMDeadlineMonitoringControl">BswMDeadlineMonitoringControl</option>
+        <option value="BswMEcuMGoDown">BswMEcuMGoDown</option>
+        <option value="BswMEcuMGoHalt">BswMEcuMGoHalt</option>
+        <option value="BswMEcuMGoPoll">BswMEcuMGoPoll</option>
+        <option value="BswMEcuMSelectShutdownTarget">BswMEcuMSelectShutdownTarget</option>
+        <option value="BswMEcuMStateSwitch">BswMEcuMStateSwitch</option>
+        <option value="BswMLinScheduleSwitch">BswMLinScheduleSwitch</option>
+        <option value="BswMPduGroupSwitch">BswMPduGroupSwitch</option>
+        <option value="BswMRteModeRequest">BswMRteModeRequest</option>
+        <option value="BswMRteSwitch">BswMRteSwitch</option>
+        <option value="BswMSchMSwitch">BswMSchMSwitch</option>
+        <option value="BswMUserCallout">BswMUserCallout</option>
+      </select>
+    </div>
+    <div id="description" style="display:none">
+      <label>Description</label>
+      <textarea id="node_desc" class="form-control" rows="10" wrap="off" style="font-family: monospace; font-size: small;"></textarea>
+    </div>
   </div>
 </div>
