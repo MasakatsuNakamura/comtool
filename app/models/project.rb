@@ -37,9 +37,9 @@ class Project < ApplicationRecord
 
   def to_ecuc_arxml
     if v1_0?
-      export_ecuc_comstack_r403(project: self, messages: messages)
+      export_ecuc_comstack_r403(project: self, messages: messages, modes: modes)
     else
-      export_ecuc_comstack_r422(project: self, messages: messages)
+      export_ecuc_comstack_r422(project: self, messages: messages, modes: modes)
     end
   end
 

@@ -14,10 +14,12 @@ ECUC-REFERENCE-DEF:
 - CanIfCtrlDrvNameRef
 - CanIfHrhCanCtrlIdRef
 - CanIfHthCanCtrlIdRef
+- CanIfRxPduBswSchExclAreaIdRef
 - CanIfRxPduHrhIdRef
 - CanIfRxPduRef
 - CanIfTTRxHwObjectTriggerIdRef
 - CanIfTTTxHwObjectTriggerIdRef
+- CanIfTxPduBswSchExclAreaIdRef
 - CanIfTxPduBufferRef
 - CanIfTxPduRef
 - ComGwIPduRef
@@ -74,9 +76,13 @@ ECUC-ENUMERATION-PARAM-DEF:
 - ComTransferProperty
 - ComTxIPduClearUpdateBit
 - ComTxModeMode
+- ComTypeOfGwSignalRef
+- ComTypeOfGwSource
 - PduIdTypeEnum
 - PduLengthTypeEnum
+- PduRDestModule
 - PduRDestPduDataProvision
+- PduRSrcModule
 ECUC-CHOICE-REFERENCE-DEF:
 - BswMActionListItemRef
 - BswMArgumentRef
@@ -200,6 +206,14 @@ ECUC-BOOLEAN-PARAM-DEF:
 - PduRIsEnabledAtInit
 - PduRLowerModule
 - PduRMetaDataSupport
+- PduRQSupportCanIf
+- PduRQSupportCanNm
+- PduRQSupportCanTp
+- PduRQSupportCom
+- PduRQSupportDcm
+- PduRQSupportIpduM
+- PduRQSupportLinIf
+- PduRQSupportLinTp
 - PduRRetransmission
 - PduRSrcPduUpTxConf
 - PduRTransmissionConfirmation
@@ -259,6 +273,7 @@ ECUC-SYMBOLIC-NAME-REFERENCE-DEF:
 ECUC-INTEGER-PARAM-DEF:
 - BswMActionListItemIndex
 - BswMModeRequesterId
+- BswMQQueueSize
 - BswMRequestedModeMax
 - CanIfBufferSize
 - CanIfCtrlId
@@ -300,6 +315,7 @@ ECUC-INTEGER-PARAM-DEF:
 - ComIPduHandleId
 - ComIPduReplicationQuorum
 - ComMaxIPduCnt
+- ComSignalGroupArrayLength
 - ComSignalLength
 - ComSupportedIPduGroups
 - ComTxIPduUnusedAreasDefault
@@ -321,6 +337,8 @@ ECUC-INTEGER-PARAM-DEF:
 - PduRTpBufferLength
 - PduRTpThreshold
 - PduRTxBufferDepth
+ECUC-MULTILINE-STRING-PARAM-DEF:
+- BswMUserCalloutFunctionMultipleInput
 ECUC-INSTANCE-REFERENCE-DEF:
 - BswMRteModeRequestPortInterfaceRef
 - EcucPartitionSoftwareComponentInstanceRef
@@ -365,7 +383,7 @@ ECUC-FUNCTION-NAME-DEF:
   BswMRequestedRemoteMode: MODE-DECLARATION
   BswMRequestedModeRef: MODE-DECLARATION
   BswMSwitchedMode: MODE-DECLARATION
-  BswMSchMModeDeclarationGroupRef: 
+  BswMSchMModeDeclarationGroupRef: MODE-DECLARATION-GROUP
   BswMSchMSwitchedMode: MODE-DECLARATION
   BswMRteModeRequestPortInterfaceMappingRef: VARIABLE-AND-PARAMETER-INTERFACE-MAPPING
   BswMModeSwitchInterfaceRef: MODE-SWITCH-INTERFACE

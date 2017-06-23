@@ -22,7 +22,7 @@ class ArxmlManager < Hash
                      'ECUC-FOREIGN-REFERENCE-DEF'       => 'ECUC-REFERENCE-VALUE',
                      'ECUC-SYMBOLIC-NAME-REFERENCE-DEF' => 'ECUC-REFERENCE-VALUE',
                      'ECUC-INSTANCE-REFERENCE-DEF'      => 'ECUC-INSTANCE-REFERENCE-VALUE',
-                     'ECUC-CHOICE-REFERENCE-DEF'        => 'ECUC-CHOICE-REFERENCE-DEF',
+                     'ECUC-CHOICE-REFERENCE-DEF'        => 'ECUC-REFERENCE-VALUE',
                      'ECUC-ENUMERATION-PARAM-DEF'       => 'ECUC-TEXTUAL-PARAM-VALUE',
                      'ECUC-STRING-PARAM-DEF'            => 'ECUC-TEXTUAL-PARAM-VALUE',
                      'ECUC-MULTILINE-STRING-PARAM-DEF'  => 'ECUC-TEXTUAL-PARAM-VALUE',
@@ -145,7 +145,7 @@ class ArxmlManager < Hash
       end
     end
 
-    @hReferenceParam = hParamInfo['ECUC-REFERENCE-DEF'] + hParamInfo['ECUC-FOREIGN-REFERENCE-DEF'] + hParamInfo['ECUC-SYMBOLIC-NAME-REFERENCE-DEF'] + hParamInfo['ECUC-INSTANCE-REFERENCE-DEF']
+    @hReferenceParam = hParamInfo['ECUC-REFERENCE-DEF'] + hParamInfo['ECUC-FOREIGN-REFERENCE-DEF'] + hParamInfo['ECUC-SYMBOLIC-NAME-REFERENCE-DEF'] + hParamInfo['ECUC-INSTANCE-REFERENCE-DEF'] + hParamInfo['ECUC-CHOICE-REFERENCE-DEF']
   end
 
   def make_container(sShortName, hParamInfo, sPath)
