@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AUTOSAR xsi:schemaLocation="http://autosar.org/schema/r4.0 AUTOSAR_4-1-1.xsd" xmlns="http://autosar.org/schema/r4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <ADMIN-DATA>
+        <DOC-REVISIONS>
+            <DOC-REVISION>
+                <REVISION-LABEL>4.3.0</REVISION-LABEL>
+                <ISSUED-BY>AUTOSAR</ISSUED-BY>
+                <DATE>2012-08-01</DATE>
+            </DOC-REVISION>
+        </DOC-REVISIONS>
+    </ADMIN-DATA>
+    <AR-PACKAGES>
+        <!-- AR-Package: AUTOSAR -->
+        <AR-PACKAGE UUID="ECUC:QINeS">
+            <SHORT-NAME>QINeS</SHORT-NAME>
+            <ELEMENTS>
+                <!-- Module Definition: EcuM -->
+                <ECUC-DEFINITION-COLLECTION>
+                    <SHORT-NAME>AUTOSARParameterDefinition</SHORT-NAME>
+                    <MODULE-REFS>
+                        <MODULE-REF DEST="ECUC-MODULE-DEF">/QINeS/Callout</MODULE-REF>
+                    </MODULE-REFS>
+                </ECUC-DEFINITION-COLLECTION>
+                <ECUC-MODULE-DEF>
+                    <SHORT-NAME>Callout</SHORT-NAME>
+                    <REFINED-MODULE-DEF-REF DEST="ECUC-MODULE-DEF">/AUTOSAR/EcucDefs/EcuM</REFINED-MODULE-DEF-REF>
+                    <DESC>
+			<L-2 L="EN">Callout Configuration module</L-2>
+			<L-2 L="JA">Calloutモジュールのコンフィグレーション。 </L-2>
+                    </DESC>
+                    <ADMIN-DATA>
+                        <DOC-REVISIONS>
+                            <DOC-REVISION>
+                                <REVISION-LABEL>4.3.0</REVISION-LABEL>
+                                <ISSUED-BY>AUTOSAR</ISSUED-BY>
+                                <DATE>2012-08-01</DATE>
+                            </DOC-REVISION>
+                        </DOC-REVISIONS>
+                    </ADMIN-DATA>
+                    <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                    <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                    <SUPPORTED-CONFIG-VARIANTS>
+                        <SUPPORTED-CONFIG-VARIANT>VARIANT-POST-BUILD</SUPPORTED-CONFIG-VARIANT>
+                    </SUPPORTED-CONFIG-VARIANTS>
+                    <CONTAINERS>
+                      <!-- Container Definition: EcuMCallout -->
+                      <ECUC-PARAM-CONF-CONTAINER-DEF>
+                            <SHORT-NAME>EcuMCallout</SHORT-NAME>
+                            <DESC><L-2 L="EN">EcuM Callout Configuration Container</L-2></DESC>
+                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                            <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                            <MULTIPLE-CONFIGURATION-CONTAINER>true</MULTIPLE-CONFIGURATION-CONTAINER>
+                            <SUB-CONTAINERS>
+                              <!-- Container Definition: EcuMCalloutStubs -->
+                              <ECUC-PARAM-CONF-CONTAINER-DEF>
+                                    <SHORT-NAME>EcuMCalloutStubs</SHORT-NAME>
+                                    <DESC><L-2 L="EN">EcuM_Callout_Stubs Configuration Container</L-2></DESC>
+                                    <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                    <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                                    <MULTIPLE-CONFIGURATION-CONTAINER>false</MULTIPLE-CONFIGURATION-CONTAINER>
+                                    <PARAMETERS>
+                                        <!-- PARAMETER DEFINITION: EcuMOnGoSleep -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMOnGoSleep</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This call allows the system designer to notify that the GO SLEEP state is about to be entered.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMOnGoOffOne -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMOnGoOffOne</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This call allows the system designer to notify that the GO OFF I state is about to be entered.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMOnGoOffTwo -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMOnGoOffTwo</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This call allows the system designer to notify that the GO OFF II state is about to be entered.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                    </PARAMETERS>
+                              </ECUC-PARAM-CONF-CONTAINER-DEF>
+                              <!-- Container Definition: EcuMCalloutStubsSys -->
+                              <ECUC-PARAM-CONF-CONTAINER-DEF>
+                                    <SHORT-NAME>EcuMCalloutStubsSys</SHORT-NAME>
+                                    <DESC><L-2 L="EN">EcuM_Callout_StubsSys Configuration Container</L-2></DESC>
+                                    <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                    <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                                    <MULTIPLE-CONFIGURATION-CONTAINER>false</MULTIPLE-CONFIGURATION-CONTAINER>
+                                    <PARAMETERS>
+                                        <!-- PARAMETER DEFINITION: EcuMALDriverInit0 -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMALDriverInit0</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This callout shall provide driver initialization and other hardware-related startup activities for loading the post-build configuration data. Beware: Here only pre-compile and link-time configurable modules may be used.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMALDriverInit1 -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMALDriverInit1</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This callout shall provide driver initialization and other hardware-related startup activities in case of a power on reset.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMALDriverInit2 -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMALDriverInit2</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This callout shall provide driver initialization of drivers which need OS and do not need to wait for the NvM_ReadAll job to finish.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMALDriverInit3 -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMALDriverInit3</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This callout shall provide driver initialization of drivers which need OS and need to wait for the NvM_ReadAll job to finish.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMALDriverRestart -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMALDriverRestart</SHORT-NAME>
+                                            <DESC><L-2 L="EN">This callout shall provide driver initialization and other hardware-related startup activities in the wakeup case.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMDeterminePbConfiguration -->
+                                        <ECUC-STRING-PARAM-DEF>
+                                            <SHORT-NAME>EcuMDeterminePbConfiguration</SHORT-NAME>
+                                            <DESC><L-2 L="EN">Initialize EcuM_Config.pAdcConfig</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-STRING-PARAM-DEF-VARIANTS>
+                                                <ECUC-STRING-PARAM-DEF-CONDITIONAL/>
+                                            </ECUC-STRING-PARAM-DEF-VARIANTS>
+                                        </ECUC-STRING-PARAM-DEF>
+                                        <!-- PARAMETER DEFINITION: EcuMQDeInitForBsws -->
+                                        <ECUC-FUNCTION-NAME-DEF>
+                                            <SHORT-NAME>EcuMQDeInitForBsws</SHORT-NAME>
+                                            <DESC><L-2 L="EN">carry out the stop of the BSW module which BswM should manage when do not use BswM.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                                <ECUC-FUNCTION-NAME-DEF-CONDITIONAL/>
+                                            </ECUC-FUNCTION-NAME-DEF-VARIANTS>
+                                        </ECUC-FUNCTION-NAME-DEF>
+                                    </PARAMETERS>
+                              </ECUC-PARAM-CONF-CONTAINER-DEF>
+                              <!-- Container Definition: EcuMGeneratedTypes -->
+                              <ECUC-PARAM-CONF-CONTAINER-DEF>
+                                    <SHORT-NAME>EcuMGeneratedTypes</SHORT-NAME>
+                                    <DESC><L-2 L="EN">EcuM_Generated_Types Configuration Container</L-2></DESC>
+                                    <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                    <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                                    <MULTIPLE-CONFIGURATION-CONTAINER>false</MULTIPLE-CONFIGURATION-CONTAINER>
+                                    <PARAMETERS>
+                                        <!-- PARAMETER DEFINITION: IncludeHeaders -->
+                                        <ECUC-STRING-PARAM-DEF>
+                                            <SHORT-NAME>IncludeHeaders</SHORT-NAME>
+                                            <DESC><L-2 L="EN">input a header file name.</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <SCOPE>LOCAL</SCOPE>
+                                            <IMPLEMENTATION-CONFIG-CLASSES>
+                                                <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                    <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                            </IMPLEMENTATION-CONFIG-CLASSES>
+                                            <ORIGIN>QINeS</ORIGIN>
+                                            <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                            <ECUC-STRING-PARAM-DEF-VARIANTS>
+                                                <ECUC-STRING-PARAM-DEF-CONDITIONAL/>
+                                            </ECUC-STRING-PARAM-DEF-VARIANTS>
+                                        </ECUC-STRING-PARAM-DEF>
+                                    </PARAMETERS>
+                                    <SUB-CONTAINERS>
+                                        <ECUC-PARAM-CONF-CONTAINER-DEF>
+                                            <!-- PARAMETER DEFINITION: EcuMConfigType -->
+                                            <SHORT-NAME>EcuMConfigType</SHORT-NAME>
+                                            <DESC><L-2 L="EN">EcuM_ConfigType Struct</L-2></DESC>
+                                            <LOWER-MULTIPLICITY>0</LOWER-MULTIPLICITY>
+                                            <UPPER-MULTIPLICITY>65535</UPPER-MULTIPLICITY>
+                                            <MULTIPLE-CONFIGURATION-CONTAINER>false</MULTIPLE-CONFIGURATION-CONTAINER>
+                                            <PARAMETERS>
+                                                <!-- PARAMETER DEFINITION: BswModuleName -->
+                                                <ECUC-STRING-PARAM-DEF>
+                                                    <SHORT-NAME>BswModuleName</SHORT-NAME>
+                                                    <DESC><L-2 L="EN">input a BSW module name.</L-2></DESC>
+                                                    <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                                                    <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                                                    <SCOPE>LOCAL</SCOPE>
+                                                    <IMPLEMENTATION-CONFIG-CLASSES>
+                                                        <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                            <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                            <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                        </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    </IMPLEMENTATION-CONFIG-CLASSES>
+                                                    <ORIGIN>QINeS</ORIGIN>
+                                                    <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                                    <ECUC-STRING-PARAM-DEF-VARIANTS>
+                                                        <ECUC-STRING-PARAM-DEF-CONDITIONAL/>
+                                                    </ECUC-STRING-PARAM-DEF-VARIANTS>
+                                                </ECUC-STRING-PARAM-DEF>
+                                                <!-- PARAMETER DEFINITION: ConfigurationStructName -->
+                                                <ECUC-STRING-PARAM-DEF>
+                                                    <SHORT-NAME>ConfigurationStructName</SHORT-NAME>
+                                                    <DESC><L-2 L="EN">input a configration struct name.</L-2></DESC>
+                                                    <LOWER-MULTIPLICITY>1</LOWER-MULTIPLICITY>
+                                                    <UPPER-MULTIPLICITY>1</UPPER-MULTIPLICITY>
+                                                    <SCOPE>LOCAL</SCOPE>
+                                                    <IMPLEMENTATION-CONFIG-CLASSES>
+                                                        <ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                            <CONFIG-CLASS>POST-BUILD</CONFIG-CLASS>
+                                                            <CONFIG-VARIANT>VARIANT-POST-BUILD</CONFIG-VARIANT>
+                                                        </ECUC-IMPLEMENTATION-CONFIGURATION-CLASS>
+                                                    </IMPLEMENTATION-CONFIG-CLASSES>
+                                                    <ORIGIN>QINeS</ORIGIN>
+                                                    <SYMBOLIC-NAME-VALUE>false</SYMBOLIC-NAME-VALUE>
+                                                    <ECUC-STRING-PARAM-DEF-VARIANTS>
+                                                        <ECUC-STRING-PARAM-DEF-CONDITIONAL/>
+                                                    </ECUC-STRING-PARAM-DEF-VARIANTS>
+                                                </ECUC-STRING-PARAM-DEF>
+                                            </PARAMETERS>
+                                        </ECUC-PARAM-CONF-CONTAINER-DEF>
+                                    </SUB-CONTAINERS>
+                              </ECUC-PARAM-CONF-CONTAINER-DEF>
+                            </SUB-CONTAINERS>
+                      </ECUC-PARAM-CONF-CONTAINER-DEF>
+                    </CONTAINERS>
+                </ECUC-MODULE-DEF>
+            </ELEMENTS>
+        </AR-PACKAGE>
+    </AR-PACKAGES>
+</AUTOSAR>

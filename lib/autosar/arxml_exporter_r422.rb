@@ -1,10 +1,14 @@
+require 'yaml'
+
 module ArxmlExporter_r422
-  def export_ecuc_comstack_r422(project: nil, messages: nil)
+  def export_ecuc_comstack_r422(project: nil, messages: nil, modes: nil)
     @project = project
     @messages = messages
+    @modes = modes
 
     cEcucConfig = ArxmlManager.new(version: 'r422', kind: 'Ecuc')
     cEcucConfig['Ecuc'] = {
+      "BswM_#{@project.name}" => create_BswM_r422,
       "CanIf_#{@project.name}" => create_CanIf_r422,
       "Com_#{@project.name}" => create_Com_r422,
       "Ecuc_#{@project.name}" => create_Ecuc_r422,
@@ -234,6 +238,70 @@ module ArxmlExporter_r422
 
     # PduR モジュール
     hPduRContainers.sort.to_h
+  end
+
+  BSWM_REF = %w[
+    BswMConditionMode
+    BswMArgumentRef
+    BswMRuleExpressionRef
+    BswMRuleFalseActionList
+    BswMRuleTrueActionList
+    BswMActionListItemRef
+  ].freeze
+
+  def create_BswM_r422
+    hBswMContainers = {}
+    hBswMContainers['DefinitionRef'] = 'BswM'
+
+    @modes.each do |mode|
+      sBswMConfig = "BswMConfig_#{mode.title}"
+      @sBswMConfig_path = "/Ecuc/BswM_#{@project.name}/#{sBswMConfig}/"
+      hBswMContainers[sBswMConfig] = {}
+      hBswMContainers[sBswMConfig]['DefinitionRef'] = 'BswMConfig'
+
+      hYamlData = YAML.safe_load(mode.param)
+      hYamlData.each_key do |sKey|
+        hBswMContainers[sBswMConfig][sKey] = create_BswMSubContainers_r422(hYaml: hYamlData[sKey])
+      end
+      hBswMContainers[sBswMConfig] = hBswMContainers[sBswMConfig].sort.to_h
+    end
+
+    hBswMContainers.sort.to_h
+  end
+
+  def create_BswMSubContainers_r422(hYaml: nil)
+    hSubContainers = {}
+    hSubContainers['DefinitionRef'] = hYaml.delete('DefinitionRef')
+    hYaml.each_key do |sKey|
+      hSubContainers[sKey] = create_BswMParameters_r422(sKey: sKey, hParamInfo: hYaml[sKey])
+    end
+    hSubContainers.sort.to_h
+  end
+
+  def create_BswMParameters_r422(sKey: '', hParamInfo: nil)
+    hParameters = {}
+    sDefinitionRef = hParamInfo.delete('DefinitionRef')
+    sDefinitionRef = sKey if sDefinitionRef.nil?
+    hParameters['DefinitionRef'] = sDefinitionRef
+    hParamInfo.each do |sParamName, sahValue|
+      if sahValue.is_a?(Hash)
+        hParameters[sParamName] = create_BswMParameters_r422(sKey: sParamName, hParamInfo: sahValue)
+      else
+        if BSWM_REF.include?(sParamName)
+          if sahValue.is_a?(Array)
+            aTemp = []
+            sahValue.each do |sVal|
+              aTemp.push("#{@sBswMConfig_path}#{sVal}")
+            end
+            sahValue = aTemp
+          else
+            sahValue = "#{@sBswMConfig_path}#{sahValue}"
+          end
+        end
+        hParameters[sParamName] = sahValue
+      end
+    end
+    hParameters.sort.to_h
   end
 
   def create_SystemSignal_r422
