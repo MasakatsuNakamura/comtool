@@ -258,7 +258,9 @@ module ArxmlExporter_r422
       @sBswMConfig_path = "/Ecuc/BswM_#{@project.name}/#{sBswMConfig}/"
       hBswMContainers[sBswMConfig] = {}
       hBswMContainers[sBswMConfig]['DefinitionRef'] = 'BswMConfig'
-      next mode.param.nil?
+      next if mode.param.nil?
+
+puts mode.param
 
       hYamlData = YAML.safe_load(mode.param)
       hYamlData.each_key do |sKey|
