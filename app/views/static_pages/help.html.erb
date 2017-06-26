@@ -8,6 +8,7 @@
     <ul>
     <li> <%= link_to "プロジェクト管理", :action => "help", :anchor => "project" %>
     <li> <%= link_to "メッセージ設計", :action => "help", :anchor => "message" %>
+    <li> <%= link_to "BswM設定", :action => "help", :anchor => "bswm_config" %>
     <li> <%= link_to "ARXMLエクスポート", :action => "help", :anchor => "export" %>
     <li> <%= link_to "DBCファイルのインポートとエクスポート", :action => "help", :anchor => "dbc_import_export" %>
     <li> <%= link_to "DB管理", :action => "help", :anchor => "db" %>
@@ -162,6 +163,255 @@
 </ul>
 
 </div>
+
+<div class="row">
+<h1 id="bswm_config" class="text-left"> BswM設定 </h1>
+<ul>
+<li> BswMConfigの作成</li>
+  <ol>
+    <li>プロジェクト画面の[BswM設定]からBswMConfig一覧画面を開きます。
+    <li>BswMConfig一覧画面の右上にある[新規BswMConfig]からBswMConfig作成画面を開きます。
+    <li>BswMConfig作成画面でBswMConfigを作成します。
+      <table class="table table-hover ">
+        <tr>
+          <th>項目名
+          <th>説明
+        <tr>
+          <td>BswMConfig名称
+          <td>BswMConfig名称を設定します。半角英数及びアンダースコアが使用できます。
+      </table>
+  </ol>
+</ul>
+
+<ul>
+<li> BswMConfigの編集</li>
+  <ol>
+    <li>BswMConfig一覧画面から編集するBswMConfigを選択し、BswMConfig編集画面を開きます。
+    <li>BswMConfig編集画面で項目を編集し、[保存して閉じる]ボタンを押します。正常に編集できた場合はBswMConfig一覧画面が表示されます。
+      <div class="panel panel-danger">
+      <div class="panel-heading">
+        <h3 class="panel-title">制約事項</h3>
+      </div>
+      <div class="panel-body">
+        <ul>
+        <li>  矢印が繋がっている場合は"ノード削除"できません。但し、BswMActionListItem は常に削除できます。
+        <li>  論理式の構文チェックは未対応です。間違った入力がされた場合、ARXMLに出力されません。
+      </div>
+      </div>
+
+      <ul>
+      <li> BswMRuleの作成</li>
+        <ol>
+          <li>Node IDが空欄の状態にします（左側の白い部分を適当にクリックします）
+          <li>[Node to add]の選択ボックスから"New Rule"を選びます
+        </ol>
+      </ul>
+      <ul>
+      <li> BswMRuleの編集</li>
+      <ol>
+        <li>"Rule_"で始まるノードを選択します。
+        <li>項目を編集し、[保存して閉じる]ボタンを押します。
+          <table class="table table-hover ">
+            <tr>
+              <th>項目名
+              <th>説明
+            <tr>
+              <td>Node Name
+              <td>BswMRule の shortName です。半角英数及びアンダースコアが使用できます。
+            <tr>
+              <td>Node to add
+              <td>参照する BswMActionList を追加/変更します
+            <tr>
+              <td>Description
+              <td>論理式をテキストで入力します。<%= link_to "BswM 論理式の入力", :action => "help", :anchor => "bswm_formula" %>
+          </table>
+      </ol>
+      </ul>
+
+      <ul>
+      <li> BswMActionList の作成</li>
+        <ol>
+          <li>BswMRule もしくは BswMActionListItem のノードを選択します。
+          <li>[Node to add]の選択ボックスから"True ActionList"もしくは"False ActionList"もしくは"New ActionList"を選びます
+        </ol>
+      </ul>
+      <ul>
+      <li> BswMActionList の編集</li>
+      <ol>
+        <li>"ActionList_"で始まるノードを選択します。
+        <li>項目を編集し、[保存して閉じる]ボタンを押します。
+          <table class="table table-hover ">
+            <tr>
+              <th>項目名
+              <th>説明
+            <tr>
+              <td>Node Name
+              <td>BswMActionList の shortName です。半角英数及びアンダースコアが使用できます。
+            <tr>
+              <td>Node to add
+              <td>BswMActionListItem を追加します
+          </table>
+      </ol>
+      </ul>
+
+      <ul>
+      <li> BswMActionListItem の作成</li>
+        <ol>
+          <li>BswMActionList のノードを選択します。
+          <li>[Node to add]の選択ボックスから"New Item"を選びます
+        </ol>
+      </ul>
+      <ul>
+      <li> BswMActionListItem の編集</li>
+      <ol>
+        <li>"数字"が表示されたノードを選択します。
+        <li>項目を編集し、[保存して閉じる]ボタンを押します。
+          <table class="table table-hover ">
+            <tr>
+              <th>項目名
+              <th>説明
+            <tr>
+              <td>Node to add
+              <td>参照する BswMActionList,BswMRule,BswMAction を追加/変更します
+          </table>
+      </ol>
+      </ul>
+
+      <ul>
+      <li> BswMAction の作成</li>
+        <ol>
+          <li>BswMActionListItem のノードを選択します。
+          <li>[Node to add]の選択ボックスから"New Action"を選びます
+        </ol>
+      </ul>
+      <ul>
+      <li> BswMAction の編集</li>
+      <ol>
+        <li>"数字"が表示されたノードを選択します。
+        <li>項目を編集し、[保存して閉じる]ボタンを押します。
+          <table class="table table-hover ">
+            <tr>
+              <th>項目名
+              <th>説明
+            <tr>
+              <td>Node Name
+              <td>BswMAction の shortName です。半角英数及びアンダースコアが使用できます。
+            <tr>
+              <td>BswMAvailableActions
+              <td>BswMAvailableActions を選択します
+          </table>
+      </ol>
+      </ul>
+
+      <ul>
+      <li> ノードの削除（共通）</li>
+        <ol>
+          <li>削除したいノードを選択します。
+          <li>[ノード削除]ボタンを押下します。
+          <li>[保存して閉じる]ボタンを押します。
+        </ol>
+      </ul>
+  </ol>
+</ul>
+
+<ul>
+<li> BswMConfigの削除</li>
+  <ol>
+    <li>BswMConfig一覧画面から削除するBswMConfigの[delete]を選択します。
+    <li>確認ダイアログで[OK]を選択します
+  </ol>
+</ul>
+
+</div>
+
+<h2 id="bswm_formula" class="text-left">  BswM 論理式の入力 </h2>
+論理式の文法について説明します。
+<ul>
+<li> 条件式が１つの場合</li>
+  <ol>
+    <li>書式:<br><pre>[BswMModeRequestSource](...) [BswMConditionType] [BswMBswRequestedMode] </pre>
+    <li>記載例:<br><pre>BswMComMIndication(...) == COMM_XXX</pre>
+
+      <table class="table table-hover ">
+        <tr>
+          <th>項目名
+          <th>説明
+        <tr>
+          <td>BswMModeRequestSource
+          <td>下記より選択します。
+            <br>BswMBswModeNotification
+            <br>BswMCanSMIcomIndication
+            <br>BswMCanSMIndication
+            <br>BswMComMIndication
+            <br>BswMComMInitiateReset
+            <br>BswMComMPncRequest
+            <br>BswMDcmComModeRequest
+            <br>BswMEcuMIndication
+            <br>BswMEcuMRUNRequestIndication
+            <br>BswMEcuMWakeupSource
+            <br>BswMEthSMIndication
+            <br>BswMFrSMIndication
+            <br>BswMGenericRequest
+            <br>BswMJ1939DcmBroadcastStatus
+            <br>BswMJ1939NmIndication
+            <br>BswMLinSMIndication
+            <br>BswMLinScheduleIndication
+            <br>BswMLinTpModeRequest
+            <br>BswMModeSwitchErrorEvent
+            <br>BswMNmIfCarWakeUpIndication
+            <br>BswMNvMJobModeIndication
+            <br>BswMNvMRequest
+            <br>BswMPartitionRestarted
+            <br>BswMSdClientServiceCurrentState
+            <br>BswMSdConsumedEventGroupCurrentState
+            <br>BswMSdEventHandlerCurrentState
+            <br>BswMSwcModeNotification
+            <br>BswMSwcModeRequest
+            <br>BswMWdgMRequestPartitionReset
+        <tr>
+          <td>BswMConditionType
+          <td>== もしくは != を記載します。
+        <tr>
+          <td>BswMBswRequestedMode
+          <td>任意の文字列を入力します。
+      </table>
+  </ol>
+</ul>
+
+<ul>
+<li> 条件式が複数の場合</li>
+  <ol>
+    <li>書式<br><pre>[BswMLogicalOperator] (<br>  [条件式], <br>   : //条件式の数だけ繰り返し <br>)<br></pre>
+    <li>記載例1
+      <pre>
+OR(
+  BswMComMIndication(...) == COMM_XXX,
+  BswMComMIndication(...) == COMM_YYY,
+)
+</pre>
+<li>記載例2
+  <pre>
+OR(
+  BswMComMIndication(...) == COMM_XXX,
+  OR(
+    BswMComMIndication(...) == COMM_YYY,
+    BswMComMIndication(...) == COMM_ZZZ,
+  )
+)
+      </pre>
+      <table class="table table-hover ">
+        <tr>
+          <th>項目名
+          <th>説明
+        <tr>
+          <td>BswMLogicalOperator
+          <td>AND,OR,NAND,XOR のいずれかを記載します。
+        <tr>
+          <td>条件式
+          <td>条件式を記載します。
+      </table>
+  </ol>
+</ul>
 
 <div class="row">
 <h1 id="export" class="text-left"> ARXMLエクスポート </h1>
