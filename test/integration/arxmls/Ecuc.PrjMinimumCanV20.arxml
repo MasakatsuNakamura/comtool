@@ -9,6 +9,15 @@
             </LONG-NAME>
             <ELEMENTS>
                 <ECUC-MODULE-CONFIGURATION-VALUES>
+                    <SHORT-NAME>BswM_PrjMinimumCanV20</SHORT-NAME>
+                    <LONG-NAME>
+                        <L-4 L="JA"></L-4>
+                    </LONG-NAME>
+                    <DEFINITION-REF DEST="ECUC-MODULE-DEF">/QINeS/BswM</DEFINITION-REF>
+                    <ECUC-DEF-EDITION>4.2.2</ECUC-DEF-EDITION>
+                    <CONTAINERS/>
+                </ECUC-MODULE-CONFIGURATION-VALUES>
+                <ECUC-MODULE-CONFIGURATION-VALUES>
                     <SHORT-NAME>CanIf_PrjMinimumCanV20</SHORT-NAME>
                     <LONG-NAME>
                         <L-4 L="JA"></L-4>
