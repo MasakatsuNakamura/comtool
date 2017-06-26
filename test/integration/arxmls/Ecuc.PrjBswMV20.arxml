@@ -385,6 +385,15 @@
                                                         <L-4 L="JA"></L-4>
                                                     </LONG-NAME>
                                                     <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource</DEFINITION-REF>
+                                                    <SUB-CONTAINERS>
+                                                        <ECUC-CONTAINER-VALUE>
+                                                            <SHORT-NAME>BswMNvMJobModeIndication</SHORT-NAME>
+                                                            <LONG-NAME>
+                                                                <L-4 L="JA"></L-4>
+                                                            </LONG-NAME>
+                                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource/BswMNvMJobModeIndication</DEFINITION-REF>
+                                                        </ECUC-CONTAINER-VALUE>
+                                                    </SUB-CONTAINERS>
                                                 </ECUC-CONTAINER-VALUE>
                                             </SUB-CONTAINERS>
                                         </ECUC-CONTAINER-VALUE>
@@ -401,6 +410,15 @@
                                                         <L-4 L="JA"></L-4>
                                                     </LONG-NAME>
                                                     <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource</DEFINITION-REF>
+                                                    <SUB-CONTAINERS>
+                                                        <ECUC-CONTAINER-VALUE>
+                                                            <SHORT-NAME>BswMNvMJobModeIndication</SHORT-NAME>
+                                                            <LONG-NAME>
+                                                                <L-4 L="JA"></L-4>
+                                                            </LONG-NAME>
+                                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource/BswMNvMJobModeIndication</DEFINITION-REF>
+                                                        </ECUC-CONTAINER-VALUE>
+                                                    </SUB-CONTAINERS>
                                                 </ECUC-CONTAINER-VALUE>
                                             </SUB-CONTAINERS>
                                         </ECUC-CONTAINER-VALUE>
@@ -417,6 +435,15 @@
                                                         <L-4 L="JA"></L-4>
                                                     </LONG-NAME>
                                                     <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource</DEFINITION-REF>
+                                                    <SUB-CONTAINERS>
+                                                        <ECUC-CONTAINER-VALUE>
+                                                            <SHORT-NAME>BswMNvMJobModeIndication</SHORT-NAME>
+                                                            <LONG-NAME>
+                                                                <L-4 L="JA"></L-4>
+                                                            </LONG-NAME>
+                                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource/BswMNvMJobModeIndication</DEFINITION-REF>
+                                                        </ECUC-CONTAINER-VALUE>
+                                                    </SUB-CONTAINERS>
                                                 </ECUC-CONTAINER-VALUE>
                                             </SUB-CONTAINERS>
                                         </ECUC-CONTAINER-VALUE>
@@ -433,6 +460,15 @@
                                                         <L-4 L="JA"></L-4>
                                                     </LONG-NAME>
                                                     <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource</DEFINITION-REF>
+                                                    <SUB-CONTAINERS>
+                                                        <ECUC-CONTAINER-VALUE>
+                                                            <SHORT-NAME>BswMEcuMIndication</SHORT-NAME>
+                                                            <LONG-NAME>
+                                                                <L-4 L="JA"></L-4>
+                                                            </LONG-NAME>
+                                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource/BswMEcuMIndication</DEFINITION-REF>
+                                                        </ECUC-CONTAINER-VALUE>
+                                                    </SUB-CONTAINERS>
                                                 </ECUC-CONTAINER-VALUE>
                                             </SUB-CONTAINERS>
                                         </ECUC-CONTAINER-VALUE>
@@ -449,6 +485,15 @@
                                                         <L-4 L="JA"></L-4>
                                                     </LONG-NAME>
                                                     <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource</DEFINITION-REF>
+                                                    <SUB-CONTAINERS>
+                                                        <ECUC-CONTAINER-VALUE>
+                                                            <SHORT-NAME>BswMEcuMIndication</SHORT-NAME>
+                                                            <LONG-NAME>
+                                                                <L-4 L="JA"></L-4>
+                                                            </LONG-NAME>
+                                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMArbitration/BswMModeRequestPort/BswMModeRequestSource/BswMEcuMIndication</DEFINITION-REF>
+                                                        </ECUC-CONTAINER-VALUE>
+                                                    </SUB-CONTAINERS>
                                                 </ECUC-CONTAINER-VALUE>
                                             </SUB-CONTAINERS>
                                         </ECUC-CONTAINER-VALUE>
@@ -593,6 +638,15 @@
                                                         <L-4 L="JA"></L-4>
                                                     </LONG-NAME>
                                                     <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMModeControl/BswMAction/BswMAvailableActions</DEFINITION-REF>
+                                                    <SUB-CONTAINERS>
+                                                        <ECUC-CONTAINER-VALUE>
+                                                            <SHORT-NAME>BswMRteSwitch</SHORT-NAME>
+                                                            <LONG-NAME>
+                                                                <L-4 L="JA"></L-4>
+                                                            </LONG-NAME>
+                                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMModeControl/BswMAction/BswMAvailableActions/BswMRteSwitch</DEFINITION-REF>
+                                                        </ECUC-CONTAINER-VALUE>
+                                                    </SUB-CONTAINERS>
                                                 </ECUC-CONTAINER-VALUE>
                                             </SUB-CONTAINERS>
                                         </ECUC-CONTAINER-VALUE>
@@ -609,6 +663,15 @@
                                                         <L-4 L="JA"></L-4>
                                                     </LONG-NAME>
                                                     <DEFINITION-REF DEST="ECUC-CHOICE-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMModeControl/BswMAction/BswMAvailableActions</DEFINITION-REF>
+                                                    <SUB-CONTAINERS>
+                                                        <ECUC-CONTAINER-VALUE>
+                                                            <SHORT-NAME>BswMComMModeSwitch</SHORT-NAME>
+                                                            <LONG-NAME>
+                                                                <L-4 L="JA"></L-4>
+                                                            </LONG-NAME>
+                                                            <DEFINITION-REF DEST="ECUC-PARAM-CONF-CONTAINER-DEF">/QINeS/BswM/BswMConfig/BswMModeControl/BswMAction/BswMAvailableActions/BswMComMModeSwitch</DEFINITION-REF>
+                                                        </ECUC-CONTAINER-VALUE>
+                                                    </SUB-CONTAINERS>
                                                 </ECUC-CONTAINER-VALUE>
                                             </SUB-CONTAINERS>
                                         </ECUC-CONTAINER-VALUE>
