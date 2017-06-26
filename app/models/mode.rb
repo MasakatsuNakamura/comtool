@@ -2,6 +2,7 @@ class Mode < ApplicationRecord
   require 'json'
   require 'yaml'
   require 'strscan'
+  require 'pp'
 
   belongs_to :project
     before_update :convert_image_json_to_yaml
@@ -208,7 +209,7 @@ class Mode < ApplicationRecord
     obj = {}
     obj[:shortName] = node['label']
     obj[:DefinitionRef] = 'BswMAction'
-    if node.key('title')
+    if node.key?('title')
       obj[:BswMAvailableActions] = {node['title'] => {}}
     end
 
