@@ -252,6 +252,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
     @project.big_endian!
     @modes = []
     @modes[0] = Mode.create!(project:@project, title: 'BswMConfig', image_json: BSWM_CONFIG_JSON)
+    @modes[0].save
     @messages = {}
 
     compare_arxml_r403
@@ -263,6 +264,7 @@ class ArxmlExporterTest < ActionDispatch::IntegrationTest
     @project.big_endian!
     @modes = []
     @modes[0] = Mode.create!(project:@project, title: 'BswMConfig', image_json: BSWM_CONFIG_JSON)
+    @modes[0].save
     @messages = {}
 
     compare_arxml_r422
