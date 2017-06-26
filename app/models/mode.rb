@@ -249,7 +249,7 @@ class Mode < ApplicationRecord
     obj = {}
     obj[:DefinitionRef] = 'BswMModeRequestPort'
     obj[:shortName] = "port_#{@obj_counts[obj[:DefinitionRef]]}"
-    obj[:BswMModeRequestSource] = {param['BswMModeRequestSource'] => nil}
+    obj[:BswMModeRequestSource] = {param['BswMModeRequestSource'] => {}}
 
     post_new obj
   end
