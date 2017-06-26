@@ -208,7 +208,9 @@ class Mode < ApplicationRecord
     obj = {}
     obj[:shortName] = node['label']
     obj[:DefinitionRef] = 'BswMAction'
-    obj[:BswMAvailableActions] = {node['title'] => {}}
+    if node.key('title')
+      obj[:BswMAvailableActions] = {node['title'] => {}}
+    end
 
     post_new obj
   end
