@@ -260,8 +260,6 @@ module ArxmlExporter_r422
       hBswMContainers[sBswMConfig]['DefinitionRef'] = 'BswMConfig'
       next if mode.param.nil?
 
-puts mode.param
-
       hYamlData = YAML.safe_load(mode.param)
       hYamlData.each_key do |sKey|
         hBswMContainers[sBswMConfig][sKey] = create_BswMSubContainers_r422(hYaml: hYamlData[sKey])
