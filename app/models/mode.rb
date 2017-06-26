@@ -2,7 +2,6 @@ class Mode < ApplicationRecord
   require 'json'
   require 'yaml'
   require 'strscan'
-  require 'pp'
 
   belongs_to :project
     before_update :convert_image_json_to_yaml
