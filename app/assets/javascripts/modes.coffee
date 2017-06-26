@@ -9,6 +9,14 @@ $(window).load ->
     myjson = JSON.parse(image_json)
     raise 'Error' if !myjson.nodes || myjson.nodes.length == 0
     nodes = new vis.DataSet(myjson.nodes)
+    nodes.forEach (node) ->
+      if node.title
+        space = new RegExp(" ", "g")
+        enter = new RegExp("\n", "g")
+        nodes.update({
+          id: node.id,
+          title: node.title.replace(space, '&nbsp;').replace(enter, '<br />')
+        })
   catch e
     nodes = new vis.DataSet([{
       id: '1',
@@ -115,33 +123,30 @@ $(window).load ->
       $('#node_id').val(node.id)
       $('#node_type').text(node.label.replace(/^(.*_).*$/, '$1'))
       $('#node_name').val(node.label.replace(/^.*_/, ''))
-      $('#node_desc').val(node.title)
+      if node.title
+        br = new RegExp("<br \/>", "g")
+        nbsp = new RegExp("\&nbsp\;", "g")
+        $('#node_desc').val(node.title.replace(br, '\n').replace(nbsp, ' '))
+      else
+        $('#node_desc').val('')
       $('#node-to-add').val('Action')
       if node.label.match(/^Action_/)
-        $('#description, #actions, #node_type_name').show()
-        $('#node-to-add-div').hide()
-        $('#node_desc').prop 'placeholder', '''
-# Write parameter for BswMAvailableActions as below:
-BswMUserCalloutFunctionMultipleInput: |
-  ComM_RequestComMode(ComMConf_ComMUser_ComMUser,
-  COMM_FULL_COMMUNICATION );
-'''
-        try
-          desc = JSON.parse(node.title)
-          for key, value of desc.BswMAvailableActions
-            $('#actions_list').val(key)
-            $('#node_desc').val(value)
-        catch e
+        $('#actions, #node_type_name').show()
+        $('#description, #node-to-add-div').hide()
+        desc = node.title || ''
+        m = desc.match(/^BswMAvailableActions:(?:<br \/>|\&nbsp\;)*([a-zA-Z]+):/)
+        if m
+          $('#actions_list').val(m[1])
+        else
           $('#actions_list').val('')
-          $('#node_desc').val('')
       else if node.label.match(/^Rule_/)
         $('#description, #node-to-add-div, #node_type_name').show()
         $('#actions').hide()
         $('#node_desc').prop 'placeholder', '''
 # Sample as below:
 AND(
-  NvMJobModeIndication(...) ==  NVM_REQ_OK,
-  EcuMIndication(...) ==  ECUM_STATE_STARTUP_TWO
+  BswMNvMJobModeIndication(...) ==  NVM_REQ_OK,
+  BswMEcuMIndication(...) ==  ECUM_STATE_STARTUP_TWO
 )
 '''
       else if node.label.match(/^[1-9][0-9]*$/)
@@ -194,10 +199,10 @@ AND(
         color: new_color
       })
     m = $('#node-to-add option:selected').text().match(/^Change\s*(True|False)/)
-    m = if m then m[1] else 'Not'
+    m = if m then m[1] else 'Do'
     edge_id = false
     edges.forEach (edge) ->
-      if edge.from == $('#node_id').val() && (edge.label == 'Do' || edge.label == m)
+      if edge.from == $('#node_id').val() && edge.label == m
         edge_id = edge.id
     if edge_id
       edges.update({
@@ -208,7 +213,7 @@ AND(
       edges.add({
         from: $('#node_id').val(),
         to: if new_id == 0 then $('#node-to-add').val() else new_id.toString(),
-        label: 'Do',
+        label: m,
         arrows: 'to'
       })
     update_event()
@@ -303,12 +308,14 @@ AND(
       if nodes.get($('#node_id').val()).label.match(/^Action_/)
         nodes.update({
           id: $('#node_id').val(),
-          title: '{"BswMAvailableActions": {"' + $('#actions_list').val() + '":"' + $('#node_desc').val() + '"}}'
+          title: 'BswMAvailableActions:<br />&nbsp;&nbsp;' + $('#actions_list').val() + ':'
         })
       else
+        space = new RegExp(" ", "g")
+        enter = new RegExp("\n", "g")
         nodes.update({
           id: $('#node_id').val(),
-          title: $('#node_desc').val()
+          title: $('#node_desc').val().replace(space, '&nbsp;').replace(enter, '<br />')
         })
 
   @oldVal2 = ""
@@ -326,7 +333,7 @@ AND(
     return false if !nodes.get($('#node_id').val()).label.match(/^Action_/) || $('#actions_list').val().length == 0
     nodes.update({
       id: $('#node_id').val(),
-      title: '{"BswMAvailableActions": {"' + $('#actions_list').val() + '":"' + $('#node_desc').val() + '"}}'
+      title: 'BswMAvailableActions:<br />&nbsp;&nbsp;' + $('#actions_list').val() + ':'
     })
     update_event()
 
@@ -348,6 +355,8 @@ AND(
     }
     nodes.forEach (node) ->
       if node
+        if node.title
+          node.title = node.title.replace(/<br \/>/g, '\n').replace(/\&nbsp\;/g, ' ')
         image_json.nodes.push node
     edges.forEach (edge) ->
       if edge
