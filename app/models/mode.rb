@@ -208,7 +208,7 @@ class Mode < ApplicationRecord
     obj = {}
     obj[:shortName] = node['label']
     obj[:DefinitionRef] = 'BswMAction'
-    unless param.nil?
+    if node.key('title')
       obj[:BswMAvailableActions] = {node['title'] => {}}
     end
 
