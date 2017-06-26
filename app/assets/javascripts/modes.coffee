@@ -13,9 +13,14 @@ $(window).load ->
       if node.title
         space = new RegExp(" ", "g")
         enter = new RegExp("\n", "g")
+        new_title =
+          if node.label.match(/^Action_/)
+            "BswMAvailableActions:\n  #{node.title}:"
+          else
+            node.title
         nodes.update({
           id: node.id,
-          title: node.title.replace(space, '&nbsp;').replace(enter, '<br />')
+          title: new_title.replace(space, '&nbsp;').replace(enter, '<br />')
         })
   catch e
     nodes = new vis.DataSet([{
@@ -357,6 +362,9 @@ AND(
       if node
         if node.title
           node.title = node.title.replace(/<br \/>/g, '\n').replace(/\&nbsp\;/g, ' ')
+          m = node.title.match(/^BswMAvailableActions:(?:\n|\s)*([a-zA-Z]+):/)
+          if node.label.match(/^Action_/) && m
+            node.title = m[1]
         image_json.nodes.push node
     edges.forEach (edge) ->
       if edge
