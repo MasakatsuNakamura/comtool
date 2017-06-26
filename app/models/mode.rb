@@ -205,17 +205,11 @@ class Mode < ApplicationRecord
   end
 
   def bswMAction_new (node:nil)
-    begin
-      param = YAML.load node['title']
-    rescue
-      param = nil
-    end
-
     obj = {}
     obj[:shortName] = node['label']
     obj[:DefinitionRef] = 'BswMAction'
     unless param.nil?
-      obj[:BswMAvailableActions] = param['BswMAvailableActions']
+      obj[:BswMAvailableActions] = {node['title'] => {}}
     end
 
     post_new obj
