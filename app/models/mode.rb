@@ -214,7 +214,9 @@ class Mode < ApplicationRecord
     obj = {}
     obj[:shortName] = node['label']
     obj[:DefinitionRef] = 'BswMAction'
-    obj[:BswMAvailableActions] = param['BswMAvailableActions']
+    unless param.nil?
+      obj[:BswMAvailableActions] = param['BswMAvailableActions']
+    end
 
     post_new obj
   end
