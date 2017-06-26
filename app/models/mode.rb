@@ -4,7 +4,7 @@ class Mode < ApplicationRecord
   require 'strscan'
 
   belongs_to :project
-    before_save :convert_image_json_to_yaml
+    before_update :convert_image_json_to_yaml
   validates :title,
             presence: true,
             uniqueness: { case_sensitive: false, scope: :project_id },
@@ -12,6 +12,8 @@ class Mode < ApplicationRecord
             format: { with: /\A[a-zA-Z]\w*\z/, message: '半角英数とアンダースコアが利用できます' }
 
   def convert_image_json_to_yaml
+    return if image_json.nil?
+
     image = JSON.parse(image_json)
     @nodes = image['nodes']
     @edges = image['edges']
@@ -145,7 +147,9 @@ class Mode < ApplicationRecord
   end
 
   def bswMRule_new (node:nil)
-    logexp_name = set_LogicalExpression_containers(scanner: StringScanner.new(node['title']))
+    unless node['title'].nil?
+      logexp_name = set_LogicalExpression_containers(scanner: StringScanner.new(node['title']))
+    end
     nested_node = connected_node(to:  node['id'], edges_label: 'Do')
     true_node   = connected_node(from: node['id'], edges_label: 'True')
     false_node  = connected_node(from: node['id'], edges_label: 'False')
@@ -163,7 +167,9 @@ class Mode < ApplicationRecord
   end
 
   def bswMActionList_new (node:nil)
-    containers = get_ActionItemList_containers(parent_id: node['id'])
+    unless node['id'].nil?
+      containers = get_ActionItemList_containers(parent_id: node['id'])
+    end
 
     obj = {}
     obj[:shortName] = node['label']
