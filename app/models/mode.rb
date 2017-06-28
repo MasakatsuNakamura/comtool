@@ -133,7 +133,9 @@ class Mode < ApplicationRecord
 
     while (node = connected_node(from:id))
       action = connected_node(from:node['id'], edges_label:'Do')
-      containers << bswMActionListItem_new({BswMActionListItemRef: action['label']})
+      if !action.nil? && action.key?('label')
+        containers << bswMActionListItem_new({BswMActionListItemRef: action['label']})
+      end
       id = node['id']
     end
 
